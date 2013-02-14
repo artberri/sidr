@@ -16,12 +16,12 @@
     box-shadow: inset 0 0 5px 5px #222;
 }
 
-.sidr.left {
+.sidr.right {
     left: auto;
     right: -300px;
 }
 
-.sidr.right {
+.sidr.left {
     left: -300px;
     right: auto;
 }

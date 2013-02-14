@@ -8,18 +8,6 @@
 
 (function($) {
 
-  // Opening variable
-  $.sidr.moving = false;
-
-  // Default settings
-  $.sidr.defaults = {
-      speed : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-      side  : 'left', // Accepts 'left' or 'right'
-      source: null    // Override the source of the content.
-  };
-
-  $.sidr.settings = [];
-
   var exceptions = {
     source: {
         name:        "Invalid Sidr Source",
@@ -55,39 +43,50 @@
     loadContent: function($menu, content) {
       $menu.html(content);
     },
-    open: function(name) {
+    open: function(name, options) {
       name = sidr.ensureName(name);
-      var $menu = $(name),
-          settings = $.sidr.settings[name],
+      var $menu = $('#' + name),
+          $body = $('body'),
+          settings = options,
           menuWidth = $menu.outerWidth(true);
 
+          console.log($.sidr.settings);
+
       // Check if we can open it
-      if( $menu.is(':visible') || $.sidr.moving )
+      if( $menu.is(':visible') || $.sidr.moving ) {
         return;
+      }
 
       // Lock sidr
       $.sidr.moving = true;
-
+console.log(settings);
+      // Open menu
       if(settings.side === 'left') {
-
+        $body.animate({marginLeft: menuWidth + 'px'}, settings.duration);
+        $menu.css('display', 'block').animate({left: '0px'}, settings.duration, function() {
+          $.sidr.moving = false;
+        });
       }
       else {
-
+        $body.animate({marginRight: menuWidth + 'px'}, settings.duration);
+        $menu.css('display', 'block').animate({right: '0px'}, settings.duration, function() {
+          $.sidr.moving = false;
+        });
       }
     },
     close: function(name) {
 
     },
-    toogle: function(name) {
+    toogle: function(name, options) {
       name = sidr.ensureName(name);
       var $menu = $(name);
 
       // If the slide is open or opening, just ignore the call
       if($menu.is(':visible')) {
-        sidr.close(name);
+        sidr.close(name, options);
       }
       else {
-        sidr.open(name);
+        sidr.open(name, options);
       }
     },
     // Main method
@@ -99,12 +98,11 @@
       }
       else if(typeof name === 'undefined') {
         name = 'sidr';
+        options = {};
       }
 
-      // Override defaults
-      $.sidr.settings[name] = $.extend($.sidr.defaults, options);
       // Variables
-      var settings = $.sidr.settings[name],
+      var settings = $.extend($.sidr.defaults, options);
           $sideMenu = $('#' + name);
 
       // If the side menu do not exist create it
@@ -129,23 +127,38 @@
         });
       }
       else if(typeof settings.source === 'string') {
-        var htmlContent = '';
-        $existingContents = $(settings.source);
+        var htmlContent = '',
+            $existingContents = $(settings.source);
         $existingContents.each(function() {
           htmlContent += $(this).html();
         });
         sidr.loadContent($sideMenu, htmlContent);
       }
-      else if(typeof settings.source !== null) {
+      else if(settings.source !== null) {
         throw exceptions.source;
       }
 
       // Mostramos sidebar
-      // @TODO Hay que decidir que elementos disparan abrir y cerrar
+      $('a[href="#' + name + '"]').click(function(e) {
+        e.preventDefault();
+        console.log(name);
+        console.log(settings);
+        sidr.toogle(name, settings);
+      });
     }
   };
 
   // Static method
   $.sidr = sidr.init;
+
+    // Opening variable
+  $.sidr.moving = false;
+
+  // Default settings
+  $.sidr.defaults = {
+      speed : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+      side  : 'left', // Accepts 'left' or 'right'
+      source: null    // Override the source of the content.
+  };
 
 }(jQuery));
