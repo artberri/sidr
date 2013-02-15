@@ -99,8 +99,9 @@
       });
     },
     open: function(name) {
-      if(!name)
+      if(!name) {
         name = 'sidr';
+      }
 
       var $menu = $('#' + name),
           $body = $('body'),
@@ -131,8 +132,9 @@
       }
     },
     close: function(name) {
-      if(!name)
+      if(!name) {
         name = 'sidr';
+      }
 
       var $menu = $('#' + name),
           $body = $('body'),
@@ -165,8 +167,9 @@
       }
     },
     toogle: function(name) {
-      if(!name)
+      if(!name) {
         name = 'sidr';
+      }
       var $menu = $('#' + name);
 
       // If the slide is open or opening, just ignore the call
