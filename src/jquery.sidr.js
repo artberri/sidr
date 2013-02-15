@@ -6,24 +6,11 @@
  * Licensed under the MIT license.
  */
 
-(function($) {
+;(function( $ ){
 
-  var exceptions = {
-    source: {
-        name:        "Invalid Sidr Source",
-        level:       "Error",
-        message:     "Error detected. You provided an invalid source."
-    }
-  };
+  var sidrMoving = false;
 
-  var sidr = {
-    ensureName: function(name) {
-      if(typeof name !== 'string') {
-        name = 'sidr';
-      }
-
-      return name;
-    },
+  var privateMethods = {
     // Check for valids urls
     // From : http://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
     isUrl: function (str) {
@@ -42,67 +29,20 @@
     // Loads the content into the menu bar
     loadContent: function($menu, content) {
       $menu.html(content);
-    },
-    open: function(name, options) {
-      name = sidr.ensureName(name);
-      var $menu = $('#' + name),
-          $body = $('body'),
-          settings = options,
-          menuWidth = $menu.outerWidth(true);
+    }
+  };
 
-          console.log($.sidr.settings);
+  var methods = {
+    init : function( options ) {
 
-      // Check if we can open it
-      if( $menu.is(':visible') || $.sidr.moving ) {
-        return;
-      }
+      var settings = $.extend( {
+        name  : 'sidr',
+        speed : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+        side  : 'left', // Accepts 'left' or 'right'
+        source: null    // Override the source of the content.
+      }, options);
 
-      // Lock sidr
-      $.sidr.moving = true;
-console.log(settings);
-      // Open menu
-      if(settings.side === 'left') {
-        $body.animate({marginLeft: menuWidth + 'px'}, settings.duration);
-        $menu.css('display', 'block').animate({left: '0px'}, settings.duration, function() {
-          $.sidr.moving = false;
-        });
-      }
-      else {
-        $body.animate({marginRight: menuWidth + 'px'}, settings.duration);
-        $menu.css('display', 'block').animate({right: '0px'}, settings.duration, function() {
-          $.sidr.moving = false;
-        });
-      }
-    },
-    close: function(name) {
-
-    },
-    toogle: function(name, options) {
-      name = sidr.ensureName(name);
-      var $menu = $(name);
-
-      // If the slide is open or opening, just ignore the call
-      if($menu.is(':visible')) {
-        sidr.close(name, options);
-      }
-      else {
-        sidr.open(name, options);
-      }
-    },
-    // Main method
-    init: function(name, options) {
-      // Check input variables
-      if(typeof name === 'object' && typeof options === 'undefined') {
-        options = name;
-        name = 'sidr';
-      }
-      else if(typeof name === 'undefined') {
-        name = 'sidr';
-        options = {};
-      }
-
-      // Variables
-      var settings = $.extend($.sidr.defaults, options);
+      var name = settings.name,
           $sideMenu = $('#' + name);
 
       // If the side menu do not exist create it
@@ -112,18 +52,23 @@ console.log(settings);
           .appendTo($('body'));
       }
 
-      // Añadir estilos a la sidebar
+      // Adding styles
       $sideMenu
         .addClass('sidr')
-        .addClass(settings.side);
+        .addClass(settings.side)
+        .data({
+          duration : settings.duration,
+          side : settings.side
+        });
 
+      // The menu content
       if(typeof settings.source === 'function') {
         var newContent = settings.source(name);
-        sidr.loadContent($sideMenu, newContent);
+        privateMethods.loadContent($sideMenu, newContent);
       }
-      else if(typeof settings.source === 'string' && sidr.isUrl(settings.source)) {
+      else if(typeof settings.source === 'string' && privateMethods.isUrl(settings.source)) {
         $.get(settings.source, function(data) {
-          sidr.loadContent($sideMenu, data);
+          privateMethods.loadContent($sideMenu, data);
         });
       }
       else if(typeof settings.source === 'string') {
@@ -132,33 +77,118 @@ console.log(settings);
         $existingContents.each(function() {
           htmlContent += $(this).html();
         });
-        sidr.loadContent($sideMenu, htmlContent);
+        privateMethods.loadContent($sideMenu, htmlContent);
       }
       else if(settings.source !== null) {
-        throw exceptions.source;
+        $.error('Invalid Sidr Source');
       }
 
-      // Mostramos sidebar
-      $('a[href="#' + name + '"]').click(function(e) {
-        e.preventDefault();
-        console.log(name);
-        console.log(settings);
-        sidr.toogle(name, settings);
+      return this.each(function(){
+
+        var $this = $(this),
+            data = $this.data('sidr');
+
+        // If the plugin hasn't been initialized yet
+        if ( ! data ) {
+          $this.data('sidr', name);
+          $this.click(function(e) {
+            e.preventDefault();
+            methods.toogle(name);
+          });
+        }
       });
+    },
+    open: function(name) {
+      if(!name)
+        name = 'sidr';
+
+      var $menu = $('#' + name),
+          $body = $('body'),
+          menuWidth = $menu.outerWidth(true),
+          duration = $menu.data('duration'),
+          side = $menu.data('side');
+
+      // Check if we can open it
+      if( $menu.is(':visible') || sidrMoving ) {
+        return;
+      }
+
+      // Lock sidr
+      sidrMoving = true;
+
+      // Open menu
+      if(side === 'left') {
+        $body.animate({marginLeft: menuWidth + 'px'}, duration);
+        $menu.css('display', 'block').animate({left: '0px'}, duration, function() {
+          sidrMoving = false;
+        });
+      }
+      else {
+        $body.animate({marginRight: menuWidth + 'px'}, duration);
+        $menu.css('display', 'block').animate({right: '0px'}, duration, function() {
+          sidrMoving = false;
+        });
+      }
+    },
+    close: function(name) {
+      if(!name)
+        name = 'sidr';
+
+      var $menu = $('#' + name),
+          $body = $('body'),
+          menuWidth = $menu.outerWidth(true),
+          duration = $menu.data('duration'),
+          side = $menu.data('side');
+
+      // Check if we can open it
+      if( !$menu.is(':visible') || sidrMoving ) {
+        return;
+      }
+
+      // Lock sidr
+      sidrMoving = true;
+
+      // Open menu
+      if(side === 'left') {
+        $body.animate({marginLeft: 0}, duration);
+        $menu.animate({left: '-' + menuWidth + 'px'}, duration, function() {
+          $menu.removeAttr('style');
+          sidrMoving = false;
+        });
+      }
+      else {
+        $body.animate({marginRight: 0}, duration);
+        $menu.animate({right: '-' + menuWidth + 'px'}, duration, function() {
+          $menu.removeAttr('style');
+          sidrMoving = false;
+        });
+      }
+    },
+    toogle: function(name) {
+      if(!name)
+        name = 'sidr';
+      var $menu = $('#' + name);
+
+      // If the slide is open or opening, just ignore the call
+      if($menu.is(':visible')) {
+        methods.close(name);
+      }
+      else {
+        methods.open(name);
+      }
     }
   };
 
-  // Static method
-  $.sidr = sidr.init;
+  $.fn.sidr = function( method ) {
 
-    // Opening variable
-  $.sidr.moving = false;
+    if ( methods[method] ) {
+      return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
+    } else if ( typeof method === 'object' || ! method ) {
+      return methods.init.apply( this, arguments );
+    } else {
+      $.error( 'Method ' +  method + ' does not exist on jQuery.tooltip' );
+    }
 
-  // Default settings
-  $.sidr.defaults = {
-      speed : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-      side  : 'left', // Accepts 'left' or 'right'
-      source: null    // Override the source of the content.
   };
 
-}(jQuery));
+})( jQuery );

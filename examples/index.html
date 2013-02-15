@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="../src/stylesheets/jquery.sidr.css" />
@@ -6,21 +7,23 @@
 </head>
 <body>
     <h1>Hola</h1>
-    <p>Ybckausd kjs fksdjhf baskdbaskdf bsakdf bsakd fsdfgs.</p>
-    <p>Ybckausd kjs fksdjhf <a href="#sidr">izq</a> bsakdf bsakd fsdfgs.</p>
-    <p>Ybckausd kjs fksdjhf baskdbaskdf <a href="#hola">der</a> bsakdf bsakd fsdfgs.</p>
+    <p>Ybckausd <a id="hola-button" href="#lele">kjs</a> fksdjhf baskdbaskdf bsakdf bsakd fsdfgs.</p>
+    <p>Ybckausd kjs fksdjhf <a class="hola-button" href="#sidr">izq</a> bsakdf bsakd fsdfgs.</p>
+    <p>Ybckausd kjs fksdjhf baskdbaskdf <a class="hola-button" href="#hola">der</a> bsakdf bsakd fsdfgs.</p>
 <script>
 ;(function ($, window) {
     $(document).ready(function() {
 
-        $.sidr('hola', {
-          speed : 400,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+        $('#hola-button').sidr({
+          name : 'hola',
+          speed : 100,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
           side  : 'right', // Accepts 'left' or 'right'
           source: null    // Override the source of the content.
         });
 
-        $.sidr({
-            speed: 200
+        $('.hola-button').sidr({
+            name: 'lele',
+            speed: 800
         });
     });
 })(jQuery, this);
