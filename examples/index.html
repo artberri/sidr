@@ -4,11 +4,14 @@
     <link rel="stylesheet" type="text/css" href="../src/stylesheets/jquery.sidr.css" />
     <script src="../libs/jquery/jquery.js"></script>
     <script src="../src/jquery.sidr.js"></script>
+    <style type="text/css">
+
+    </style>
 </head>
 <body>
     <h1>Hola</h1>
     <p>Ybckausd <a id="hola-button" href="#lele">kjs</a> fksdjhf baskdbaskdf bsakdf bsakd fsdfgs.</p>
-    <p>Ybckausd kjs fksdjhf <a class="hola-button" href="#sidr">izq</a> bsakdf bsakd fsdfgs.</p>
+    <p>Ybckausd kjs fksdjhf <a class="holas-button" href="#sidr">izq</a> bsakdf bsakd fsdfgs.</p>
     <p>Ybckausd kjs fksdjhf baskdbaskdf <a class="hola-button" href="#hola">der</a> bsakdf bsakd fsdfgs.</p>
 <script>
 ;(function ($, window) {
@@ -24,6 +27,11 @@
         $('.hola-button').sidr({
             name: 'lele',
             speed: 800
+        });
+
+        $('.holas-button').sidr({
+            name: 'jeu',
+            source: 'h1,p'
         });
     });
 })(jQuery, this);

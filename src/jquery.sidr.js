@@ -8,8 +8,10 @@
 
 ;(function( $ ){
 
-  var sidrMoving = false;
+  var sidrMoving = false,
+      sidrOpened = false;
 
+  // Private methods
   var privateMethods = {
     // Check for valids urls
     // From : http://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
@@ -28,18 +30,20 @@
     },
     // Loads the content into the menu bar
     loadContent: function($menu, content) {
-      $menu.html(content);
+      $menu.find('.sidr-inner').html(content);
     }
   };
 
+  // Sidr public methods
   var methods = {
     init : function( options ) {
 
       var settings = $.extend( {
-        name  : 'sidr',
-        speed : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-        side  : 'left', // Accepts 'left' or 'right'
-        source: null    // Override the source of the content.
+        name    : 'sidr', // Name for the 'sidr'
+        speed   : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+        side    : 'left', // Accepts 'left' or 'right'
+        source  : null,    // Override the source of the content.
+        renaming: true    // The ids and classes will be prepended with a prefix when loading existent content
       }, options);
 
       var name = settings.name,
@@ -60,6 +64,11 @@
           duration : settings.duration,
           side : settings.side
         });
+
+      // Add inner container
+      $('<div />')
+        .attr('class', 'sidr-inner')
+        .appendTo($sideMenu);
 
       // The menu content
       if(typeof settings.source === 'function') {
@@ -98,8 +107,12 @@
         }
       });
     },
-    open: function(name) {
-      if(!name) {
+    open: function(name, callback) {
+      if(typeof name === 'function') {
+        callback = name;
+        name = 'sidr';
+      }
+      else if(!name) {
         name = 'sidr';
       }
 
@@ -107,32 +120,61 @@
           $body = $('body'),
           menuWidth = $menu.outerWidth(true),
           duration = $menu.data('duration'),
-          side = $menu.data('side');
+          side = $menu.data('side'),
+          bodyAnimation,
+          menuAnimation;
 
       // Check if we can open it
       if( $menu.is(':visible') || sidrMoving ) {
         return;
       }
 
+      // If another menu opened close first
+      if(sidrOpened !== false) {
+        methods.close(sidrOpened, function() {
+          methods.open(name);
+        });
+
+        return;
+      }
+
       // Lock sidr
       sidrMoving = true;
 
-      // Open menu
+      // Left or right?
       if(side === 'left') {
-        $body.animate({marginLeft: menuWidth + 'px'}, duration);
-        $menu.css('display', 'block').animate({left: '0px'}, duration, function() {
-          sidrMoving = false;
-        });
+        bodyAnimation = {left: menuWidth + 'px'};
+        menuAnimation = {left: '0px'};
       }
       else {
-        $body.animate({marginRight: menuWidth + 'px'}, duration);
-        $menu.css('display', 'block').animate({right: '0px'}, duration, function() {
-          sidrMoving = false;
-        });
+        bodyAnimation = {right: menuWidth + 'px'};
+        menuAnimation = {right: '0px'};
       }
+
+      // Prepare page
+      $('html').css('overflow-x', 'hidden');
+      $body.css({
+        width: $body.width(),
+        position: 'absolute'
+      });
+
+      // Open menu
+      $body.animate(bodyAnimation, duration);
+      $menu.css('display', 'block').animate(menuAnimation, duration, function() {
+        sidrMoving = false;
+        sidrOpened = name;
+        // Callback
+        if(typeof callback === 'function') {
+          callback(name);
+        }
+      });
     },
-    close: function(name) {
-      if(!name) {
+    close: function(name, callback) {
+      if(typeof name === 'function') {
+        callback = name;
+        name = 'sidr';
+      }
+      else if(!name) {
         name = 'sidr';
       }
 
@@ -140,7 +182,9 @@
           $body = $('body'),
           menuWidth = $menu.outerWidth(true),
           duration = $menu.data('duration'),
-          side = $menu.data('side');
+          side = $menu.data('side'),
+          bodyAnimation,
+          menuAnimation;
 
       // Check if we can open it
       if( !$menu.is(':visible') || sidrMoving ) {
@@ -150,34 +194,46 @@
       // Lock sidr
       sidrMoving = true;
 
-      // Open menu
+      // Right or left menu?
       if(side === 'left') {
-        $body.animate({marginLeft: 0}, duration);
-        $menu.animate({left: '-' + menuWidth + 'px'}, duration, function() {
-          $menu.removeAttr('style');
-          sidrMoving = false;
-        });
+        bodyAnimation = {left: 0};
+        menuAnimation = {left: '-' + menuWidth + 'px'};
       }
       else {
-        $body.animate({marginRight: 0}, duration);
-        $menu.animate({right: '-' + menuWidth + 'px'}, duration, function() {
-          $menu.removeAttr('style');
-          sidrMoving = false;
-        });
+        bodyAnimation = {right: 0};
+        menuAnimation = {right: '-' + menuWidth + 'px'};
       }
+
+      // Close menu
+      $body.animate(bodyAnimation, duration);
+      $menu.animate(menuAnimation, duration, function() {
+        $menu.removeAttr('style');
+        $body.removeAttr('style');
+        $('html').removeAttr('style');
+        sidrMoving = false;
+        sidrOpened = false;
+        // Callback
+        if(typeof callback === 'function') {
+          callback(name);
+        }
+      });
     },
-    toogle: function(name) {
-      if(!name) {
+    toogle: function(name, callback) {
+      if(typeof name === 'function') {
+        callback = name;
+        name = 'sidr';
+      }
+      else if(!name) {
         name = 'sidr';
       }
       var $menu = $('#' + name);
 
-      // If the slide is open or opening, just ignore the call
+      // Open or close sidr
       if($menu.is(':visible')) {
-        methods.close(name);
+        methods.close(name, callback);
       }
       else {
-        methods.open(name);
+        methods.open(name, callback);
       }
     }
   };
@@ -189,7 +245,7 @@
     } else if ( typeof method === 'object' || ! method ) {
       return methods.init.apply( this, arguments );
     } else {
-      $.error( 'Method ' +  method + ' does not exist on jQuery.tooltip' );
+      $.error( 'Method ' +  method + ' does not exist on jQuery.sidr' );
     }
 
   };

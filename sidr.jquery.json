@@ -1,7 +1,7 @@
 {
   "name": "sidr",
   "title": "Sidr",
-  "description": "The best jQuery plugin ever.",
+  "description": "jQuery plugin for creating side menus and the easiest way for doing your menu responsive",
   "version": "0.1.0",
   "homepage": "https://github.com/artberri/sidr",
   "author": {
@@ -23,7 +23,7 @@
     }
   ],
   "dependencies": {
-    "jquery": "*"
+    "jquery": ">=1.4.3"
   },
   "keywords": []
 }
