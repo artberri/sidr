@@ -25,6 +25,4 @@ Assuming that you don't see any red, you're ready to go. Just be sure to run `gr
 1. Fix stuff.
 1. Add examples if you are adding a new feature.
 1. Run `grunt` to see if there are warnings/errors.
-1. Open `examples/*.html` file(s) in actual browser to ensure the examples work. Repeat steps 2-5 until done.
-1. Update the documentation to reflect any changes.
 1. Push to your fork and submit a pull request.

@@ -1,4 +1,4 @@
-/*! Sidr - v0.1.0 - 2013-02-17
+/*! Sidr - v1.0.0 - 2013-02-17
  * https://github.com/artberri/sidr
  * Copyright (c) 2013 Alberto Varela; Licensed MIT */
 
@@ -27,6 +27,18 @@
     // Loads the content into the menu bar
     loadContent: function($menu, content) {
       $menu.find('.sidr-inner').html(content);
+    },
+    // Add sidr prefixes
+    addPrefix: function($element) {
+      var elementId = $element.attr('id'),
+          elementClass = $element.attr('class');
+
+      if(typeof elementId === 'string' && '' !== elementId) {
+        $element.attr('id', elementId.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-r-$1'));
+      }
+      if(typeof elementClass === 'string' && '' !== elementClass) {
+        $element.attr('class', elementClass.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-r-$1'));
+      }
     }
   };
 
@@ -82,6 +94,15 @@
         $existingContents.each(function() {
           htmlContent += $(this).html();
         });
+        // Renaming ids and classes
+        if(settings.renaming) {
+          var $htmlContent = $('<div />').html(htmlContent);
+          $htmlContent.find('*').each(function(index, element) {
+            var $element = $(element);
+            privateMethods.addPrefix($element);
+          });
+          htmlContent = $htmlContent.html();
+        }
         privateMethods.loadContent($sideMenu, htmlContent);
       }
       else if(settings.source !== null) {

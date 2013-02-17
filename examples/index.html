@@ -10,9 +10,11 @@
 </head>
 <body>
     <h1>Hola</h1>
-    <p>Ybckausd <a id="hola-button" href="#lele">kjs</a> fksdjhf baskdbaskdf bsakdf bsakd fsdfgs.</p>
-    <p>Ybckausd kjs fksdjhf <a class="holas-button" href="#sidr">izq</a> bsakdf bsakd fsdfgs.</p>
-    <p>Ybckausd kjs fksdjhf baskdbaskdf <a class="hola-button" href="#hola">der</a> bsakdf bsakd fsdfgs.</p>
+    <div id="contenedor">
+        <p class="nono">Ybckausd <a id="hola-button" href="#lele">kjs</a> fksdjhf baskdbaskdf bsakdf bsakd fsdfgs.</p>
+        <p>Ybckausd kjs fksdjhf <a class="holas-button" href="#sidr">izq</a> bsakdf bsakd fsdfgs.</p>
+        <p>Ybckausd <span class="prueba prueba2">kjs</span> fksdjhf baskdbaskdf <a class="hola-button" href="#hola">contenedor</a> bsakdf bsakd fsdfgs.</p>
+    </div>
 <script>
 ;(function ($, window) {
     $(document).ready(function() {
@@ -26,12 +28,13 @@
 
         $('.hola-button').sidr({
             name: 'lele',
-            speed: 800
+            speed: 800,
+            source: '#contenedor'
         });
 
         $('.holas-button').sidr({
             name: 'jeu',
-            source: 'h1,p'
+            source: 'h1'
         });
     });
 })(jQuery, this);
