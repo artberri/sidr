@@ -1,0 +1,3 @@
+[submodule "package"]
+	path = package
+	url = https://github.com/artberri/sidr-package.git
