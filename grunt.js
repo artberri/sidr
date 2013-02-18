@@ -32,7 +32,7 @@ module.exports = function(grunt) {
         tasks: 'lint'
       },
       compass: {
-        files: [ 'src/stylesheets/*.scss' ],
+        files: [ 'src/scss/*.scss' ],
         tasks: [ 'compass:dev', 'compass:prod' ]
       }
     },
@@ -57,14 +57,14 @@ module.exports = function(grunt) {
     uglify: {},
     compass: {
       dev: {
-        src: 'src/stylesheets',
+        src: 'src/scss',
         dest: 'dist/stylesheets',
         linecomments: true,
         forcecompile: true,
         debugsass: true
       },
       prod: {
-        src: 'src/stylesheets',
+        src: 'src/scss',
         dest: 'package/stylesheets',
         outputstyle: 'compressed',
         linecomments: false,
