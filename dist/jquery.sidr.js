@@ -1,4 +1,4 @@
-/*! Sidr - v1.0.0 - 2013-02-18
+/*! Sidr - v1.0.0 - 2013-02-19
  * https://github.com/artberri/sidr
  * Copyright (c) 2013 Alberto Varela; Licensed MIT */
 
@@ -26,7 +26,7 @@
     },
     // Loads the content into the menu bar
     loadContent: function($menu, content) {
-      $menu.find('.sidr-inner').html(content);
+      $menu.html(content);
     },
     // Add sidr prefixes
     addPrefix: function($element) {
@@ -34,11 +34,12 @@
           elementClass = $element.attr('class');
 
       if(typeof elementId === 'string' && '' !== elementId) {
-        $element.attr('id', elementId.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-r-$1'));
+        $element.attr('id', elementId.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-id-$1'));
       }
-      if(typeof elementClass === 'string' && '' !== elementClass) {
-        $element.attr('class', elementClass.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-r-$1'));
+      if(typeof elementClass === 'string' && '' !== elementClass && 'sidr-inner' !== elementClass) {
+        $element.attr('class', elementClass.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-class-$1'));
       }
+      $element.removeAttr('style');
     }
   };
 
@@ -73,11 +74,6 @@
           side : settings.side
         });
 
-      // Add inner container
-      $('<div />')
-        .attr('class', 'sidr-inner')
-        .appendTo($sideMenu);
-
       // The menu content
       if(typeof settings.source === 'function') {
         var newContent = settings.source(name);
@@ -90,10 +86,12 @@
       }
       else if(typeof settings.source === 'string') {
         var htmlContent = '',
-            $existingContents = $(settings.source);
-        $existingContents.each(function() {
-          htmlContent += $(this).html();
+            selectors   = settings.source.split(',');
+
+        $.each(selectors, function(index, element) {
+          htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
         });
+
         // Renaming ids and classes
         if(settings.renaming) {
           var $htmlContent = $('<div />').html(htmlContent);
