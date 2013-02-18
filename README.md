@@ -6,7 +6,7 @@ Sidr is a jQuery plugin for creating side menus and the easiest way for doing yo
 
 - Source hosted at [GitHub](https://github.com/artberri/sidr)
 - Report issues, questions, feature requests on [GitHub Issues](https://github.com/artberri/sidr/issues)
-- Contributing: [[CONTRIBUTING.md]]
+- Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 Pull requests are very welcome! Make sure your patches are well tested. Please create a topic branch for every separate change you make.
 
