@@ -27,8 +27,14 @@ module.exports = function(grunt) {
       files: ['grunt.js', 'src/**/*.js']
     },
     watch: {
-      files: '<config:lint.files>',
-      tasks: 'lint'
+      lint: {
+        files: '<config:lint.files>',
+        tasks: 'lint'
+      },
+      compass: {
+        files: [ 'src/stylesheets/*.scss' ],
+        tasks: [ 'compass:dev', 'compass:prod' ]
+      }
     },
     jshint: {
       options: {
@@ -48,10 +54,30 @@ module.exports = function(grunt) {
         jQuery: true
       }
     },
-    uglify: {}
+    uglify: {},
+    compass: {
+      dev: {
+        src: 'src/stylesheets',
+        dest: 'dist/stylesheets',
+        linecomments: true,
+        forcecompile: true,
+        debugsass: true
+      },
+      prod: {
+        src: 'src/stylesheets',
+        dest: 'package/stylesheets',
+        outputstyle: 'compressed',
+        linecomments: false,
+        forcecompile: true,
+        debugsass: false
+      }
+    }
   });
 
+  // Loading compass task
+  grunt.loadNpmTasks('grunt-compass');
+
   // Default task.
-  grunt.registerTask('default', 'lint concat min');
+  grunt.registerTask('default', 'lint concat min compass');
 
 };
