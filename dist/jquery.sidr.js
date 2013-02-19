@@ -133,11 +133,13 @@
 
       var $menu = $('#' + name),
           $body = $('body'),
+          $html = $('html'),
           menuWidth = $menu.outerWidth(true),
           duration = $menu.data('duration'),
           side = $menu.data('side'),
           bodyAnimation,
-          menuAnimation;
+          menuAnimation,
+          scrollTop;
 
       // Check if we can open it
       if( $menu.is(':visible') || sidrMoving ) {
@@ -167,7 +169,8 @@
       }
 
       // Prepare page
-      $('html').css('overflow-x', 'hidden');
+      scrollTop = $html.scrollTop();
+      $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
       $body.css({
         width: $body.width(),
         position: 'absolute'
@@ -195,11 +198,13 @@
 
       var $menu = $('#' + name),
           $body = $('body'),
+          $html = $('html'),
           menuWidth = $menu.outerWidth(true),
           duration = $menu.data('duration'),
           side = $menu.data('side'),
           bodyAnimation,
-          menuAnimation;
+          menuAnimation,
+          scrollTop;
 
       // Check if we can open it
       if( !$menu.is(':visible') || sidrMoving ) {
@@ -220,6 +225,8 @@
       }
 
       // Close menu
+      scrollTop = $html.scrollTop();
+      $html.removeAttr('style').scrollTop(scrollTop);
       $body.animate(bodyAnimation, duration);
       $menu.animate(menuAnimation, duration, function() {
         $menu.removeAttr('style');
