@@ -1,11 +1,11 @@
 {
-  "name": "jquery-plugin",
+  "name": "jquery-sidr",
   "version": "1.0.0",
   "engines": {
     "node": ">= 0.6.0"
   },
   "devDependencies": {
     "grunt": "~0.3.17",
-    "grunt-contrib-compass": "~0.1.2"
+    "grunt-compass": "*"
   }
 }
