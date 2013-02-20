@@ -49,83 +49,6 @@
 
   // Sidr public methods
   var methods = {
-    init : function( options ) {
-
-      var settings = $.extend( {
-        name    : 'sidr', // Name for the 'sidr'
-        speed   : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-        side    : 'left', // Accepts 'left' or 'right'
-        source  : null,    // Override the source of the content.
-        renaming: true    // The ids and classes will be prepended with a prefix when loading existent content
-      }, options);
-
-      var name = settings.name,
-          $sideMenu = $('#' + name);
-
-      // If the side menu do not exist create it
-      if( $sideMenu.length === 0 ) {
-        $sideMenu = $('<div />')
-          .attr('id', name)
-          .appendTo($('body'));
-      }
-
-      // Adding styles
-      $sideMenu
-        .addClass('sidr')
-        .addClass(settings.side)
-        .data({
-          duration : settings.duration,
-          side : settings.side
-        });
-
-      // The menu content
-      if(typeof settings.source === 'function') {
-        var newContent = settings.source(name);
-        privateMethods.loadContent($sideMenu, newContent);
-      }
-      else if(typeof settings.source === 'string' && privateMethods.isUrl(settings.source)) {
-        $.get(settings.source, function(data) {
-          privateMethods.loadContent($sideMenu, data);
-        });
-      }
-      else if(typeof settings.source === 'string') {
-        var htmlContent = '',
-            selectors   = settings.source.split(',');
-
-        $.each(selectors, function(index, element) {
-          htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
-        });
-
-        // Renaming ids and classes
-        if(settings.renaming) {
-          var $htmlContent = $('<div />').html(htmlContent);
-          $htmlContent.find('*').each(function(index, element) {
-            var $element = $(element);
-            privateMethods.addPrefix($element);
-          });
-          htmlContent = $htmlContent.html();
-        }
-        privateMethods.loadContent($sideMenu, htmlContent);
-      }
-      else if(settings.source !== null) {
-        $.error('Invalid Sidr Source');
-      }
-
-      return this.each(function(){
-
-        var $this = $(this),
-            data = $this.data('sidr');
-
-        // If the plugin hasn't been initialized yet
-        if ( ! data ) {
-          $this.data('sidr', name);
-          $this.click(function(e) {
-            e.preventDefault();
-            methods.toogle(name);
-          });
-        }
-      });
-    },
     open: function(name, callback) {
       if(typeof name === 'function') {
         callback = name;
@@ -139,7 +62,7 @@
           $body = $('body'),
           $html = $('html'),
           menuWidth = $menu.outerWidth(true),
-          duration = $menu.data('duration'),
+          speed = $menu.data('speed'),
           side = $menu.data('side'),
           bodyAnimation,
           menuAnimation,
@@ -181,8 +104,8 @@
       });
 
       // Open menu
-      $body.animate(bodyAnimation, duration);
-      $menu.css('display', 'block').animate(menuAnimation, duration, function() {
+      $body.animate(bodyAnimation, speed);
+      $menu.css('display', 'block').animate(menuAnimation, speed, function() {
         sidrMoving = false;
         sidrOpened = name;
         // Callback
@@ -204,7 +127,7 @@
           $body = $('body'),
           $html = $('html'),
           menuWidth = $menu.outerWidth(true),
-          duration = $menu.data('duration'),
+          speed = $menu.data('speed'),
           side = $menu.data('side'),
           bodyAnimation,
           menuAnimation,
@@ -231,8 +154,8 @@
       // Close menu
       scrollTop = $html.scrollTop();
       $html.removeAttr('style').scrollTop(scrollTop);
-      $body.animate(bodyAnimation, duration);
-      $menu.animate(menuAnimation, duration, function() {
+      $body.animate(bodyAnimation, speed);
+      $menu.animate(menuAnimation, speed, function() {
         $menu.removeAttr('style');
         $body.removeAttr('style');
         $('html').removeAttr('style');
@@ -264,16 +187,94 @@
     }
   };
 
-  $.fn.sidr = function( method ) {
+  $.sidr = function( method ) {
 
     if ( methods[method] ) {
       return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-    } else if ( typeof method === 'object' || ! method ) {
-      return methods.init.apply( this, arguments );
+    } else if ( typeof method === 'function' ||  typeof method === 'string'  || ! method ) {
+      return methods.toogle.apply( this, arguments );
     } else {
       $.error( 'Method ' +  method + ' does not exist on jQuery.sidr' );
     }
 
+  };
+
+  $.fn.sidr = function( options ) {
+
+    var settings = $.extend( {
+      name    : 'sidr', // Name for the 'sidr'
+      speed   : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+      side    : 'left', // Accepts 'left' or 'right'
+      source  : null,    // Override the source of the content.
+      renaming: true    // The ids and classes will be prepended with a prefix when loading existent content
+    }, options);
+
+    var name = settings.name,
+        $sideMenu = $('#' + name);
+
+    // If the side menu do not exist create it
+    if( $sideMenu.length === 0 ) {
+      $sideMenu = $('<div />')
+        .attr('id', name)
+        .appendTo($('body'));
+    }
+
+    // Adding styles
+    $sideMenu
+      .addClass('sidr')
+      .addClass(settings.side)
+      .data({
+        speed : settings.speed,
+        side : settings.side
+      });
+
+    // The menu content
+    if(typeof settings.source === 'function') {
+      var newContent = settings.source(name);
+      privateMethods.loadContent($sideMenu, newContent);
+    }
+    else if(typeof settings.source === 'string' && privateMethods.isUrl(settings.source)) {
+      $.get(settings.source, function(data) {
+        privateMethods.loadContent($sideMenu, data);
+      });
+    }
+    else if(typeof settings.source === 'string') {
+      var htmlContent = '',
+          selectors   = settings.source.split(',');
+
+      $.each(selectors, function(index, element) {
+        htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
+      });
+
+      // Renaming ids and classes
+      if(settings.renaming) {
+        var $htmlContent = $('<div />').html(htmlContent);
+        $htmlContent.find('*').each(function(index, element) {
+          var $element = $(element);
+          privateMethods.addPrefix($element);
+        });
+        htmlContent = $htmlContent.html();
+      }
+      privateMethods.loadContent($sideMenu, htmlContent);
+    }
+    else if(settings.source !== null) {
+      $.error('Invalid Sidr Source');
+    }
+
+    return this.each(function(){
+
+      var $this = $(this),
+          data = $this.data('sidr');
+
+      // If the plugin hasn't been initialized yet
+      if ( ! data ) {
+        $this.data('sidr', name);
+        $this.click(function(e) {
+          e.preventDefault();
+          methods.toogle(name);
+        });
+      }
+    });
   };
 
 })( jQuery );
