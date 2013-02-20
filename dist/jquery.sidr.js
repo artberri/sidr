@@ -1,4 +1,4 @@
-/*! Sidr - v1.0.0 - 2013-02-19
+/*! Sidr - v1.0.0 - 2013-02-20
  * https://github.com/artberri/sidr
  * Copyright (c) 2013 Alberto Varela; Licensed MIT */
 

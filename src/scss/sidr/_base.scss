@@ -26,7 +26,7 @@
         right: -260px;
     }
 
-    &.sidr.left {
+    &.left {
         left: -260px;
         right: auto;
     }
@@ -42,6 +42,8 @@
         font-size: $sidr-font-size - 4;
         font-weight: normal;
         padding: 0 15px;
+        margin: 0 0 5px;
+        color: $sidr-text-color;
         line-height: 24px;
         @include background-image(linear-gradient(lighten($sidr-background, 10%), darken($sidr-background, 10%)));
         @include single-box-shadow(rgba(#000, .2), 0, 5px, 5px, 3px);
@@ -62,7 +64,7 @@
 
     ul {
         display: block;
-        margin: 0;
+        margin: 0 0 15px;
         padding: 0;
         border-top: 1px solid darken($sidr-background, 10%);
         border-bottom: 1px solid lighten($sidr-background, 10%);
@@ -94,6 +96,7 @@
 
             ul {
                 border-bottom: none;
+                margin: 0;
                 li {
                     line-height: 40px;
                     font-size: $sidr-font-size - 2;
@@ -130,7 +133,17 @@
         font-size: $sidr-font-size - 2;
     }
 
-    input, select, textarea {
+    input[type="text"],
+    input[type="password"],
+    input[type="date"],
+    input[type="datetime"],
+    input[type="email"],
+    input[type="number"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="time"],
+    input[type="url"],
+    textarea, select {
         width: 100%;
         font-size: $sidr-font-size - 2;
         padding: 5px;
