@@ -158,7 +158,7 @@
       privateMethods.execute('open', name, callback);
     },
     close: function(name, callback) {
-      privateMethods.execute('open', name, callback);
+      privateMethods.execute('close', name, callback);
     },
     toogle: function(name, callback) {
       privateMethods.execute('toogle', name, callback);
