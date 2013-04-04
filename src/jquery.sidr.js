@@ -164,6 +164,18 @@
       privateMethods.execute('toogle', name, callback);
     }
   };
+  
+  // Add event listeners to body for closing Sidr  
+  $(document).click(function () {
+    $.sidr('close');
+  });
+  
+  $(document).keyup(function ( e ) {
+    var key = e.keyCode || e.which;
+    if ( key === 27 ) {
+      $.sidr('close');
+    }
+  });
 
   $.sidr = function( method ) {
 
@@ -195,6 +207,9 @@
     if( $sideMenu.length === 0 ) {
       $sideMenu = $('<div />')
         .attr('id', name)
+        .click(function () {
+            return false;
+          })
         .appendTo($('body'));
     }
 
