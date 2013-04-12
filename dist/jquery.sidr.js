@@ -101,10 +101,12 @@
         $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
 
         // Open menu
-        $body.css({
+        $body.addClass('sidr-animating').css({
           width: $body.width(),
           position: 'absolute'
-        }).animate(bodyAnimation, speed).addClass(bodyClass);
+        }).animate(bodyAnimation, speed, function() {
+        	$(this).addClass(bodyClass)
+        });
         $menu.css('display', 'block').animate(menuAnimation, speed, function() {
           sidrMoving = false;
           sidrOpened = name;
@@ -112,6 +114,7 @@
           if(typeof callback === 'function') {
             callback(name);
           }
+          $body.removeClass('sidr-animating');
         });
       }
       // Close Sidr
@@ -137,10 +140,10 @@
         // Close menu
         scrollTop = $html.scrollTop();
         $html.removeAttr('style').scrollTop(scrollTop);
-        $body.animate(bodyAnimation, speed);
+        $body.addClass('sidr-animating').animate(bodyAnimation, speed).removeClass(bodyClass);
         $menu.animate(menuAnimation, speed, function() {
           $menu.removeAttr('style');
-          $body.removeAttr('style').removeClass(bodyClass);
+          $body.removeAttr('style');
           $('html').removeAttr('style');
           sidrMoving = false;
           sidrOpened = false;
@@ -148,6 +151,7 @@
           if(typeof callback === 'function') {
             callback(name);
           }
+          $body.removeClass('sidr-animating');
         });
       }
     }
