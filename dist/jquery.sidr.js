@@ -64,7 +64,8 @@
           side = $menu.data('side'),
           bodyAnimation,
           menuAnimation,
-          scrollTop;
+          scrollTop,
+          bodyClass = (name == 'sidr' ? 'sidr-open' : 'sidr-open ' + name + '-open');
 
       // Open Sidr
       if('open' === action || ('toogle' === action && !$menu.is(':visible'))) {
@@ -103,7 +104,7 @@
         $body.css({
           width: $body.width(),
           position: 'absolute'
-        }).animate(bodyAnimation, speed);
+        }).animate(bodyAnimation, speed).addClass(bodyClass);
         $menu.css('display', 'block').animate(menuAnimation, speed, function() {
           sidrMoving = false;
           sidrOpened = name;
@@ -139,7 +140,7 @@
         $body.animate(bodyAnimation, speed);
         $menu.animate(menuAnimation, speed, function() {
           $menu.removeAttr('style');
-          $body.removeAttr('style');
+          $body.removeAttr('style').removeClass(bodyClass);
           $('html').removeAttr('style');
           sidrMoving = false;
           sidrOpened = false;
