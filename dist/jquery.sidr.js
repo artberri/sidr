@@ -245,6 +245,9 @@
         .attr('id', name)
         .appendTo($('body'));
     }
+    else {
+      $sideMenu.width('');
+    }
 
     // Adding styles and options
     $sideMenu
