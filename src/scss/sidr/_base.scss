@@ -2,15 +2,20 @@
 
 .sidr {
     /* Default Settings */
-    display: none;
+    font-family: sidr-hidden;
     position: absolute;
     position: fixed;
     top: 0;
     height: 100%;
     z-index: 999999;
     width: 260px;
-    overflow-x: none;
-    overflow-y: auto;
+    overflow: hidden;
+
+    &.open {
+        font-family: sidr-visible;
+        overflow-x: none;
+        overflow-y: auto;
+    }
 
     .sidr-inner {
         padding: 0 0 15px;
@@ -32,7 +37,9 @@
     }
 
     /* Theme Settings */
-    font-family: $sidr-font-family;
+    .sidr-inner {
+        font-family: $sidr-font-family;
+    }
     font-size: $sidr-font-size;
     background: $sidr-background;
     color: $sidr-text-color;
@@ -172,4 +179,13 @@
             background: rgba($sidr-text-color, .9);
         }
     }
+}
+body.sidr-open-left {
+    position: absolute;
+    left: 0;
+}
+
+body.sidr-open-right {
+    position: absolute;
+    right: 0;
 }

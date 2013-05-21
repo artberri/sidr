@@ -28,6 +28,38 @@
         return true;
       }
     },
+    // Check if transitions is supported
+    transitions: (function() {
+      var body = document.body || document.documentElement,
+          style = body.style,
+          supported = false,
+          propertyName = 'transition',
+          eventName = 'transitionend';
+      if (propertyName in style) {
+        supported = true;
+      }
+      else {
+        var prefixes = ['Moz', 'Webkit', 'Khtml', 'O', 'ms'],
+            prefix;
+        propertyName = propertyName.charAt(0).toUpperCase() + propertyName.substr(1);
+        supported = (function() {
+          for (var i = 0; i < prefixes.length; i++) {
+            prefix = prefixes[i];
+            if((prefix + propertyName) in style) {
+              return true;
+            }
+          }
+          return false;
+        })();
+        eventName = supported ? prefix + propertyName + 'End' : null;
+        propertyName = supported ? '-' + prefix.toLowerCase() + '-' + propertyName.toLowerCase() : null;
+      }
+      return {
+        supported: supported,
+        eventName: eventName,
+        propertyName: propertyName
+      };
+    })(),
     // Loads the content into the menu bar
     loadContent: function($menu, content) {
       $menu.html(content);
@@ -59,17 +91,19 @@
       var $menu = $('#' + name),
           $body = $($menu.data('body')),
           $html = $('html'),
-          menuWidth = $menu.outerWidth(true),
+          menuWidth = $menu.data('width'),
           speed = $menu.data('speed'),
           side = $menu.data('side'),
+          transitions = privateMethods.transitions,
           bodyAnimation,
           menuAnimation,
-          scrollTop;
+          scrollTop,
+          completed;
 
       // Open Sidr
-      if('open' === action || ('toogle' === action && !$menu.is(':visible'))) {
+      if('open' === action || ('toogle' === action && $menu.css('font-family') === 'sidr-hidden')) {
         // Check if we can open it
-        if( $menu.is(':visible') || sidrMoving ) {
+        if( $menu.css('font-family') === 'sidr-visible' || sidrMoving ) {
           return;
         }
 
@@ -99,24 +133,24 @@
         scrollTop = $html.scrollTop();
         $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
 
-        // Open menu
-        $body.css({
-          width: $body.width(),
-          position: 'absolute'
-        }).animate(bodyAnimation, speed);
-        $menu.css('display', 'block').animate(menuAnimation, speed, function() {
+        // Animation done
+        completed = function() {
           sidrMoving = false;
           sidrOpened = name;
           // Callback
           if(typeof callback === 'function') {
             callback(name);
           }
-        });
+        };
+
+        // Prepare opening
+        $body.addClass('sidr-open-' + side).width($body.width());
+        $menu.addClass('open').width(menuWidth);
       }
       // Close Sidr
       else {
         // Check if we can close it
-        if( !$menu.is(':visible') || sidrMoving ) {
+        if( $menu.css('font-family') === 'sidr-hidden' || sidrMoving ) {
           return;
         }
 
@@ -133,13 +167,10 @@
           menuAnimation = {right: '-' + menuWidth + 'px'};
         }
 
-        // Close menu
-        scrollTop = $html.scrollTop();
-        $html.removeAttr('style').scrollTop(scrollTop);
-        $body.animate(bodyAnimation, speed);
-        $menu.animate(menuAnimation, speed, function() {
-          $menu.removeAttr('style');
-          $body.removeAttr('style');
+        // Animation done
+        completed = function() {
+          $menu.removeClass('open').removeAttr('style').width(0);
+          $body.removeClass('sidr-open-' + side).removeAttr('style');
           $('html').removeAttr('style');
           sidrMoving = false;
           sidrOpened = false;
@@ -147,7 +178,24 @@
           if(typeof callback === 'function') {
             callback(name);
           }
-        });
+        };
+
+        // Prepare page
+        scrollTop = $html.scrollTop();
+        $html.removeAttr('style').scrollTop(scrollTop);
+
+      }
+
+      // Open or close menu
+      if (transitions.supported) {
+        $body.css(transitions.propertyName, side + ' ' + (speed/1000) + 's ease');
+        $menu.css(transitions.propertyName, side + ' ' + (speed/1000) + 's ease').one(transitions.eventName, completed);
+        $body.css(bodyAnimation);
+        $menu.css(menuAnimation);
+      }
+      else {
+        $body.animate(bodyAnimation, speed);
+        $menu.animate(menuAnimation, speed, completed);
       }
     }
   };
@@ -205,8 +253,11 @@
       .data({
         speed          : settings.speed,
         side           : settings.side,
-        body           : settings.body
+        body           : settings.body,
+        width          : $sideMenu.outerWidth(true)
       });
+
+    $sideMenu.width(0);
 
     // The menu content
     if(typeof settings.source === 'function') {
