@@ -101,9 +101,9 @@
           completed;
 
       // Open Sidr
-      if('open' === action || ('toogle' === action && $menu.css('font-family') === 'sidr-hidden')) {
+      if('open' === action || ('toogle' === action && !$menu.hasClass('open'))) {
         // Check if we can open it
-        if( $menu.css('font-family') === 'sidr-visible' || sidrMoving ) {
+        if( $menu.hasClass('open') || sidrMoving ) {
           return;
         }
 
@@ -150,7 +150,7 @@
       // Close Sidr
       else {
         // Check if we can close it
-        if( $menu.css('font-family') === 'sidr-hidden' || sidrMoving ) {
+        if( !$menu.hasClass('open') || sidrMoving ) {
           return;
         }
 

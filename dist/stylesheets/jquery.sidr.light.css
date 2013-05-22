@@ -1,7 +1,6 @@
 /* line 3, ../../src/scss/sidr/_base.scss */
 .sidr {
   /* Default Settings */
-  font-family: sidr-hidden;
   position: absolute;
   position: fixed;
   top: 0;
@@ -10,6 +9,7 @@
   width: 260px;
   overflow: hidden;
   /* Theme Settings */
+  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
   font-size: 15px;
   background: #f8f8f8;
   color: #333333;
@@ -17,36 +17,31 @@
   -moz-box-shadow: inset 0 0 5px 5px #ebebeb;
   box-shadow: inset 0 0 5px 5px #ebebeb;
 }
-/* line 14, ../../src/scss/sidr/_base.scss */
+/* line 13, ../../src/scss/sidr/_base.scss */
 .sidr.open {
-  font-family: sidr-visible;
   overflow-x: none;
   overflow-y: auto;
 }
-/* line 20, ../../src/scss/sidr/_base.scss */
+/* line 18, ../../src/scss/sidr/_base.scss */
 .sidr .sidr-inner {
   padding: 0 0 15px;
 }
-/* line 23, ../../src/scss/sidr/_base.scss */
+/* line 21, ../../src/scss/sidr/_base.scss */
 .sidr .sidr-inner > p {
   margin-left: 15px;
   margin-right: 15px;
 }
-/* line 29, ../../src/scss/sidr/_base.scss */
+/* line 27, ../../src/scss/sidr/_base.scss */
 .sidr.right {
   left: auto;
   right: -260px;
 }
-/* line 34, ../../src/scss/sidr/_base.scss */
+/* line 32, ../../src/scss/sidr/_base.scss */
 .sidr.left {
   left: -260px;
   right: auto;
 }
-/* line 40, ../../src/scss/sidr/_base.scss */
-.sidr .sidr-inner {
-  font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
-}
-/* line 48, ../../src/scss/sidr/_base.scss */
+/* line 44, ../../src/scss/sidr/_base.scss */
 .sidr h1, .sidr h2, .sidr h3, .sidr h4, .sidr h5, .sidr h6 {
   font-size: 11px;
   font-weight: normal;
@@ -63,21 +58,21 @@
   -moz-box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.2);
 }
-/* line 59, ../../src/scss/sidr/_base.scss */
+/* line 55, ../../src/scss/sidr/_base.scss */
 .sidr p {
   font-size: 13px;
   margin: 0 0 12px;
 }
-/* line 62, ../../src/scss/sidr/_base.scss */
+/* line 58, ../../src/scss/sidr/_base.scss */
 .sidr p a {
   color: rgba(51, 51, 51, 0.9);
 }
-/* line 67, ../../src/scss/sidr/_base.scss */
+/* line 63, ../../src/scss/sidr/_base.scss */
 .sidr > p {
   margin-left: 15px;
   margin-right: 15px;
 }
-/* line 72, ../../src/scss/sidr/_base.scss */
+/* line 68, ../../src/scss/sidr/_base.scss */
 .sidr ul {
   display: block;
   margin: 0 0 15px;
@@ -85,7 +80,7 @@
   border-top: 1px solid #dfdfdf;
   border-bottom: 1px solid white;
 }
-/* line 79, ../../src/scss/sidr/_base.scss */
+/* line 75, ../../src/scss/sidr/_base.scss */
 .sidr ul li {
   display: block;
   margin: 0;
@@ -93,63 +88,63 @@
   border-top: 1px solid white;
   border-bottom: 1px solid #dfdfdf;
 }
-/* line 88, ../../src/scss/sidr/_base.scss */
+/* line 84, ../../src/scss/sidr/_base.scss */
 .sidr ul li:hover, .sidr ul li.active, .sidr ul li.sidr-class-active {
   border-top: none;
   line-height: 49px;
 }
-/* line 92, ../../src/scss/sidr/_base.scss */
+/* line 88, ../../src/scss/sidr/_base.scss */
 .sidr ul li:hover > a, .sidr ul li:hover > span, .sidr ul li.active > a, .sidr ul li.active > span, .sidr ul li.sidr-class-active > a, .sidr ul li.sidr-class-active > span {
   -webkit-box-shadow: inset 0 0 15px 3px #ebebeb;
   -moz-box-shadow: inset 0 0 15px 3px #ebebeb;
   box-shadow: inset 0 0 15px 3px #ebebeb;
 }
-/* line 97, ../../src/scss/sidr/_base.scss */
+/* line 93, ../../src/scss/sidr/_base.scss */
 .sidr ul li a, .sidr ul li span {
   padding: 0 15px;
   display: block;
   text-decoration: none;
   color: #333333;
 }
-/* line 104, ../../src/scss/sidr/_base.scss */
+/* line 100, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul {
   border-bottom: none;
   margin: 0;
 }
-/* line 107, ../../src/scss/sidr/_base.scss */
+/* line 103, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li {
   line-height: 40px;
   font-size: 13px;
 }
-/* line 111, ../../src/scss/sidr/_base.scss */
+/* line 107, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li:last-child {
   border-bottom: none;
 }
-/* line 117, ../../src/scss/sidr/_base.scss */
+/* line 113, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li:hover, .sidr ul li ul li.active, .sidr ul li ul li.sidr-class-active {
   border-top: none;
   line-height: 41px;
 }
-/* line 121, ../../src/scss/sidr/_base.scss */
+/* line 117, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li:hover > a, .sidr ul li ul li:hover > span, .sidr ul li ul li.active > a, .sidr ul li ul li.active > span, .sidr ul li ul li.sidr-class-active > a, .sidr ul li ul li.sidr-class-active > span {
   -webkit-box-shadow: inset 0 0 15px 3px #ebebeb;
   -moz-box-shadow: inset 0 0 15px 3px #ebebeb;
   box-shadow: inset 0 0 15px 3px #ebebeb;
 }
-/* line 126, ../../src/scss/sidr/_base.scss */
+/* line 122, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li a, .sidr ul li ul li span {
   color: rgba(51, 51, 51, 0.8);
   padding-left: 30px;
 }
-/* line 135, ../../src/scss/sidr/_base.scss */
+/* line 131, ../../src/scss/sidr/_base.scss */
 .sidr form {
   margin: 0 15px;
 }
-/* line 139, ../../src/scss/sidr/_base.scss */
+/* line 135, ../../src/scss/sidr/_base.scss */
 .sidr label {
   font-size: 13px;
 }
-/* line 153, ../../src/scss/sidr/_base.scss */
+/* line 149, ../../src/scss/sidr/_base.scss */
 .sidr input[type="text"],
 .sidr input[type="password"],
 .sidr input[type="date"],
@@ -179,31 +174,31 @@
   display: block;
   clear: both;
 }
-/* line 167, ../../src/scss/sidr/_base.scss */
+/* line 163, ../../src/scss/sidr/_base.scss */
 .sidr input[type=checkbox] {
   width: auto;
   display: inline;
   clear: none;
 }
-/* line 174, ../../src/scss/sidr/_base.scss */
+/* line 170, ../../src/scss/sidr/_base.scss */
 .sidr input[type=button],
 .sidr input[type=submit] {
   color: #f8f8f8;
   background: #333333;
 }
-/* line 178, ../../src/scss/sidr/_base.scss */
+/* line 174, ../../src/scss/sidr/_base.scss */
 .sidr input[type=button]:hover,
 .sidr input[type=submit]:hover {
   background: rgba(51, 51, 51, 0.9);
 }
 
-/* line 183, ../../src/scss/sidr/_base.scss */
+/* line 179, ../../src/scss/sidr/_base.scss */
 .sidr-open-left {
   position: absolute;
   left: 0;
 }
 
-/* line 188, ../../src/scss/sidr/_base.scss */
+/* line 184, ../../src/scss/sidr/_base.scss */
 .sidr-open-right {
   position: absolute;
   right: 0;
