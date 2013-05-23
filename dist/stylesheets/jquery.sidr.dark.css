@@ -6,7 +6,6 @@
   top: 0;
   height: 100%;
   z-index: 999999;
-  width: 260px;
   overflow: hidden;
   /* Theme Settings */
   font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
@@ -17,31 +16,29 @@
   -moz-box-shadow: inset 0 0 5px 5px #222222;
   box-shadow: inset 0 0 5px 5px #222222;
 }
-/* line 13, ../../src/scss/sidr/_base.scss */
+/* line 12, ../../src/scss/sidr/_base.scss */
 .sidr.open {
   overflow-x: none;
   overflow-y: auto;
 }
-/* line 18, ../../src/scss/sidr/_base.scss */
+/* line 17, ../../src/scss/sidr/_base.scss */
 .sidr .sidr-inner {
   padding: 0 0 15px;
 }
-/* line 21, ../../src/scss/sidr/_base.scss */
+/* line 20, ../../src/scss/sidr/_base.scss */
 .sidr .sidr-inner > p {
   margin-left: 15px;
   margin-right: 15px;
 }
-/* line 27, ../../src/scss/sidr/_base.scss */
+/* line 26, ../../src/scss/sidr/_base.scss */
 .sidr.right {
   left: auto;
-  right: -260px;
 }
-/* line 32, ../../src/scss/sidr/_base.scss */
+/* line 30, ../../src/scss/sidr/_base.scss */
 .sidr.left {
-  left: -260px;
   right: auto;
 }
-/* line 44, ../../src/scss/sidr/_base.scss */
+/* line 41, ../../src/scss/sidr/_base.scss */
 .sidr h1, .sidr h2, .sidr h3, .sidr h4, .sidr h5, .sidr h6 {
   font-size: 11px;
   font-weight: normal;
@@ -58,21 +55,21 @@
   -moz-box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.2);
 }
-/* line 55, ../../src/scss/sidr/_base.scss */
+/* line 52, ../../src/scss/sidr/_base.scss */
 .sidr p {
   font-size: 13px;
   margin: 0 0 12px;
 }
-/* line 58, ../../src/scss/sidr/_base.scss */
+/* line 55, ../../src/scss/sidr/_base.scss */
 .sidr p a {
   color: rgba(255, 255, 255, 0.9);
 }
-/* line 63, ../../src/scss/sidr/_base.scss */
+/* line 60, ../../src/scss/sidr/_base.scss */
 .sidr > p {
   margin-left: 15px;
   margin-right: 15px;
 }
-/* line 68, ../../src/scss/sidr/_base.scss */
+/* line 65, ../../src/scss/sidr/_base.scss */
 .sidr ul {
   display: block;
   margin: 0 0 15px;
@@ -80,7 +77,7 @@
   border-top: 1px solid #1a1a1a;
   border-bottom: 1px solid #4d4d4d;
 }
-/* line 75, ../../src/scss/sidr/_base.scss */
+/* line 72, ../../src/scss/sidr/_base.scss */
 .sidr ul li {
   display: block;
   margin: 0;
@@ -88,63 +85,63 @@
   border-top: 1px solid #4d4d4d;
   border-bottom: 1px solid #1a1a1a;
 }
-/* line 84, ../../src/scss/sidr/_base.scss */
+/* line 81, ../../src/scss/sidr/_base.scss */
 .sidr ul li:hover, .sidr ul li.active, .sidr ul li.sidr-class-active {
   border-top: none;
   line-height: 49px;
 }
-/* line 88, ../../src/scss/sidr/_base.scss */
+/* line 85, ../../src/scss/sidr/_base.scss */
 .sidr ul li:hover > a, .sidr ul li:hover > span, .sidr ul li.active > a, .sidr ul li.active > span, .sidr ul li.sidr-class-active > a, .sidr ul li.sidr-class-active > span {
   -webkit-box-shadow: inset 0 0 15px 3px #222222;
   -moz-box-shadow: inset 0 0 15px 3px #222222;
   box-shadow: inset 0 0 15px 3px #222222;
 }
-/* line 93, ../../src/scss/sidr/_base.scss */
+/* line 90, ../../src/scss/sidr/_base.scss */
 .sidr ul li a, .sidr ul li span {
   padding: 0 15px;
   display: block;
   text-decoration: none;
   color: white;
 }
-/* line 100, ../../src/scss/sidr/_base.scss */
+/* line 97, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul {
   border-bottom: none;
   margin: 0;
 }
-/* line 103, ../../src/scss/sidr/_base.scss */
+/* line 100, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li {
   line-height: 40px;
   font-size: 13px;
 }
-/* line 107, ../../src/scss/sidr/_base.scss */
+/* line 104, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li:last-child {
   border-bottom: none;
 }
-/* line 113, ../../src/scss/sidr/_base.scss */
+/* line 110, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li:hover, .sidr ul li ul li.active, .sidr ul li ul li.sidr-class-active {
   border-top: none;
   line-height: 41px;
 }
-/* line 117, ../../src/scss/sidr/_base.scss */
+/* line 114, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li:hover > a, .sidr ul li ul li:hover > span, .sidr ul li ul li.active > a, .sidr ul li ul li.active > span, .sidr ul li ul li.sidr-class-active > a, .sidr ul li ul li.sidr-class-active > span {
   -webkit-box-shadow: inset 0 0 15px 3px #222222;
   -moz-box-shadow: inset 0 0 15px 3px #222222;
   box-shadow: inset 0 0 15px 3px #222222;
 }
-/* line 122, ../../src/scss/sidr/_base.scss */
+/* line 119, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li a, .sidr ul li ul li span {
   color: rgba(255, 255, 255, 0.8);
   padding-left: 30px;
 }
-/* line 131, ../../src/scss/sidr/_base.scss */
+/* line 128, ../../src/scss/sidr/_base.scss */
 .sidr form {
   margin: 0 15px;
 }
-/* line 135, ../../src/scss/sidr/_base.scss */
+/* line 132, ../../src/scss/sidr/_base.scss */
 .sidr label {
   font-size: 13px;
 }
-/* line 149, ../../src/scss/sidr/_base.scss */
+/* line 146, ../../src/scss/sidr/_base.scss */
 .sidr input[type="text"],
 .sidr input[type="password"],
 .sidr input[type="date"],
@@ -174,31 +171,31 @@
   display: block;
   clear: both;
 }
-/* line 163, ../../src/scss/sidr/_base.scss */
+/* line 160, ../../src/scss/sidr/_base.scss */
 .sidr input[type=checkbox] {
   width: auto;
   display: inline;
   clear: none;
 }
-/* line 170, ../../src/scss/sidr/_base.scss */
+/* line 167, ../../src/scss/sidr/_base.scss */
 .sidr input[type=button],
 .sidr input[type=submit] {
   color: #333333;
   background: white;
 }
-/* line 174, ../../src/scss/sidr/_base.scss */
+/* line 171, ../../src/scss/sidr/_base.scss */
 .sidr input[type=button]:hover,
 .sidr input[type=submit]:hover {
   background: rgba(255, 255, 255, 0.9);
 }
 
-/* line 179, ../../src/scss/sidr/_base.scss */
+/* line 176, ../../src/scss/sidr/_base.scss */
 .sidr-open-left {
   position: absolute;
   left: 0;
 }
 
-/* line 184, ../../src/scss/sidr/_base.scss */
+/* line 181, ../../src/scss/sidr/_base.scss */
 .sidr-open-right {
   position: absolute;
   right: 0;

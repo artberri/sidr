@@ -7,7 +7,6 @@
     top: 0;
     height: 100%;
     z-index: 999999;
-    width: 260px;
     overflow: hidden;
 
     &.open {
@@ -26,11 +25,9 @@
 
     &.right {
         left: auto;
-        right: -260px;
     }
 
     &.left {
-        left: -260px;
         right: auto;
     }
 

@@ -121,11 +121,11 @@
 
         // Left or right?
         if(side === 'left') {
-          bodyAnimation = {left: menuWidth + 'px'};
+          bodyAnimation = {left: menuWidth};
           menuAnimation = {left: '0px'};
         }
         else {
-          bodyAnimation = {right: menuWidth + 'px'};
+          bodyAnimation = {right: menuWidth};
           menuAnimation = {right: '0px'};
         }
 
@@ -160,16 +160,16 @@
         // Right or left menu?
         if(side === 'left') {
           bodyAnimation = {left: 0};
-          menuAnimation = {left: '-' + menuWidth + 'px'};
+          menuAnimation = {left: '-' + menuWidth};
         }
         else {
           bodyAnimation = {right: 0};
-          menuAnimation = {right: '-' + menuWidth + 'px'};
+          menuAnimation = {right: '-' + menuWidth};
         }
 
         // Animation done
         completed = function() {
-          $menu.removeClass('open').removeAttr('style').width(0);
+          $menu.removeClass('open').removeAttr('style').width(0).css(side, '-' + menuWidth);
           $body.removeClass('sidr-open-' + side).removeAttr('style');
           $('html').removeAttr('style');
           sidrMoving = false;
@@ -229,15 +229,17 @@
 
     var settings = $.extend( {
       name          : 'sidr', // Name for the 'sidr'
+      width         : 260,    // Width for the 'Sidr' 
       speed         : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
       side          : 'left', // Accepts 'left' or 'right'
       source        : null,   // Override the source of the content.
       renaming      : true,   // The ids and classes will be prepended with a prefix when loading existent content
-      body          : 'body'  // Page container selector,
+      body          : 'body'  // Page container selector
     }, options);
 
     var name = settings.name,
-        $sideMenu = $('#' + name);
+        $sideMenu = $('#' + name),
+        menuWidth = typeof settings.width === 'number' ? settings.width + 'px' : settings.width;
 
     // If the side menu do not exist create it
     if( $sideMenu.length === 0 ) {
@@ -245,22 +247,19 @@
         .attr('id', name)
         .appendTo($('body'));
     }
-    else {
-      $sideMenu.width('');
-    }
 
     // Adding styles and options
     $sideMenu
       .addClass('sidr')
       .addClass(settings.side)
+      .width(menuWidth)
+      .css(settings.side, '-' + menuWidth)
       .data({
         speed          : settings.speed,
         side           : settings.side,
         body           : settings.body,
-        width          : $sideMenu.outerWidth(true)
+        width           : settings.width
       });
-
-    $sideMenu.width(0);
 
     // The menu content
     if(typeof settings.source === 'function') {
