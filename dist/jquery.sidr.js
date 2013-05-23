@@ -144,7 +144,7 @@
         };
 
         // Prepare opening
-        $body.addClass('sidr-open-' + side).width($body.width());
+        $body.addClass('sidr-open-' + side);
         $menu.addClass('open').width(menuWidth);
       }
       // Close Sidr

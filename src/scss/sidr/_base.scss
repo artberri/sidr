@@ -173,12 +173,17 @@
         }
     }
 }
-.sidr-open-left {
+
+.sidr-open-left,
+.sidr-open-right {
+    width: 100%;
     position: absolute;
-    left: 0;
 }
 
 .sidr-open-right {
-    position: absolute;
     right: 0;
+}
+
+.sidr-open-left {
+    left: 0;
 }
