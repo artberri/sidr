@@ -59,7 +59,7 @@
       var $menu = $('#' + name),
           $body = $($menu.data('body')),
           $html = $('html'),
-          menuWidth = $menu.outerWidth(true),
+          menuWidth = $menu.data('width'),
           speed = $menu.data('speed'),
           side = $menu.data('side'),
           bodyAnimation,
@@ -87,11 +87,11 @@
 
         // Left or right?
         if(side === 'left') {
-          bodyAnimation = {left: menuWidth + 'px'};
+          bodyAnimation = {left: menuWidth};
           menuAnimation = {left: '0px'};
         }
         else {
-          bodyAnimation = {right: menuWidth + 'px'};
+          bodyAnimation = {right: menuWidth};
           menuAnimation = {right: '0px'};
         }
 
@@ -104,7 +104,7 @@
           width: $body.width(),
           position: 'absolute'
         }).animate(bodyAnimation, speed);
-        $menu.css('display', 'block').animate(menuAnimation, speed, function() {
+        $menu.width(menuWidth).css('display', 'block').animate(menuAnimation, speed, function() {
           sidrMoving = false;
           sidrOpened = name;
           // Callback
@@ -126,11 +126,11 @@
         // Right or left menu?
         if(side === 'left') {
           bodyAnimation = {left: 0};
-          menuAnimation = {left: '-' + menuWidth + 'px'};
+          menuAnimation = {left: '-' + menuWidth};
         }
         else {
           bodyAnimation = {right: 0};
-          menuAnimation = {right: '-' + menuWidth + 'px'};
+          menuAnimation = {right: '-' + menuWidth};
         }
 
         // Close menu
@@ -138,7 +138,7 @@
         $html.removeAttr('style').scrollTop(scrollTop);
         $body.animate(bodyAnimation, speed);
         $menu.animate(menuAnimation, speed, function() {
-          $menu.removeAttr('style');
+          $menu.removeAttr('style').width(menuWidth).css(side, '-' + menuWidth);
           $body.removeAttr('style');
           $('html').removeAttr('style');
           sidrMoving = false;
@@ -181,15 +181,17 @@
 
     var settings = $.extend( {
       name          : 'sidr', // Name for the 'sidr'
+      width         : 260,    // Width for the 'Sidr' 
       speed         : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
       side          : 'left', // Accepts 'left' or 'right'
       source        : null,   // Override the source of the content.
       renaming      : true,   // The ids and classes will be prepended with a prefix when loading existent content
-      body          : 'body'  // Page container selector,
+      body          : 'body'  // Page container selector
     }, options);
 
     var name = settings.name,
-        $sideMenu = $('#' + name);
+        $sideMenu = $('#' + name),
+        menuWidth = typeof settings.width === 'number' ? settings.width + 'px' : settings.width;
 
     // If the side menu do not exist create it
     if( $sideMenu.length === 0 ) {
@@ -202,10 +204,13 @@
     $sideMenu
       .addClass('sidr')
       .addClass(settings.side)
+      .width(menuWidth)
+      .css(settings.side, '-' + menuWidth)
       .data({
         speed          : settings.speed,
         side           : settings.side,
-        body           : settings.body
+        body           : settings.body,
+        width           : settings.width
       });
 
     // The menu content
