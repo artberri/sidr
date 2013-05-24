@@ -28,6 +28,35 @@
         return true;
       }
     },
+    // Check if transitions is supported
+    transitions: (function() {
+      var body = document.body || document.documentElement,
+          style = body.style,
+          supported = false,
+          property = 'transition';
+      if (property in style) {
+        supported = true;
+      }
+      else {
+        var prefixes = ['moz', 'webkit', 'o', 'ms'],
+            prefix;
+        property = property.charAt(0).toUpperCase() + property.substr(1);
+        supported = (function() {
+          for (var i = 0; i < prefixes.length; i++) {
+            prefix = prefixes[i];
+            if((prefix + property) in style) {
+              return true;
+            }
+          }
+          return false;
+        })();
+        property = supported ? '-' + prefix.toLowerCase() + '-' + property.toLowerCase() : null;
+      }
+      return {
+        supported: supported,
+        property: property
+      };
+    })(),
     // Loads the content into the menu bar
     loadContent: function($menu, content) {
       $menu.html(content);
@@ -59,17 +88,19 @@
       var $menu = $('#' + name),
           $body = $($menu.data('body')),
           $html = $('html'),
-          menuWidth = $menu.outerWidth(true),
+          menuWidth = $menu.data('width'),
           speed = $menu.data('speed'),
           side = $menu.data('side'),
+          transitions = privateMethods.transitions,
           bodyAnimation,
           menuAnimation,
-          scrollTop;
+          scrollTop,
+          completed;
 
       // Open Sidr
-      if('open' === action || ('toogle' === action && !$menu.is(':visible'))) {
+      if('open' === action || ('toogle' === action && !$menu.hasClass('open'))) {
         // Check if we can open it
-        if( $menu.is(':visible') || sidrMoving ) {
+        if( $menu.hasClass('open') || sidrMoving ) {
           return;
         }
 
@@ -87,11 +118,11 @@
 
         // Left or right?
         if(side === 'left') {
-          bodyAnimation = {left: menuWidth + 'px'};
+          bodyAnimation = {left: menuWidth};
           menuAnimation = {left: '0px'};
         }
         else {
-          bodyAnimation = {right: menuWidth + 'px'};
+          bodyAnimation = {right: menuWidth};
           menuAnimation = {right: '0px'};
         }
 
@@ -99,24 +130,24 @@
         scrollTop = $html.scrollTop();
         $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
 
-        // Open menu
-        $body.css({
-          width: $body.width(),
-          position: 'absolute'
-        }).animate(bodyAnimation, speed);
-        $menu.css('display', 'block').animate(menuAnimation, speed, function() {
+        // Animation done
+        completed = function() {
           sidrMoving = false;
           sidrOpened = name;
           // Callback
           if(typeof callback === 'function') {
             callback(name);
           }
-        });
+        };
+
+        // Prepare opening
+        $body.addClass('sidr-open-' + side);
+        $menu.addClass('open').width(menuWidth);
       }
       // Close Sidr
       else {
         // Check if we can close it
-        if( !$menu.is(':visible') || sidrMoving ) {
+        if( !$menu.hasClass('open') || sidrMoving ) {
           return;
         }
 
@@ -126,20 +157,17 @@
         // Right or left menu?
         if(side === 'left') {
           bodyAnimation = {left: 0};
-          menuAnimation = {left: '-' + menuWidth + 'px'};
+          menuAnimation = {left: '-' + menuWidth};
         }
         else {
           bodyAnimation = {right: 0};
-          menuAnimation = {right: '-' + menuWidth + 'px'};
+          menuAnimation = {right: '-' + menuWidth};
         }
 
-        // Close menu
-        scrollTop = $html.scrollTop();
-        $html.removeAttr('style').scrollTop(scrollTop);
-        $body.animate(bodyAnimation, speed);
-        $menu.animate(menuAnimation, speed, function() {
-          $menu.removeAttr('style');
-          $body.removeAttr('style');
+        // Animation done
+        completed = function() {
+          $menu.removeClass('open').removeAttr('style').width(0).css(side, '-' + menuWidth);
+          $body.removeClass('sidr-open-' + side).removeAttr('style');
           $('html').removeAttr('style');
           sidrMoving = false;
           sidrOpened = false;
@@ -147,7 +175,24 @@
           if(typeof callback === 'function') {
             callback(name);
           }
-        });
+        };
+
+        // Prepare page
+        scrollTop = $html.scrollTop();
+        $html.removeAttr('style').scrollTop(scrollTop);
+
+      }
+
+      // Open or close menu
+      if (transitions.supported) {
+        $body.css(transitions.property, side + ' ' + (speed/1000) + 's ease');
+        $menu.css(transitions.property, side + ' ' + (speed/1000) + 's ease').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', completed);
+        $body.css(bodyAnimation);
+        $menu.css(menuAnimation);
+      }
+      else {
+        $body.animate(bodyAnimation, speed);
+        $menu.animate(menuAnimation, speed, completed);
       }
     }
   };
@@ -181,15 +226,17 @@
 
     var settings = $.extend( {
       name          : 'sidr', // Name for the 'sidr'
+      width         : 260,    // Width for the 'Sidr' 
       speed         : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
       side          : 'left', // Accepts 'left' or 'right'
       source        : null,   // Override the source of the content.
       renaming      : true,   // The ids and classes will be prepended with a prefix when loading existent content
-      body          : 'body'  // Page container selector,
+      body          : 'body'  // Page container selector
     }, options);
 
     var name = settings.name,
-        $sideMenu = $('#' + name);
+        $sideMenu = $('#' + name),
+        menuWidth = typeof settings.width === 'number' ? settings.width + 'px' : settings.width;
 
     // If the side menu do not exist create it
     if( $sideMenu.length === 0 ) {
@@ -202,11 +249,16 @@
     $sideMenu
       .addClass('sidr')
       .addClass(settings.side)
+      .width(menuWidth)
+      .css(settings.side, '-' + menuWidth)
       .data({
         speed          : settings.speed,
         side           : settings.side,
-        body           : settings.body
+        body           : settings.body,
+        width           : menuWidth
       });
+
+    $sideMenu.width(0);
 
     // The menu content
     if(typeof settings.source === 'function') {

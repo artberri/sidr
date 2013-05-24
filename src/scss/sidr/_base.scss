@@ -2,15 +2,17 @@
 
 .sidr {
     /* Default Settings */
-    display: none;
     position: absolute;
     position: fixed;
     top: 0;
     height: 100%;
     z-index: 999999;
-    width: 260px;
-    overflow-x: none;
-    overflow-y: auto;
+    overflow: hidden;
+
+    &.open {
+        overflow-x: none;
+        overflow-y: auto;
+    }
 
     .sidr-inner {
         padding: 0 0 15px;
@@ -23,11 +25,9 @@
 
     &.right {
         left: auto;
-        right: -260px;
     }
 
     &.left {
-        left: -260px;
         right: auto;
     }
 
@@ -172,4 +172,18 @@
             background: rgba($sidr-text-color, .9);
         }
     }
+}
+
+.sidr-open-left,
+.sidr-open-right {
+    width: 100%;
+    position: absolute;
+}
+
+.sidr-open-right {
+    right: 0;
+}
+
+.sidr-open-left {
+    left: 0;
 }
