@@ -258,7 +258,7 @@
         speed          : settings.speed,
         side           : settings.side,
         body           : settings.body,
-        width           : settings.width
+        width           : menuWidth
       });
 
     // The menu content
