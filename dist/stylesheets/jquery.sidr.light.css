@@ -189,14 +189,19 @@
   background: rgba(51, 51, 51, 0.9);
 }
 
-/* line 176, ../../src/scss/sidr/_base.scss */
-.sidr-open-left {
+/* line 178, ../../src/scss/sidr/_base.scss */
+.sidr-open-left,
+.sidr-open-right {
+  width: 100%;
   position: absolute;
-  left: 0;
 }
 
-/* line 181, ../../src/scss/sidr/_base.scss */
+/* line 183, ../../src/scss/sidr/_base.scss */
 .sidr-open-right {
-  position: absolute;
   right: 0;
+}
+
+/* line 187, ../../src/scss/sidr/_base.scss */
+.sidr-open-left {
+  left: 0;
 }
