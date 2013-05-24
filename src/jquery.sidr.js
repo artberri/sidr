@@ -33,31 +33,28 @@
       var body = document.body || document.documentElement,
           style = body.style,
           supported = false,
-          propertyName = 'transition',
-          eventName = 'transitionend';
-      if (propertyName in style) {
+          property = 'transition';
+      if (property in style) {
         supported = true;
       }
       else {
-        var prefixes = ['Moz', 'Webkit', 'Khtml', 'O', 'ms'],
+        var prefixes = ['moz', 'webkit', 'o', 'ms'],
             prefix;
-        propertyName = propertyName.charAt(0).toUpperCase() + propertyName.substr(1);
+        property = property.charAt(0).toUpperCase() + property.substr(1);
         supported = (function() {
           for (var i = 0; i < prefixes.length; i++) {
             prefix = prefixes[i];
-            if((prefix + propertyName) in style) {
+            if((prefix + property) in style) {
               return true;
             }
           }
           return false;
         })();
-        eventName = supported ? prefix + propertyName + 'End' : null;
-        propertyName = supported ? '-' + prefix.toLowerCase() + '-' + propertyName.toLowerCase() : null;
+        property = supported ? '-' + prefix.toLowerCase() + '-' + property.toLowerCase() : null;
       }
       return {
         supported: supported,
-        eventName: eventName,
-        propertyName: propertyName
+        property: property
       };
     })(),
     // Loads the content into the menu bar
@@ -188,8 +185,8 @@
 
       // Open or close menu
       if (transitions.supported) {
-        $body.css(transitions.propertyName, side + ' ' + (speed/1000) + 's ease');
-        $menu.css(transitions.propertyName, side + ' ' + (speed/1000) + 's ease').one(transitions.eventName, completed);
+        $body.css(transitions.property, side + ' ' + (speed/1000) + 's ease');
+        $menu.css(transitions.property, side + ' ' + (speed/1000) + 's ease').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', completed);
         $body.css(bodyAnimation);
         $menu.css(menuAnimation);
       }
