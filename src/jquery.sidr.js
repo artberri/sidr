@@ -261,6 +261,8 @@
         width           : menuWidth
       });
 
+    $sideMenu.width(0);
+
     // The menu content
     if(typeof settings.source === 'function') {
       var newContent = settings.source(name);
