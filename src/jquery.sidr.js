@@ -138,7 +138,7 @@
         $html.removeAttr('style').scrollTop(scrollTop);
         $body.animate(bodyAnimation, speed);
         $menu.animate(menuAnimation, speed, function() {
-          $menu.removeAttr('style');
+          $menu.removeAttr('style').hide();
           $body.removeAttr('style');
           $('html').removeAttr('style');
           sidrMoving = false;
