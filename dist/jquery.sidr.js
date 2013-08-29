@@ -95,9 +95,12 @@
           menuAnimation = {right: '0px'};
         }
 
-        // Prepare page
-        scrollTop = $html.scrollTop();
-        $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
+        // Prepare page if container is body
+        if($body.is('body')){
+          scrollTop = $html.scrollTop();
+          $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
+        }
+        
 
         // Open menu
         $body.css({
