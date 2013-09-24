@@ -72,6 +72,7 @@
           menuWidth = $menu.outerWidth(true),
           speed = $menu.data('speed'),
           side = $menu.data('side'),
+          display = $menu.data('display'),
           bodyAnimation,
           menuAnimation,
           scrollTop;
@@ -114,7 +115,7 @@
           width: $body.width(),
           position: 'absolute'
         }).animate(bodyAnimation, speed);
-        $menu.css('display', 'block').animate(menuAnimation, speed, function() {
+        $menu.css('display', ((typeof display === 'undefined') ? 'block' : display)).animate(menuAnimation, speed, function() {
           sidrMoving = false;
           sidrOpened = name;
           // Callback
@@ -217,7 +218,8 @@
       .data({
         speed          : settings.speed,
         side           : settings.side,
-        body           : settings.body
+        body           : settings.body,
+        display        : settings.display
       });
 
     // The menu content
@@ -244,7 +246,7 @@
     else if(settings.source instanceof Array) {
       $.each(settings.source, function(index, element) {
         var selectors   = element.source.split(','),
-		innerClass = (typeof element.classOverride === 'undefined') ? "sidr-inner " : '';
+        innerClass = (typeof element.classOverride === 'undefined') ? "sidr-inner " : '';
         htmlContent += '<div class="' + innerClass + ((typeof element.className === 'undefined') ? '' : element.className) + '">';
         $.each(selectors, function(index, element) {
           htmlContent += $(element).html();
