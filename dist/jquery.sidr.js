@@ -243,8 +243,9 @@
     }
     else if(settings.source instanceof Array) {
       $.each(settings.source, function(index, element) {
-        var selectors   = element.source.split(',');
-        htmlContent += '<div class="sidr-inner ' + ((typeof element.className === 'undefined') ? '' : element.className) + '">';
+        var selectors   = element.source.split(','),
+		innerClass = (typeof element.classOverride === 'undefined') ? "sidr-inner " : '';
+        htmlContent += '<div class="' + innerClass + ((typeof element.className === 'undefined') ? '' : element.className) + '">';
         $.each(selectors, function(index, element) {
           htmlContent += $(element).html();
         });
