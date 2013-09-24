@@ -45,6 +45,16 @@
       }
       $element.removeAttr('style');
     },
+    renameAttributes: function(htmlContent) {
+      // Renaming ids and classes
+      var $htmlContent = $('<div />').html(htmlContent);
+      $htmlContent.find('*').each(function(index, element) {
+        var $element = $(element);
+        privateMethods.addPrefix($element);
+      });
+      htmlContent = $htmlContent.html();
+      return htmlContent;
+    },
     execute: function(action, name, callback) {
       // Check arguments
       if(typeof name === 'function') {
@@ -190,7 +200,9 @@
 
     var name = settings.name,
         $sideMenu = $('#' + name);
-
+    
+    var htmlContent = '';
+    
     // If the side menu do not exist create it
     if( $sideMenu.length === 0 ) {
       $sideMenu = $('<div />')
@@ -219,23 +231,29 @@
       });
     }
     else if(typeof settings.source === 'string') {
-      var htmlContent = '',
-          selectors   = settings.source.split(',');
+      var selectors   = settings.source.split(',');
 
       $.each(selectors, function(index, element) {
         htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
       });
-
-      // Renaming ids and classes
       if(settings.renaming) {
-        var $htmlContent = $('<div />').html(htmlContent);
-        $htmlContent.find('*').each(function(index, element) {
-          var $element = $(element);
-          privateMethods.addPrefix($element);
-        });
-        htmlContent = $htmlContent.html();
+        htmlContent = privateMethods.renameAttributes(htmlContent);
       }
       privateMethods.loadContent($sideMenu, htmlContent);
+    }
+    else if(settings.source instanceof Array) {
+      $.each(settings.source, function(index, element) {
+        var selectors   = element.source.split(',');
+        htmlContent += '<div class="sidr-inner ' + ((typeof element.className === 'undefined') ? '' : element.className) + '">';
+        $.each(selectors, function(index, element) {
+          htmlContent += $(element).html();
+        });
+        htmlContent += '</div>';
+        if(settings.renaming) {
+          htmlContent = privateMethods.renameAttributes(htmlContent);
+        }
+        privateMethods.loadContent($sideMenu, htmlContent);
+      });
     }
     else if(settings.source !== null) {
       $.error('Invalid Sidr Source');
