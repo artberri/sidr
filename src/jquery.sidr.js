@@ -111,6 +111,7 @@
           if(typeof callback === 'function') {
             callback(name);
           }
+          $menu.trigger("sidropened", name);
         });
       }
       // Close Sidr
@@ -147,8 +148,29 @@
           if(typeof callback === 'function') {
             callback(name);
           }
+          $menu.trigger("sidrclosed", name);
         });
       }
+    },
+
+    enableClickTrap: function($menu, events) {
+      if(typeof events !== "string") {
+        events = "click";
+      }
+
+      var clickTrap = null;
+      $menu.on("sidropened", function(_, name){
+        clickTrap = $('<a href="#"/>').addClass("sidr-trap").appendTo("body");
+        clickTrap.bind(events, function(){
+          methods.close(name);
+          return false;
+        });
+        return true;
+      });
+      $menu.on("sidrclosed", function(){
+        clickTrap.remove();
+        return true;
+      });
     }
   };
 
@@ -185,7 +207,8 @@
       side          : 'left', // Accepts 'left' or 'right'
       source        : null,   // Override the source of the content.
       renaming      : true,   // The ids and classes will be prepended with a prefix when loading existent content
-      body          : 'body'  // Page container selector,
+      body          : 'body', // Page container selector,
+      coverScreen   : false   // Events on the rest of the page that causes the sidr to close (ex: "click", "click tap")
     }, options);
 
     var name = settings.name,
@@ -239,6 +262,10 @@
     }
     else if(settings.source !== null) {
       $.error('Invalid Sidr Source');
+    }
+
+    if(settings.coverScreen) {
+      privateMethods.enableClickTrap($sideMenu, settings.coverScreen);
     }
 
     return this.each(function(){
