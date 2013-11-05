@@ -1,9 +1,10 @@
 # Changelog
 
 ## Next version
-- Adding bind to tap event if exists (faster)
-- Fix bug with navigation reopening on Android 4.2 default browser
+- Adding bind to tap event if exists instead of click    (faster)
+- Fixed reopening menu bug in some browsers and jQuery versions
 - Add a body class when the sidr menu is open and when animating
+- Fixing the toogle/toggle typo
 
 ## 1.1.1 2013-03-13
 - Fix bug when closing sidr programatically
