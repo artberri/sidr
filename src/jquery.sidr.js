@@ -62,6 +62,7 @@
           menuWidth = $menu.outerWidth(true),
           speed = $menu.data('speed'),
           side = $menu.data('side'),
+          displace = $menu.data('displace'),
           bodyAnimation,
           menuAnimation,
           scrollTop,
@@ -101,12 +102,19 @@
         $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
 
         // Open menu
-        $body.addClass('sidr-animating').css({
-          width: $body.width(),
-          position: 'absolute'
-        }).animate(bodyAnimation, speed, function() {
-          $(this).addClass(bodyClass);
-        });
+        if(displace){
+          $body.addClass('sidr-animating').css({
+            width: $body.width(),
+            position: 'absolute'
+          }).animate(bodyAnimation, speed, function() {
+            $(this).addClass(bodyClass);
+          });
+        }
+        else {
+          setTimeout(function() {
+            $(this).addClass(bodyClass);
+          }, speed);
+        }
         $menu.css('display', 'block').animate(menuAnimation, speed, function() {
           sidrMoving = false;
           sidrOpened = name;
@@ -178,10 +186,12 @@
 
     if ( methods[method] ) {
       return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-    } else if ( typeof method === 'function' ||  typeof method === 'string'  || ! method ) {
+    }
+    else if ( typeof method === 'function' || typeof method === 'string' || ! method ) {
       return methods.toggle.apply( this, arguments );
-    } else {
-      $.error( 'Method ' +  method + ' does not exist on jQuery.sidr' );
+    }
+    else {
+      $.error( 'Method ' + method + ' does not exist on jQuery.sidr' );
     }
 
   };
@@ -194,7 +204,8 @@
       side          : 'left', // Accepts 'left' or 'right'
       source        : null,   // Override the source of the content.
       renaming      : true,   // The ids and classes will be prepended with a prefix when loading existent content
-      body          : 'body'  // Page container selector,
+      body          : 'body',  // Page container selector,
+      displace: true // Displace the body content or not
     }, options);
 
     var name = settings.name,
@@ -214,7 +225,8 @@
       .data({
         speed          : settings.speed,
         side           : settings.side,
-        body           : settings.body
+        body           : settings.body,
+        displace      : settings.displace
       });
 
     // The menu content
@@ -229,7 +241,7 @@
     }
     else if(typeof settings.source === 'string') {
       var htmlContent = '',
-          selectors   = settings.source.split(',');
+          selectors = settings.source.split(',');
 
       $.each(selectors, function(index, element) {
         htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
