@@ -143,10 +143,7 @@
         $body.addClass('sidr-animating').animate(bodyAnimation, speed).removeClass(bodyClass);
         $menu.animate(menuAnimation, speed, function() {
           $menu.removeAttr('style');
-          $body.css({
-            width: 'auto',
-            position: 'static'
-          });
+          $body.removeAttr("style");
           $('html').removeAttr('style');
           sidrMoving = false;
           sidrOpened = false;
