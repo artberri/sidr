@@ -260,10 +260,12 @@
 
       // If the plugin hasn't been initialized yet
       if ( ! data ) {
-        var evnt = "click";
-        if("ontouchstart" in document.documentElement) {evnt = "tap";}
+        var actionEvent = 'click';
+        if('ontouchstart' in document.documentElement) {
+          actionEvent = 'tap';
+        }
         $this.data('sidr', name);
-        $this.bind(evnt, function(e) {
+        $this.bind(actionEvent, function(e) {
           e.preventDefault();
           methods.toggle(name);
         });
