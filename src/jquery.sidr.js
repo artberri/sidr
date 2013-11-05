@@ -111,6 +111,7 @@
           if(typeof callback === 'function') {
             callback(name);
           }
+          $menu.trigger("sidropened", name);
         });
       }
       // Close Sidr
@@ -147,6 +148,7 @@
           if(typeof callback === 'function') {
             callback(name);
           }
+          $menu.trigger("sidrclosed", name);
         });
       }
     }
