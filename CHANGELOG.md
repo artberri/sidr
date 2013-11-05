@@ -1,10 +1,11 @@
 # Changelog
 
-## Next version
+## 1.2.0 Next version
 - Adding bind to tap event if exists instead of click    (faster)
 - Fixed reopening menu bug in some browsers and jQuery versions
 - Add a body class when the sidr menu is open and when animating
 - Fixing the toogle/toggle typo
+- Adds an option to allow choosing between displace or not the content (displace)
 
 ## 1.1.1 2013-03-13
 - Fix bug when closing sidr programatically
