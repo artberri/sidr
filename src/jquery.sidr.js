@@ -279,21 +279,32 @@
     }
 
     return this.each(function(){
-
       var $this = $(this),
           data = $this.data('sidr');
 
       // If the plugin hasn't been initialized yet
       if ( ! data ) {
-        var actionEvent = 'click';
-        if('ontouchstart' in document.documentElement) {
-          actionEvent = 'tap';
-        }
+
         $this.data('sidr', name);
-        $this.bind(actionEvent, function(e) {
-          e.preventDefault();
-          methods.toggle(name);
-        });
+        if('ontouchstart' in document.documentElement) {
+          $this.bind('touchstart', function(e) {
+            var theEvent = e.originalEvent.touches[0];
+            this.touched = e.timeStamp;
+          });
+          $this.bind('touchend', function(e) {
+            var delta = Math.abs(e.timeStamp - this.touched);
+            if(delta < 200) {
+              e.preventDefault();
+              methods.toggle(name);
+            }
+          });
+        }
+        else {
+          $this.click(function(e) {
+            e.preventDefault();
+            methods.toggle(name);
+          });
+        }
       }
     });
   };

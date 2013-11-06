@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.1 2013-11-06
+- Fixing tap event on touch devices
+
 ## 1.2.0 2013-11-05
 - Adding bind to tap event if exists instead of click    (faster)
 - Fixed reopening menu bug in some browsers and jQuery versions
