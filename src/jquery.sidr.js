@@ -62,6 +62,8 @@
           menuWidth = $menu.outerWidth(true),
           speed = $menu.data('speed'),
           side = $menu.data('side'),
+          onOpen = $menu.data('onOpen'),
+          onClose = $menu.data('onClose'),
           bodyAnimation,
           menuAnimation,
           scrollTop;
@@ -112,6 +114,9 @@
             callback(name);
           }
         });
+        
+        // onOpen callback
+        onOpen();
       }
       // Close Sidr
       else {
@@ -148,6 +153,9 @@
             callback(name);
           }
         });
+        
+        // onClose callback
+        onClose();
       }
     }
   };
@@ -180,12 +188,14 @@
   $.fn.sidr = function( options ) {
 
     var settings = $.extend( {
-      name          : 'sidr', // Name for the 'sidr'
-      speed         : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-      side          : 'left', // Accepts 'left' or 'right'
-      source        : null,   // Override the source of the content.
-      renaming      : true,   // The ids and classes will be prepended with a prefix when loading existent content
-      body          : 'body'  // Page container selector,
+      name          : 'sidr',         // Name for the 'sidr'
+      speed         : 200,            // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+      side          : 'left',         // Accepts 'left' or 'right'
+      source        : null,           // Override the source of the content.
+      renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
+      body          : 'body',         // Page container selector,
+      onOpen        : function() {},  // Callback when sidr opened
+      onClose       : function() {}   // Callback when sidr closed
     }, options);
 
     var name = settings.name,
@@ -205,7 +215,9 @@
       .data({
         speed          : settings.speed,
         side           : settings.side,
-        body           : settings.body
+        body           : settings.body,
+        onOpen         : settings.onOpen,
+        onClose        : settings.onClose
       });
 
     // The menu content
