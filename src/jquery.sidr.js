@@ -63,6 +63,8 @@
           speed = $menu.data('speed'),
           side = $menu.data('side'),
           displace = $menu.data('displace'),
+          onOpen = $menu.data('onOpen'),
+          onClose = $menu.data('onClose'),
           bodyAnimation,
           menuAnimation,
           scrollTop,
@@ -126,6 +128,9 @@
           }
           $body.removeClass('sidr-animating');
         });
+
+        // onOpen callback
+        onOpen();
       }
       // Close Sidr
       else {
@@ -165,6 +170,9 @@
           }
           $body.removeClass('sidr-animating');
         });
+
+        // onClose callback
+        onClose();
       }
     }
   };
@@ -203,13 +211,15 @@
   $.fn.sidr = function( options ) {
 
     var settings = $.extend( {
-      name          : 'sidr', // Name for the 'sidr'
-      speed         : 200,    // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-      side          : 'left', // Accepts 'left' or 'right'
-      source        : null,   // Override the source of the content.
-      renaming      : true,   // The ids and classes will be prepended with a prefix when loading existent content
-      body          : 'body',  // Page container selector,
-      displace: true // Displace the body content or not
+      name          : 'sidr',         // Name for the 'sidr'
+      speed         : 200,            // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+      side          : 'left',         // Accepts 'left' or 'right'
+      source        : null,           // Override the source of the content.
+      renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
+      body          : 'body',         // Page container selector,
+      displace: true, // Displace the body content or not
+      onOpen        : function() {},  // Callback when sidr opened
+      onClose       : function() {}   // Callback when sidr closed
     }, options);
 
     var name = settings.name,
@@ -230,7 +240,9 @@
         speed          : settings.speed,
         side           : settings.side,
         body           : settings.body,
-        displace      : settings.displace
+        displace      : settings.displace,
+        onOpen         : settings.onOpen,
+        onClose        : settings.onClose
       });
 
     // The menu content

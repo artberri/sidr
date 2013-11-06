@@ -6,6 +6,7 @@
 - Add a body class when the sidr menu is open and when animating
 - Fixing the toogle/toggle typo
 - Adds an option to allow choosing between displace or not the content (displace)
+- Added callbacks for onOpen and onClose
 
 ## 1.1.1 2013-03-13
 - Fix bug when closing sidr programatically
