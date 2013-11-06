@@ -2,7 +2,7 @@
   "name": "sidr",
   "title": "Sidr",
   "description": "jQuery plugin for creating side menus and the easiest way for doing your menu responsive",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "homepage": "https://github.com/artberri/sidr",
   "author": {
     "name": "Alberto Varela",

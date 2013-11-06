@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 Next version
+## 1.2.0 2013-11-05
 - Adding bind to tap event if exists instead of click    (faster)
 - Fixed reopening menu bug in some browsers and jQuery versions
 - Add a body class when the sidr menu is open and when animating
