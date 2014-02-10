@@ -15,8 +15,6 @@
   font-size: 15px;
   background: #f8f8f8;
   color: #333333;
-  -webkit-box-shadow: inset 0 0 5px 5px #ebebeb;
-  -moz-box-shadow: inset 0 0 5px 5px #ebebeb;
   box-shadow: inset 0 0 5px 5px #ebebeb;
 }
 /* line 15, ../../src/scss/sidr/_base.scss */
@@ -46,13 +44,10 @@
   margin: 0 0 5px;
   color: #333333;
   line-height: 24px;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #dfdfdf));
-  background-image: -webkit-linear-gradient(#ffffff, #dfdfdf);
   background-image: -moz-linear-gradient(#ffffff, #dfdfdf);
   background-image: -o-linear-gradient(#ffffff, #dfdfdf);
+  background-image: -webkit-linear-gradient(#ffffff, #dfdfdf);
   background-image: linear-gradient(#ffffff, #dfdfdf);
-  -webkit-box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.2);
 }
 /* line 52, ../../src/scss/sidr/_base.scss */
@@ -85,15 +80,13 @@
   border-top: 1px solid white;
   border-bottom: 1px solid #dfdfdf;
 }
-/* line 81, ../../src/scss/sidr/_base.scss */
+/* line 79, ../../src/scss/sidr/_base.scss */
 .sidr ul li:hover, .sidr ul li.active, .sidr ul li.sidr-class-active {
   border-top: none;
   line-height: 49px;
 }
 /* line 85, ../../src/scss/sidr/_base.scss */
 .sidr ul li:hover > a, .sidr ul li:hover > span, .sidr ul li.active > a, .sidr ul li.active > span, .sidr ul li.sidr-class-active > a, .sidr ul li.sidr-class-active > span {
-  -webkit-box-shadow: inset 0 0 15px 3px #ebebeb;
-  -moz-box-shadow: inset 0 0 15px 3px #ebebeb;
   box-shadow: inset 0 0 15px 3px #ebebeb;
 }
 /* line 90, ../../src/scss/sidr/_base.scss */
@@ -117,15 +110,13 @@
 .sidr ul li ul li:last-child {
   border-bottom: none;
 }
-/* line 110, ../../src/scss/sidr/_base.scss */
+/* line 108, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li:hover, .sidr ul li ul li.active, .sidr ul li ul li.sidr-class-active {
   border-top: none;
   line-height: 41px;
 }
 /* line 114, ../../src/scss/sidr/_base.scss */
 .sidr ul li ul li:hover > a, .sidr ul li ul li:hover > span, .sidr ul li ul li.active > a, .sidr ul li ul li.active > span, .sidr ul li ul li.sidr-class-active > a, .sidr ul li ul li.sidr-class-active > span {
-  -webkit-box-shadow: inset 0 0 15px 3px #ebebeb;
-  -moz-box-shadow: inset 0 0 15px 3px #ebebeb;
   box-shadow: inset 0 0 15px 3px #ebebeb;
 }
 /* line 119, ../../src/scss/sidr/_base.scss */
@@ -141,7 +132,7 @@
 .sidr label {
   font-size: 13px;
 }
-/* line 146, ../../src/scss/sidr/_base.scss */
+/* line 136, ../../src/scss/sidr/_base.scss */
 .sidr input[type="text"],
 .sidr input[type="password"],
 .sidr input[type="date"],
@@ -156,14 +147,10 @@
   width: 100%;
   font-size: 13px;
   padding: 5px;
-  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   margin: 0 0 10px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
   border-radius: 2px;
   border: none;
   background: rgba(0, 0, 0, 0.1);
@@ -177,7 +164,7 @@
   display: inline;
   clear: none;
 }
-/* line 167, ../../src/scss/sidr/_base.scss */
+/* line 166, ../../src/scss/sidr/_base.scss */
 .sidr input[type=button],
 .sidr input[type=submit] {
   color: #f8f8f8;
