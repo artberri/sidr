@@ -299,7 +299,6 @@
             privateMethods.loadContent($sideMenu, newContent);
         }
         else if(typeof source === 'string' && privateMethods.isUrl(source)) {
-            console.log("yes");
             $.get(source, function(data) {
                 privateMethods.loadContent($sideMenu, data);
             });
@@ -325,7 +324,7 @@
             privateMethods.loadContent($sideMenu, htmlContent);
 
         }
-        else if(settings.source !== null) {
+        else if(source !== null) {
             $.error('Invalid Sidr Source');
         }
     }
