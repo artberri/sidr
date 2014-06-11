@@ -119,6 +119,7 @@
             $(this).addClass(bodyClass);
           }, speed);
         }
+
         $menu.css('display', 'block').animate(menuAnimation, speed, function() {
           sidrMoving = false;
           sidrOpened = name;
@@ -191,6 +192,9 @@
     // I made a typo, so I mantain this method to keep backward compatibilty with 1.1.1v and previous
     toogle: function(name, callback) {
       privateMethods.execute('toggle', name, callback);
+    },
+    reload: function(name, source, callback){
+        parseSource(name, source);
     }
   };
 
@@ -217,7 +221,7 @@
       source        : null,           // Override the source of the content.
       renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
       body          : 'body',         // Page container selector,
-      displace: true, // Displace the body content or not
+      displace      : true,           // Displace the body content or not
       onOpen        : function() {},  // Callback when sidr opened
       onClose       : function() {}   // Callback when sidr closed
     }, options);
@@ -240,43 +244,13 @@
         speed          : settings.speed,
         side           : settings.side,
         body           : settings.body,
-        displace      : settings.displace,
+        displace       : settings.displace,
+        renaming       : settings.renaming,
         onOpen         : settings.onOpen,
         onClose        : settings.onClose
       });
 
-    // The menu content
-    if(typeof settings.source === 'function') {
-      var newContent = settings.source(name);
-      privateMethods.loadContent($sideMenu, newContent);
-    }
-    else if(typeof settings.source === 'string' && privateMethods.isUrl(settings.source)) {
-      $.get(settings.source, function(data) {
-        privateMethods.loadContent($sideMenu, data);
-      });
-    }
-    else if(typeof settings.source === 'string') {
-      var htmlContent = '',
-          selectors = settings.source.split(',');
-
-      $.each(selectors, function(index, element) {
-        htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
-      });
-
-      // Renaming ids and classes
-      if(settings.renaming) {
-        var $htmlContent = $('<div />').html(htmlContent);
-        $htmlContent.find('*').each(function(index, element) {
-          var $element = $(element);
-          privateMethods.addPrefix($element);
-        });
-        htmlContent = $htmlContent.html();
-      }
-      privateMethods.loadContent($sideMenu, htmlContent);
-    }
-    else if(settings.source !== null) {
-      $.error('Invalid Sidr Source');
-    }
+      parseSource(name, settings.source );
 
     return this.each(function(){
       var $this = $(this),
@@ -308,5 +282,51 @@
       }
     });
   };
+
+    /**
+     * Parsing source
+     * @access private
+     * @param string name
+     * @param string|function source
+     */
+    function parseSource(name, source){
+
+        var $sideMenu = $('#' + name);
+
+        // The menu content
+        if(typeof source === 'function') {
+            var newContent = source(name);
+            privateMethods.loadContent($sideMenu, newContent);
+        }
+        else if(typeof source === 'string' && privateMethods.isUrl(source)) {
+            $.get(source, function(data) {
+                privateMethods.loadContent($sideMenu, data);
+            });
+        }
+        else if(typeof source === 'string') {
+            var htmlContent = '',
+                selectors = source.split(',');
+
+            $.each(selectors, function(index, element) {
+                htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
+            });
+
+            // Renaming ids and classes
+            if( $sideMenu.data('renaming') ) {
+                var $htmlContent = $('<div />').html(htmlContent);
+                $htmlContent.find('*').each(function(index, element) {
+                    var $element = $(element);
+                    privateMethods.addPrefix($element);
+                });
+                htmlContent = $htmlContent.html();
+            }
+
+            privateMethods.loadContent($sideMenu, htmlContent);
+
+        }
+        else if(source !== null) {
+            $.error('Invalid Sidr Source');
+        }
+    }
 
 })( jQuery );
