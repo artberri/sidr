@@ -286,7 +286,10 @@
       if ( ! data ) {
 
         $this.data('sidr', name);
-        if('ontouchstart' in document.documentElement) {
+        var hasTouchEvent, isMobileUserAgent;
+        isMobileUserAgent = navigator.userAgent.match(/(Android|Backerry|iPhone|iPod|ios|iOS|iPad|WebOS|Symbian|Windows Phone|Phone)/i) != null;
+        hasTouchEvent = isMobileUserAgent ? ("ontouchstart" in document.documentElement) : false;
+        if(hasTouchEvent) {
           $this.bind('touchstart', function(e) {
             var theEvent = e.originalEvent.touches[0];
             this.touched = e.timeStamp;
