@@ -63,6 +63,7 @@
           speed = $menu.data('speed'),
           side = $menu.data('side'),
           displace = $menu.data('displace'),
+          closeOthers = $menu.data('closeOthers'),
           onOpen = $menu.data('onOpen'),
           onClose = $menu.data('onClose'),
           bodyAnimation,
@@ -78,7 +79,7 @@
         }
 
         // If another menu opened close first
-        if(sidrOpened !== false) {
+        if(sidrOpened !== false && closeOthers === true) {
           methods.close(sidrOpened, function() {
             methods.open(name);
           });
@@ -217,7 +218,8 @@
       source        : null,           // Override the source of the content.
       renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
       body          : 'body',         // Page container selector,
-      displace: true, // Displace the body content or not
+      displace      : true,           // Displace the body content or not
+      closeOthers   : true,           // If true, others menus will be closed when sidr opened
       onOpen        : function() {},  // Callback when sidr opened
       onClose       : function() {}   // Callback when sidr closed
     }, options);
@@ -240,7 +242,8 @@
         speed          : settings.speed,
         side           : settings.side,
         body           : settings.body,
-        displace      : settings.displace,
+        displace       : settings.displace,
+        closeOthers    : settings.closeOthers,
         onOpen         : settings.onOpen,
         onClose        : settings.onClose
       });
