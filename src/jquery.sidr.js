@@ -63,7 +63,7 @@
           speed = $menu.data('speed'),
           side = $menu.data('side'),
           displace = $menu.data('displace'),
-          closeOthers = $menu.data('closeOthers')
+          closeOthers = $menu.data('closeOthers'),
           onOpen = $menu.data('onOpen'),
           onClose = $menu.data('onClose'),
           bodyAnimation,
