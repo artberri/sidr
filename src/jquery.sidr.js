@@ -284,7 +284,9 @@
 
       // If the plugin hasn't been initialized yet
       if ( ! data ) {
-
+        
+        sidrOpened = false;
+        sidrMoving = false;
         $this.data('sidr', name);
         if('ontouchstart' in document.documentElement) {
           $this.bind('touchstart', function(e) {
