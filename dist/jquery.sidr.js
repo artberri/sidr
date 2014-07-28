@@ -110,8 +110,12 @@
           $body.addClass('sidr-animating').css({
             width: $body.width(),
             position: 'absolute'
-          }).animate(bodyAnimation, speed, function() {
-            $(this).addClass(bodyClass);
+          }).animate(bodyAnimation, {
+            queue: false, 
+            duration: speed, 
+            complete: function() {
+              $(this).addClass(bodyClass);
+            }
           });
         }
         else {
@@ -119,14 +123,18 @@
             $(this).addClass(bodyClass);
           }, speed);
         }
-        $menu.css('display', 'block').animate(menuAnimation, speed, function() {
-          sidrMoving = false;
-          sidrOpened = name;
-          // Callback
-          if(typeof callback === 'function') {
-            callback(name);
+        $menu.css('display', 'block').animate(menuAnimation, {
+          queue: false,
+          duration: speed, 
+          complete: function() {
+            sidrMoving = false;
+            sidrOpened = name;
+            // Callback
+            if(typeof callback === 'function') {
+              callback(name);
+            }
+            $body.removeClass('sidr-animating');
           }
-          $body.removeClass('sidr-animating');
         });
 
         // onOpen callback
@@ -157,18 +165,25 @@
           scrollTop = $html.scrollTop();
           $html.removeAttr('style').scrollTop(scrollTop);
         }
-        $body.addClass('sidr-animating').animate(bodyAnimation, speed).removeClass(bodyClass);
-        $menu.animate(menuAnimation, speed, function() {
-          $menu.removeAttr('style').hide();
-          $body.removeAttr('style');
-          $('html').removeAttr('style');
-          sidrMoving = false;
-          sidrOpened = false;
-          // Callback
-          if(typeof callback === 'function') {
-            callback(name);
+        $body.addClass('sidr-animating').animate(bodyAnimation, {
+          queue: false,
+          duration: speed
+        }).removeClass(bodyClass);
+        $menu.animate(menuAnimation, {
+          queue: false,
+          duration: speed, 
+          complete: function() {
+            $menu.removeAttr('style').hide();
+            $body.removeAttr('style');
+            $('html').removeAttr('style');
+            sidrMoving = false;
+            sidrOpened = false;
+            // Callback
+            if(typeof callback === 'function') {
+              callback(name);
+            }
+            $body.removeClass('sidr-animating');
           }
-          $body.removeClass('sidr-animating');
         });
 
         // onClose callback
