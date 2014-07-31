@@ -32,16 +32,28 @@
     loadContent: function($menu, content) {
       $menu.html(content);
     },
+    // checks if a string (attribute) starts with
+    attribStartsWith: function(attribute, needle) {
+      if ( typeof needle === 'string' ) {
+        var rEx = new RegExp('\\b'+needle+'[\\w\\-_]+', 'i');
+        return rEx.test(attribute);
+      }
+      return false;
+    },
     // Add sidr prefixes
-    addPrefix: function($element) {
+    addPrefix: function($element, skipPrefix) {
       var elementId = $element.attr('id'),
           elementClass = $element.attr('class');
 
       if(typeof elementId === 'string' && '' !== elementId) {
-        $element.attr('id', elementId.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-id-$1'));
+          if ( ! privateMethods.attribStartsWith(elementId, skipPrefix) ) {
+          $element.attr('id', elementId.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-id-$1'));
+        }
       }
-      if(typeof elementClass === 'string' && '' !== elementClass && 'sidr-inner' !== elementClass) {
-        $element.attr('class', elementClass.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-class-$1'));
+      if(typeof elementClass === 'string' && '' !== elementClass) {
+        if ( ! privateMethods.attribStartsWith(elementClass, skipPrefix) &&  'sidr-inner' !== elementClass ) {
+          $element.attr('class', elementClass.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-class-$1'));
+        }
       }
       $element.removeAttr('style');
     },
@@ -216,6 +228,7 @@
       side          : 'left',         // Accepts 'left' or 'right'
       source        : null,           // Override the source of the content.
       renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
+      skipPrefix    : false,          // If set to any string all classes and id starting with this prefix will not be renamed (useful for compatiblity)
       body          : 'body',         // Page container selector,
       displace: true, // Displace the body content or not
       onOpen        : function() {},  // Callback when sidr opened
@@ -268,7 +281,7 @@
         var $htmlContent = $('<div />').html(htmlContent);
         $htmlContent.find('*').each(function(index, element) {
           var $element = $(element);
-          privateMethods.addPrefix($element);
+          privateMethods.addPrefix($element, settings.skipPrefix);
         });
         htmlContent = $htmlContent.html();
       }
