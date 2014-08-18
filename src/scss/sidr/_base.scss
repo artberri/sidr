@@ -76,8 +76,6 @@
             border-top: 1px solid lighten($sidr-background, 10%);
             border-bottom: 1px solid darken($sidr-background, 10%);
 
-            &:hover,
-            &.active,
             &.sidr-class-active {
                 border-top: none;
                 line-height: 49px;
@@ -105,8 +103,6 @@
                         border-bottom: none;
                     }
 
-                    &:hover,
-                    &.active,
                     &.sidr-class-active {
                         border-top: none;
                         line-height: 41px;
