@@ -219,7 +219,8 @@
       body          : 'body',         // Page container selector,
       displace: true, // Displace the body content or not
       onOpen        : function() {},  // Callback when sidr opened
-      onClose       : function() {}   // Callback when sidr closed
+      onClose       : function() {},  // Callback when sidr closed
+      method        : 'toggle'        // The method to call when element is clicked
     }, options);
 
     var name = settings.name,
@@ -295,14 +296,14 @@
             var delta = Math.abs(e.timeStamp - this.touched);
             if(delta < 200) {
               e.preventDefault();
-              methods.toggle(name);
+              methods[settings.method](name);
             }
           });
         }
         else {
           $this.click(function(e) {
             e.preventDefault();
-            methods.toggle(name);
+            methods[settings.method](name);
           });
         }
       }
