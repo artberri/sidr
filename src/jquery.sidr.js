@@ -1,9 +1,14 @@
+/*! Sidr - v1.2.1 - 2013-11-06
+ * https://github.com/artberri/sidr
+ * Copyright (c) 2013 Alberto Varela; Licensed MIT */
 /*
  * Sidr
  * https://github.com/artberri/sidr
  *
  * Copyright (c) 2013 Alberto Varela
  * Licensed under the MIT license.
+ *
+ * Fullwidth update by Scribilicious
  */
 
 ;(function( $ ){
@@ -40,7 +45,7 @@
       if(typeof elementId === 'string' && '' !== elementId) {
         $element.attr('id', elementId.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-id-$1'));
       }
-      if(typeof elementClass === 'string' && '' !== elementClass && 'sidr-inner' !== elementClass) {
+      if(typeof elementClass === 'string' && '' !== elementClass && 'sidr-inner' !== elementClass && 'sidr-outer' !== elementClass) {
         $element.attr('class', elementClass.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-class-$1'));
       }
       $element.removeAttr('style');
@@ -63,12 +68,15 @@
           speed = $menu.data('speed'),
           side = $menu.data('side'),
           displace = $menu.data('displace'),
+          fullwidth = $menu.data('fullwidth'),
           onOpen = $menu.data('onOpen'),
           onClose = $menu.data('onClose'),
           bodyAnimation,
           menuAnimation,
           scrollTop,
           bodyClass = (name === 'sidr' ? 'sidr-open' : 'sidr-open ' + name + '-open');
+
+      if (fullwidth) menuWidth = $('.sidr-inner',$menu).outerWidth(true);
 
       // Open Sidr
       if('open' === action || ('toggle' === action && !$menu.is(':visible'))) {
@@ -217,7 +225,8 @@
       source        : null,           // Override the source of the content.
       renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
       body          : 'body',         // Page container selector,
-      displace: true, // Displace the body content or not
+      displace      : true,           // Displace the body content or not
+      fullwidth     : false,           // Fullwidth mode
       onOpen        : function() {},  // Callback when sidr opened
       onClose       : function() {}   // Callback when sidr closed
     }, options);
@@ -240,10 +249,16 @@
         speed          : settings.speed,
         side           : settings.side,
         body           : settings.body,
-        displace      : settings.displace,
+        displace       : settings.displace,
+        fullwidth      : settings.fullwidth,
         onOpen         : settings.onOpen,
         onClose        : settings.onClose
       });
+
+    // Adding an extra class to the menu when fullwidth is set
+    if ($sideMenu.data('fullwidth')) {
+       $sideMenu.addClass('fullwidth');
+    }
 
     // The menu content
     if(typeof settings.source === 'function') {
@@ -261,6 +276,7 @@
 
       $.each(selectors, function(index, element) {
         htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
+        if ($sideMenu.data('fullwidth')) htmlContent += '<div class="sidr-outer"></div>';
       });
 
       // Renaming ids and classes
@@ -305,6 +321,13 @@
             methods.toggle(name);
           });
         }
+      }
+
+      // Close menu when clicked on the outer div
+      if ($sideMenu.data('fullwidth')) {
+        $('#'+name+' .sidr-outer').click(function() {
+          methods.close(name);
+        });
       }
     });
   };
