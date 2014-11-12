@@ -173,3 +173,23 @@
         }
     }
 }
+
+.sidr.fullwidth {
+    width: 100%;
+    background: none;
+    @include single-box-shadow($sidr-background-shadow-color, 0, 0, 0, 0, inset)
+    
+    .sidr-inner {
+        width: 260px;
+        background: $sidr-background;
+        @include single-box-shadow($sidr-background-shadow-color, 0, 0, 5px, 5px, inset);        
+    }
+    
+    .left .sidr-outer {
+        position:fixed; top:0; left:280px; right:0; bottom:0; cursor:pointer;
+    }
+    
+    .right .sidr-outer {
+        position:fixed; top:0; left:0; right:280px; bottom:0; cursor:pointer;
+    }
+}
