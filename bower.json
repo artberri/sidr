@@ -1,0 +1,16 @@
+{
+  "name": "sidr",
+  "version": "1.2.1",
+  "homepage": "https://github.com/artberri/sidr",
+  "authors": [
+    "artberri"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
