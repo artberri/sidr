@@ -285,14 +285,15 @@
       // If the plugin hasn't been initialized yet
       if ( ! data ) {
 
+        var touchStart;
         $this.data('sidr', name);
         if('ontouchstart' in document.documentElement) {
           $this.bind('touchstart', function(e) {
             var theEvent = e.originalEvent.touches[0];
-            this.touched = e.timeStamp;
+            touchStart = e.timeStamp;
           });
           $this.bind('touchend', function(e) {
-            var delta = Math.abs(e.timeStamp - this.touched);
+            var delta = Math.abs(e.timeStamp - touchStart);
             if(delta < 200) {
               e.preventDefault();
               methods.toggle(name);
