@@ -99,10 +99,10 @@
           menuAnimation = {right: '0px'};
         }
 
-        // Prepare page if container is body
+        // Prepare page if container is body (overflow-x hides the slid-over container while position prevents the slid-over container from causing the viewport to change scale)
         if($body.is('body')){
           scrollTop = $html.scrollTop();
-          $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
+          $html.css({'overflow-x':'hidden', 'position':'fixed'}).scrollTop(scrollTop);
         }
 
         // Open menu
