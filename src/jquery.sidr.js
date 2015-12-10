@@ -226,7 +226,7 @@
       renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
       body          : 'body',         // Page container selector,
       displace      : true,           // Displace the body content or not
-      fullwidth     : false,           // Fullwidth mode
+      fullwidth     : true,           // Fullwidth mode
       onOpen        : function() {},  // Callback when sidr opened
       onClose       : function() {}   // Callback when sidr closed
     }, options);
