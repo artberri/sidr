@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.2 ???
+- Fixing tap event on touchscreen devices
+- Removing unnecessary compass mixins
+- Fixes reinitalization
+- Adding example
+- Fixing bower structure
+- Adding continous integration
+- Fixing adding body classes when no displacing
+
 ## 1.2.1 2013-11-06
 - Fixing tap event on touch devices
 

@@ -2,7 +2,7 @@
  * Sidr
  * https://github.com/artberri/sidr
  *
- * Copyright (c) 2013 Alberto Varela
+ * Copyright (c) 2013-2016 Alberto Varela
  * Licensed under the MIT license.
  */
 
@@ -22,36 +22,38 @@
         '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
         '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
         '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-      if(!pattern.test(str)) {
+      if (!pattern.test(str)) {
         return false;
       } else {
         return true;
       }
     },
+
     // Loads the content into the menu bar
     loadContent: function($menu, content) {
       $menu.html(content);
     },
+
     // Add sidr prefixes
     addPrefix: function($element) {
       var elementId = $element.attr('id'),
           elementClass = $element.attr('class');
 
-      if(typeof elementId === 'string' && '' !== elementId) {
+      if (typeof elementId === 'string' && '' !== elementId) {
         $element.attr('id', elementId.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-id-$1'));
       }
-      if(typeof elementClass === 'string' && '' !== elementClass && 'sidr-inner' !== elementClass) {
+      if (typeof elementClass === 'string' && '' !== elementClass && 'sidr-inner' !== elementClass) {
         $element.attr('class', elementClass.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-class-$1'));
       }
       $element.removeAttr('style');
     },
+
     execute: function(action, name, callback) {
       // Check arguments
-      if(typeof name === 'function') {
+      if (typeof name === 'function') {
         callback = name;
         name = 'sidr';
-      }
-      else if(!name) {
+      } else if (!name) {
         name = 'sidr';
       }
 
@@ -71,14 +73,14 @@
           bodyClass = (name === 'sidr' ? 'sidr-open' : 'sidr-open ' + name + '-open');
 
       // Open Sidr
-      if('open' === action || ('toggle' === action && !$menu.is(':visible'))) {
+      if ('open' === action || ('toggle' === action && !$menu.is(':visible'))) {
         // Check if we can open it
-        if( $menu.is(':visible') || sidrMoving ) {
+        if ( $menu.is(':visible') || sidrMoving ) {
           return;
         }
 
         // If another menu opened close first
-        if(sidrOpened !== false) {
+        if (sidrOpened !== false) {
           methods.close(sidrOpened, function() {
             methods.open(name);
           });
@@ -90,43 +92,49 @@
         sidrMoving = true;
 
         // Left or right?
-        if(side === 'left') {
+        if (side === 'left') {
           bodyAnimation = {left: menuWidth + 'px'};
           menuAnimation = {left: '0px'};
-        }
-        else {
+        } else {
           bodyAnimation = {right: menuWidth + 'px'};
           menuAnimation = {right: '0px'};
         }
 
         // Prepare page if container is body
-        if($body.is('body')){
+        if ($body.is('body')){
           scrollTop = $html.scrollTop();
           $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
         }
 
         // Open menu
-        if(displace){
+        if (displace){
           $body.addClass('sidr-animating').css({
             width: $body.width(),
             position: 'absolute'
-          }).animate(bodyAnimation, speed, function() {
-            $(this).addClass(bodyClass);
+          }).animate(bodyAnimation, {
+            queue: false,
+            duration: speed,
+            complete: function() {
+              $(this).addClass(bodyClass);
+            }
           });
-        }
-        else {
+        } else {
           setTimeout(function() {
-            $(this).addClass(bodyClass);
+            $body.addClass(bodyClass);
           }, speed);
         }
-        $menu.css('display', 'block').animate(menuAnimation, speed, function() {
-          sidrMoving = false;
-          sidrOpened = name;
-          // Callback
-          if(typeof callback === 'function') {
-            callback(name);
+        $menu.css('display', 'block').animate(menuAnimation, {
+          queue: false,
+          duration: speed,
+          complete: function() {
+            sidrMoving = false;
+            sidrOpened = name;
+            // Callback
+            if (typeof callback === 'function') {
+              callback(name);
+            }
+            $body.removeClass('sidr-animating');
           }
-          $body.removeClass('sidr-animating');
         });
 
         // onOpen callback
@@ -135,7 +143,7 @@
       // Close Sidr
       else {
         // Check if we can close it
-        if( !$menu.is(':visible') || sidrMoving ) {
+        if ( !$menu.is(':visible') || sidrMoving ) {
           return;
         }
 
@@ -143,32 +151,38 @@
         sidrMoving = true;
 
         // Right or left menu?
-        if(side === 'left') {
+        if (side === 'left') {
           bodyAnimation = {left: 0};
           menuAnimation = {left: '-' + menuWidth + 'px'};
-        }
-        else {
+        } else {
           bodyAnimation = {right: 0};
           menuAnimation = {right: '-' + menuWidth + 'px'};
         }
 
         // Close menu
-        if($body.is('body')){
+        if ($body.is('body')){
           scrollTop = $html.scrollTop();
           $html.removeAttr('style').scrollTop(scrollTop);
         }
-        $body.addClass('sidr-animating').animate(bodyAnimation, speed).removeClass(bodyClass);
-        $menu.animate(menuAnimation, speed, function() {
-          $menu.removeAttr('style').hide();
-          $body.removeAttr('style');
-          $('html').removeAttr('style');
-          sidrMoving = false;
-          sidrOpened = false;
-          // Callback
-          if(typeof callback === 'function') {
-            callback(name);
+        $body.addClass('sidr-animating').animate(bodyAnimation, {
+          queue: false,
+          duration: speed
+        }).removeClass(bodyClass);
+        $menu.animate(menuAnimation, {
+          queue: false,
+          duration: speed,
+          complete: function() {
+            $menu.removeAttr('style').hide();
+            $body.removeAttr('style');
+            $('html').removeAttr('style');
+            sidrMoving = false;
+            sidrOpened = false;
+            // Callback
+            if (typeof callback === 'function') {
+              callback(name);
+            }
+            $body.removeClass('sidr-animating');
           }
-          $body.removeClass('sidr-animating');
         });
 
         // onClose callback
@@ -178,31 +192,28 @@
   };
 
   // Sidr public methods
-  var methods = {
-    open: function(name, callback) {
-      privateMethods.execute('open', name, callback);
-    },
-    close: function(name, callback) {
-      privateMethods.execute('close', name, callback);
-    },
-    toggle: function(name, callback) {
-      privateMethods.execute('toggle', name, callback);
-    },
-    // I made a typo, so I mantain this method to keep backward compatibilty with 1.1.1v and previous
-    toogle: function(name, callback) {
-      privateMethods.execute('toggle', name, callback);
-    }
-  };
+  var publicMethodsIndex,
+      publicMethods = ['open', 'close', 'toggle'],
+      methodName,
+      methods = {},
+      getMethod = function (methodName) {
+        return function(name, callback) {
+          privateMethods.execute(methodName, name, callback);
+        };
+      };
+
+  for (publicMethodsIndex = 0; publicMethodsIndex <= publicMethods.length; publicMethodsIndex++) {
+    methodName = publicMethods[publicMethodsIndex];
+    methods[methodName] = getMethod(methodName);
+  }
 
   $.sidr = function( method ) {
 
     if ( methods[method] ) {
       return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
-    }
-    else if ( typeof method === 'function' || typeof method === 'string' || ! method ) {
+    } else if ( typeof method === 'function' || typeof method === 'string' || ! method ) {
       return methods.toggle.apply( this, arguments );
-    }
-    else {
+    } else {
       $.error( 'Method ' + method + ' does not exist on jQuery.sidr' );
     }
 
@@ -217,7 +228,7 @@
       source        : null,           // Override the source of the content.
       renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
       body          : 'body',         // Page container selector,
-      displace: true, // Displace the body content or not
+      displace      : true,           // Displace the body content or not
       onOpen        : function() {},  // Callback when sidr opened
       onClose       : function() {}   // Callback when sidr closed
     }, options);
@@ -226,7 +237,7 @@
         $sideMenu = $('#' + name);
 
     // If the side menu do not exist create it
-    if( $sideMenu.length === 0 ) {
+    if ($sideMenu.length === 0) {
       $sideMenu = $('<div />')
         .attr('id', name)
         .appendTo($('body'));
@@ -246,16 +257,14 @@
       });
 
     // The menu content
-    if(typeof settings.source === 'function') {
+    if (typeof settings.source === 'function') {
       var newContent = settings.source(name);
       privateMethods.loadContent($sideMenu, newContent);
-    }
-    else if(typeof settings.source === 'string' && privateMethods.isUrl(settings.source)) {
+    } else if (typeof settings.source === 'string' && privateMethods.isUrl(settings.source)) {
       $.get(settings.source, function(data) {
         privateMethods.loadContent($sideMenu, data);
       });
-    }
-    else if(typeof settings.source === 'string') {
+    } else if (typeof settings.source === 'string') {
       var htmlContent = '',
           selectors = settings.source.split(',');
 
@@ -264,7 +273,7 @@
       });
 
       // Renaming ids and classes
-      if(settings.renaming) {
+      if (settings.renaming) {
         var $htmlContent = $('<div />').html(htmlContent);
         $htmlContent.find('*').each(function(index, element) {
           var $element = $(element);
@@ -273,38 +282,33 @@
         htmlContent = $htmlContent.html();
       }
       privateMethods.loadContent($sideMenu, htmlContent);
-    }
-    else if(settings.source !== null) {
+    } else if (settings.source !== null) {
       $.error('Invalid Sidr Source');
     }
 
     return this.each(function(){
       var $this = $(this),
-          data = $this.data('sidr');
+          data = $this.data('sidr'),
+          flag = false;
 
       // If the plugin hasn't been initialized yet
       if ( ! data ) {
+        sidrMoving = false;
+        sidrOpened = false;
 
         $this.data('sidr', name);
-        if('ontouchstart' in document.documentElement) {
-          $this.bind('touchstart', function(e) {
-            var theEvent = e.originalEvent.touches[0];
-            this.touched = e.timeStamp;
-          });
-          $this.bind('touchend', function(e) {
-            var delta = Math.abs(e.timeStamp - this.touched);
-            if(delta < 200) {
-              e.preventDefault();
-              methods.toggle(name);
-            }
-          });
-        }
-        else {
-          $this.click(function(e) {
-            e.preventDefault();
+
+        $this.bind('touchstart click', function(event) {
+          event.preventDefault();
+
+          if (!flag) {
+            flag = true;
             methods.toggle(name);
-          });
-        }
+            setTimeout(function () {
+              flag = false;
+            }, 100);
+          }
+        });
       }
     });
   };

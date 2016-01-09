@@ -1,83 +1,155 @@
-/*global module:false*/
+/*global module:false, require:false*/
 module.exports = function(grunt) {
+
+  require('load-grunt-tasks')(grunt);
 
   // Project configuration.
   grunt.initConfig({
-    pkg: grunt.file.readJSON('sidr.jquery.json'),
-    concat: {
-      dist: {
-        src: ['src/jquery.<%= pkg.name %>.js'],
-        dest: 'dist/jquery.<%= pkg.name %>.js'
+    pkg: grunt.file.readJSON('package.json'),
+
+    clean: {
+      dist: ['dist'],
+      cssmin: [
+        'dist/stylesheets/jquery.sidr.dark.css',
+        'dist/stylesheets/jquery.sidr.light.css'
+      ]
+    },
+
+    copy: {
+      js: {
+        files: [{
+          src: 'src/jquery.<%= pkg.name %>.js',
+          dest: 'dist/jquery.<%= pkg.name %>.js'
+        }]
+      },
+      cssmin: {
+        files: [
+          {
+            src: 'dist/stylesheets/jquery.sidr.light.css',
+            dest: 'dist/stylesheets/jquery.sidr.light.min.css'
+          },
+          {
+            src: 'dist/stylesheets/jquery.sidr.dark.css',
+            dest: 'dist/stylesheets/jquery.sidr.dark.min.css'
+          }
+        ]
       }
     },
+
     uglify: {
       options: {
         banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
         '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
-        ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n'
+        ' * Copyright (c) 2013-<%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+        ' Licensed <%= pkg.license %> */\n'
       },
-      pkg: {
+      dist: {
         files: {
-          'package/jquery.<%= pkg.name %>.min.js': ['dist/jquery.<%= pkg.name %>.js']
+          'dist/jquery.<%= pkg.name %>.min.js': ['dist/jquery.<%= pkg.name %>.js']
         }
       }
     },
+
     jshint: {
       all: ['Gruntfile.js', 'src/**/*.js'],
       options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        boss: true,
-        eqnull: true,
-        browser: true,
-        globals: {
-          jQuery: true
-        }
+        jshintrc: true
       }
     },
+
+    scsslint: {
+      allFiles: ['src/scss/**/*'],
+      options: {
+        bundleExec: true,
+        config: '.scss-lint.yml',
+        colorizeOutput: true
+      }
+    },
+
     watch: {
-      jshint: {
-        files: '<config:jshint.all>',
-        tasks: 'jshint'
+      js: {
+        files: ['src/jquery.sidr.js'],
+        tasks: 'copy:js'
       },
       compass: {
-        files: [ 'src/scss/*.scss' ],
-        tasks: [ 'compass:dev', 'compass:prod' ]
+        files: ['src/scss/**/*.scss'],
+        tasks: ['compass:dev' ]
       }
     },
+
     compass: {
+      options: {
+        sassDir: 'src/scss',
+        bundleExec: true
+      },
       dev: {
         options: {
-          sassDir: 'src/scss',
-          cssDir: 'dist/stylesheets'
+          sourcemap: true,
+          cssDir: 'dist/stylesheets',
+          outputStyle: 'expanded'
         }
       },
-      prod: {
+      dist: {
         options: {
-          sassDir: 'src/scss',
-          cssDir: 'package/stylesheets',
+          sourcemap: false,
+          cssDir: 'dist/stylesheets',
+          outputStyle: 'expanded',
+          environment: 'production'
+        }
+      },
+      distmin: {
+        options: {
+          sourcemap: false,
+          cssDir: 'dist/stylesheets',
+          noLineComments: true,
+          outputStyle: 'compressed',
           environment: 'production'
         }
       }
+    },
+
+    connect: {
+      options: {
+          port: 9000,
+          hostname: 'localhost'
+      },
+      dist: {
+          options: {
+              open: 'http://localhost:9000/examples/index.html'
+          }
+      }
     }
+
   });
 
-  // Loading compass task
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-compass');
+  grunt.registerTask('lint', [
+    'jshint',
+    'scsslint'
+  ]);
+
+  grunt.registerTask('qa', [
+    'lint'
+  ]);
+
+  grunt.registerTask('build', [
+    'copy:js',
+    'compass:distmin',
+    'copy:cssmin',
+    'clean:cssmin',
+    'compass:dist',
+    'uglify:dist'
+  ]);
+
+  grunt.registerTask('serve', [
+    'clean:dist',
+    'compass:dev',
+    'copy:js',
+    'connect:dist',
+    'watch'
+  ]);
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'concat', 'compass', 'uglify']);
+  grunt.registerTask('default', ['clean:dist', 'qa', 'build']);
 
 };

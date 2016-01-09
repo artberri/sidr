@@ -1,0 +1,44 @@
+{
+  "name": "sidr",
+  "description": "jQuery plugin for creating side menus and the easiest way for doing your menu responsive",
+  "main": [
+    "src/jquery.sidr.js",
+    "src/scss/jquery.sidr.dark.scss",
+    "src/scss/jquery.sidr.light.scss"
+  ],
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "menu",
+    "responsive",
+    "navigation",
+    "jquery-plugin",
+    "ecosystem:jquery",
+    "jquery",
+    "plugin",
+    "rwd"
+  ],
+  "authors": [
+    {
+      "name": "Alberto Varela",
+      "email": "alberto@berriart.com",
+      "homepage": "http://www.berriart.com"
+    }
+  ],
+  "homepage": "http://www.berriart.com/sidr/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/artberri/sidr.git"
+  },
+  "dependencies": {
+    "jquery": ">=1.4.3"
+  }
+}
