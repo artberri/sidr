@@ -7,7 +7,7 @@
     top: 0;
     height: 100%;
     z-index: 999999;
-    width: 260px;
+    width: $sidebar-width;
     overflow-x: none;
     overflow-y: auto;
 
@@ -22,11 +22,11 @@
 
     &.right {
         left: auto;
-        right: -260px;
+        right: $sidebar-width-neg;
     }
 
     &.left {
-        left: -260px;
+        left: $sidebar-width-neg;
         right: auto;
     }
 

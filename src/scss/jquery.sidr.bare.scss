@@ -1,0 +1,26 @@
+// Minimal initial style of sidebar
+
+$sidebar-width: 260px;
+$sidebar-width-neg: -260px;
+
+.sidr {
+    display: none;
+    position: absolute;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: 999999;
+    width: $sidebar-width;
+    overflow-x: none;
+    overflow-y: auto;
+
+    &.right {
+        left: auto;
+        right: $sidebar-width-neg;
+    }
+
+    &.left {
+        left: $sidebar-width-neg;
+        right: auto;
+    }
+}
