@@ -2,7 +2,7 @@
 
 You can see here some dummy examples with different common situations.
 
-## Running the sample locally
+## Running the examples locally
 
 Ensure that you have [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/) installed. The best way to do it is through [NVM](https://github.com/creationix/nvm).
 
@@ -16,3 +16,9 @@ Ensure that you have [Ruby](https://www.ruby-lang.org/) and [RubyGems](https://r
 1. Run `grunt serve` to create a local server
 
 The browser should open automatically with the sample index.
+
+## Example list
+
+- [Simple Menu](simple-menu.html)
+- [No displaced menu that closes when tapping anywhere on the screen or in a menu item](nodisplaced-menu-with-close-options.html)
+
