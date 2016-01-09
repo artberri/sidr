@@ -54,20 +54,7 @@ module.exports = function(grunt) {
     jshint: {
       all: ['Gruntfile.js', 'src/**/*.js'],
       options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        boss: true,
-        eqnull: true,
-        browser: true,
-        globals: {
-          jQuery: true
-        }
+        jshintrc: true
       }
     },
 
@@ -81,13 +68,13 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      jshint: {
-        files: '<config:jshint.all>',
-        tasks: 'jshint'
+      js: {
+        files: ['src/jquery.sidr.js'],
+        tasks: 'copy:js'
       },
       compass: {
-        files: ['src/scss/*.scss'],
-        tasks: ['compass:prod' ]
+        files: ['src/scss/**/*.scss'],
+        tasks: ['compass:dev' ]
       }
     },
 
@@ -95,6 +82,13 @@ module.exports = function(grunt) {
       options: {
         sassDir: 'src/scss',
         bundleExec: true
+      },
+      dev: {
+        options: {
+          sourcemap: true,
+          cssDir: 'dist/stylesheets',
+          outputStyle: 'expanded'
+        }
       },
       dist: {
         options: {
@@ -112,6 +106,18 @@ module.exports = function(grunt) {
           outputStyle: 'compressed',
           environment: 'production'
         }
+      }
+    },
+
+    connect: {
+      options: {
+          port: 9000,
+          hostname: 'localhost'
+      },
+      dist: {
+          options: {
+              open: 'http://localhost:9000/examples/index.html'
+          }
       }
     }
 
@@ -135,7 +141,15 @@ module.exports = function(grunt) {
     'uglify:dist'
   ]);
 
+  grunt.registerTask('serve', [
+    'clean:dist',
+    'compass:dev',
+    'copy:js',
+    'connect:dist',
+    'watch'
+  ]);
+
   // Default task.
-  grunt.registerTask('default', ['clean', 'qa', 'build']);
+  grunt.registerTask('default', ['clean:dist', 'qa', 'build']);
 
 };
