@@ -1,10 +1,12 @@
 // Fonts
-$sidr-font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+$sidr-font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
 $sidr-font-size: 15px;
 
 // Colors
-$sidr-background : #f8f8f8;
-$sidr-background-shadow-color : #ebebeb;
+$sidr-background: #f8f8f8;
+$sidr-background-shadow-color: #ebebeb;
 $sidr-text-color: #333;
+$sidr-box-shadow-color: #000;
+$sidr-input-background-color: #000;
 
-@import "sidr/base";
+@import 'sidr/base';

@@ -6,3 +6,6 @@
 .tags_sorted_by_file
 node_modules
 .sass-cache
+.bundle/
+vendor/
+bower_components/

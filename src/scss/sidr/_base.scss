@@ -1,7 +1,7 @@
-@import "compass/css3";
+@import 'compass/css3';
 
 .sidr {
-    /* Default Settings */
+    // Default Settings
     display: none;
     position: absolute;
     position: fixed;
@@ -31,14 +31,19 @@
         right: auto;
     }
 
-    /* Theme Settings */
+    // Theme Settings
     font-family: $sidr-font-family;
     font-size: $sidr-font-size;
     background: $sidr-background;
     color: $sidr-text-color;
-    @include single-box-shadow($sidr-background-shadow-color, 0, 0, 5px, 5px, inset);
+    @include single-box-shadow(0, 0, 5px, 5px, $sidr-background-shadow-color, inset);
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         font-size: $sidr-font-size - 4;
         font-weight: normal;
         padding: 0 15px;
@@ -46,12 +51,13 @@
         color: $sidr-text-color;
         line-height: 24px;
         @include background-image(linear-gradient(lighten($sidr-background, 10%), darken($sidr-background, 10%)));
-        @include single-box-shadow(rgba(#000, .2), 0, 5px, 5px, 3px);
+        @include single-box-shadow(0, 5px, 5px, 3px, rgba($sidr-box-shadow-color, .2));
     }
 
     p {
         font-size: $sidr-font-size - 2;
         margin: 0 0 12px;
+
         a {
             color: rgba($sidr-text-color, .9);
         }
@@ -79,15 +85,17 @@
             &:hover,
             &.active,
             &.sidr-class-active {
-                border-top: none;
+                border-top: 0;
                 line-height: 49px;
 
-                > a, > span {
-                    @include single-box-shadow($sidr-background-shadow-color, 0, 0, 15px, 3px, inset);
+                > a,
+                > span {
+                    @include single-box-shadow(0, 0, 15px, 3px, $sidr-background-shadow-color, inset);
                 }
             }
 
-            a, span {
+            a,
+            span {
                 padding: 0 15px;
                 display: block;
                 text-decoration: none;
@@ -95,28 +103,31 @@
             }
 
             ul {
-                border-bottom: none;
+                border-bottom: 0;
                 margin: 0;
+
                 li {
                     line-height: 40px;
                     font-size: $sidr-font-size - 2;
 
                     &:last-child {
-                        border-bottom: none;
+                        border-bottom: 0;
                     }
 
                     &:hover,
                     &.active,
                     &.sidr-class-active {
-                        border-top: none;
+                        border-top: 0;
                         line-height: 41px;
 
-                        > a, > span {
-                            @include single-box-shadow($sidr-background-shadow-color, 0, 0, 15px, 3px, inset);
+                        > a,
+                        > span {
+                            @include single-box-shadow(0, 0, 15px, 3px, $sidr-background-shadow-color, inset);
                         }
                     }
 
-                    a, span {
+                    a,
+                    span {
                         color: rgba($sidr-text-color, .8);
                         padding-left: 30px;
                     }
@@ -143,15 +154,16 @@
     input[type="tel"],
     input[type="time"],
     input[type="url"],
-    textarea, select {
+    textarea,
+    select {
         width: 100%;
         font-size: $sidr-font-size - 2;
         padding: 5px;
         @include box-sizing(border-box);
         margin: 0 0 10px;
         @include border-radius(2px);
-        border: none;
-        background: rgba(#000, .1);
+        border: 0;
+        background: rgba($sidr-input-background-color, .1);
         color: rgba($sidr-text-color, .6);
         display: block;
         clear: both;

@@ -1,5 +1,5 @@
 {
-  "name": "jquery-sidr",
+  "name": "sidr",
   "description": "jQuery plugin for creating side menus and the easiest way for doing your menu responsive",
   "version": "1.2.1",
   "homepage": "http://www.berriart.com/sidr/",
@@ -12,24 +12,34 @@
     "type": "git",
     "url": "https://github.com/artberri/sidr"
   },
-  "bugs": {
-    "url": "https://github.com/artberri/sidr/issues"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/artberri/sidr/blob/master/LICENSE-MIT"
-    }
-  ],
+  "bugs": "https://github.com/artberri/sidr/issues",
+  "license": "MIT",
   "engines": {
     "node": ">= 0.6.0"
   },
+  "dependencies": {
+    "jquery": ">=1.4.3"
+  },
   "devDependencies": {
-    "grunt": "~0.4.0",
-    "grunt-contrib-jshint": "~0.1.1",
-    "grunt-contrib-uglify": "~0.1.2",
-    "grunt-contrib-concat": "~0.1.3",
-    "grunt-contrib-compass": "~0.1.3",
-    "grunt-contrib-watch": "~0.3.1"
-  }
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.7.0",
+    "grunt-contrib-compass": "^1.0.4",
+    "grunt-contrib-connect": "^0.11.2",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-uglify": "^0.11.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-scss-lint": "^0.3.8",
+    "load-grunt-tasks": "^3.4.0"
+  },
+  "keywords": [
+    "menu",
+    "responsive",
+    "navigation",
+    "jquery-plugin",
+    "ecosystem:jquery",
+    "jquery",
+    "plugin",
+    "rwd"
+  ]
 }

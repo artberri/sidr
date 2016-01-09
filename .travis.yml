@@ -1,0 +1,13 @@
+---
+sudo: false
+language: ruby
+rvm:
+  - 2.2.0
+cache: bundler
+before_script:
+  - npm install
+  - npm install -g bower grunt-cli
+  - bower install
+  - grunt
+notifications:
+  email: false
