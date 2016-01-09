@@ -249,11 +249,11 @@
     if (typeof settings.source === 'function') {
       var newContent = settings.source(name);
       privateMethods.loadContent($sideMenu, newContent);
-    } else if(typeof settings.source === 'string' && privateMethods.isUrl(settings.source)) {
+    } else if (typeof settings.source === 'string' && privateMethods.isUrl(settings.source)) {
       $.get(settings.source, function(data) {
         privateMethods.loadContent($sideMenu, data);
       });
-    } else if(typeof settings.source === 'string') {
+    } else if (typeof settings.source === 'string') {
       var htmlContent = '',
           selectors = settings.source.split(',');
 
@@ -262,7 +262,7 @@
       });
 
       // Renaming ids and classes
-      if(settings.renaming) {
+      if (settings.renaming) {
         var $htmlContent = $('<div />').html(htmlContent);
         $htmlContent.find('*').each(function(index, element) {
           var $element = $(element);
@@ -271,13 +271,14 @@
         htmlContent = $htmlContent.html();
       }
       privateMethods.loadContent($sideMenu, htmlContent);
-    } else if(settings.source !== null) {
+    } else if (settings.source !== null) {
       $.error('Invalid Sidr Source');
     }
 
     return this.each(function(){
       var $this = $(this),
-          data = $this.data('sidr');
+          data = $this.data('sidr'),
+          flag = false;
 
       // If the plugin hasn't been initialized yet
       if ( ! data ) {
@@ -285,24 +286,18 @@
         sidrOpened = false;
 
         $this.data('sidr', name);
-        if('ontouchstart' in document.documentElement) {
-          $this.bind('touchstart', function(e) {
-            this.touched = e.timeStamp;
-          });
-          $this.bind('touchend', function(e) {
-            var delta = Math.abs(e.timeStamp - this.touched);
-            if(delta < 200) {
-              e.preventDefault();
-              methods.toggle(name);
-            }
-          });
-        }
-        else {
-          $this.click(function(e) {
-            e.preventDefault();
+
+        $this.bind('touchstart click', function(event) {
+          event.preventDefault();
+
+          if (!flag) {
+            flag = true;
             methods.toggle(name);
-          });
-        }
+            setTimeout(function () {
+              flag = false;
+            }, 100);
+          }
+        });
       }
     });
   };
