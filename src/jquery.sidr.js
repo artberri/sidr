@@ -22,7 +22,7 @@
         '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
         '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
         '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-      if(!pattern.test(str)) {
+      if (!pattern.test(str)) {
         return false;
       } else {
         return true;
@@ -39,10 +39,10 @@
       var elementId = $element.attr('id'),
           elementClass = $element.attr('class');
 
-      if(typeof elementId === 'string' && '' !== elementId) {
+      if (typeof elementId === 'string' && '' !== elementId) {
         $element.attr('id', elementId.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-id-$1'));
       }
-      if(typeof elementClass === 'string' && '' !== elementClass && 'sidr-inner' !== elementClass) {
+      if (typeof elementClass === 'string' && '' !== elementClass && 'sidr-inner' !== elementClass) {
         $element.attr('class', elementClass.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-class-$1'));
       }
       $element.removeAttr('style');
@@ -50,11 +50,10 @@
 
     execute: function(action, name, callback) {
       // Check arguments
-      if(typeof name === 'function') {
+      if (typeof name === 'function') {
         callback = name;
         name = 'sidr';
-      }
-      else if(!name) {
+      } else if (!name) {
         name = 'sidr';
       }
 
@@ -74,14 +73,14 @@
           bodyClass = (name === 'sidr' ? 'sidr-open' : 'sidr-open ' + name + '-open');
 
       // Open Sidr
-      if('open' === action || ('toggle' === action && !$menu.is(':visible'))) {
+      if ('open' === action || ('toggle' === action && !$menu.is(':visible'))) {
         // Check if we can open it
-        if( $menu.is(':visible') || sidrMoving ) {
+        if ( $menu.is(':visible') || sidrMoving ) {
           return;
         }
 
         // If another menu opened close first
-        if(sidrOpened !== false) {
+        if (sidrOpened !== false) {
           methods.close(sidrOpened, function() {
             methods.open(name);
           });
@@ -93,43 +92,49 @@
         sidrMoving = true;
 
         // Left or right?
-        if(side === 'left') {
+        if (side === 'left') {
           bodyAnimation = {left: menuWidth + 'px'};
           menuAnimation = {left: '0px'};
-        }
-        else {
+        } else {
           bodyAnimation = {right: menuWidth + 'px'};
           menuAnimation = {right: '0px'};
         }
 
         // Prepare page if container is body
-        if($body.is('body')){
+        if ($body.is('body')){
           scrollTop = $html.scrollTop();
           $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
         }
 
         // Open menu
-        if(displace){
+        if (displace){
           $body.addClass('sidr-animating').css({
             width: $body.width(),
             position: 'absolute'
-          }).animate(bodyAnimation, speed, function() {
-            $(this).addClass(bodyClass);
+          }).animate(bodyAnimation, {
+            queue: false,
+            duration: speed,
+            complete: function() {
+              $(this).addClass(bodyClass);
+            }
           });
-        }
-        else {
+        } else {
           setTimeout(function() {
             $(this).addClass(bodyClass);
           }, speed);
         }
-        $menu.css('display', 'block').animate(menuAnimation, speed, function() {
-          sidrMoving = false;
-          sidrOpened = name;
-          // Callback
-          if(typeof callback === 'function') {
-            callback(name);
+        $menu.css('display', 'block').animate(menuAnimation, {
+          queue: false,
+          duration: speed,
+          complete: function() {
+            sidrMoving = false;
+            sidrOpened = name;
+            // Callback
+            if (typeof callback === 'function') {
+              callback(name);
+            }
+            $body.removeClass('sidr-animating');
           }
-          $body.removeClass('sidr-animating');
         });
 
         // onOpen callback
@@ -138,7 +143,7 @@
       // Close Sidr
       else {
         // Check if we can close it
-        if( !$menu.is(':visible') || sidrMoving ) {
+        if ( !$menu.is(':visible') || sidrMoving ) {
           return;
         }
 
@@ -146,32 +151,38 @@
         sidrMoving = true;
 
         // Right or left menu?
-        if(side === 'left') {
+        if (side === 'left') {
           bodyAnimation = {left: 0};
           menuAnimation = {left: '-' + menuWidth + 'px'};
-        }
-        else {
+        } else {
           bodyAnimation = {right: 0};
           menuAnimation = {right: '-' + menuWidth + 'px'};
         }
 
         // Close menu
-        if($body.is('body')){
+        if ($body.is('body')){
           scrollTop = $html.scrollTop();
           $html.removeAttr('style').scrollTop(scrollTop);
         }
-        $body.addClass('sidr-animating').animate(bodyAnimation, speed).removeClass(bodyClass);
-        $menu.animate(menuAnimation, speed, function() {
-          $menu.removeAttr('style').hide();
-          $body.removeAttr('style');
-          $('html').removeAttr('style');
-          sidrMoving = false;
-          sidrOpened = false;
-          // Callback
-          if(typeof callback === 'function') {
-            callback(name);
+        $body.addClass('sidr-animating').animate(bodyAnimation, {
+          queue: false,
+          duration: speed
+        }).removeClass(bodyClass);
+        $menu.animate(menuAnimation, {
+          queue: false,
+          duration: speed,
+          complete: function() {
+            $menu.removeAttr('style').hide();
+            $body.removeAttr('style');
+            $('html').removeAttr('style');
+            sidrMoving = false;
+            sidrOpened = false;
+            // Callback
+            if (typeof callback === 'function') {
+              callback(name);
+            }
+            $body.removeClass('sidr-animating');
           }
-          $body.removeClass('sidr-animating');
         });
 
         // onClose callback
