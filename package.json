@@ -1,7 +1,7 @@
 {
   "name": "sidr",
   "description": "jQuery plugin for creating side menus and the easiest way for doing your menu responsive",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "homepage": "http://www.berriart.com/sidr/",
   "author": {
     "name": "Alberto Varela",
