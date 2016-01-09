@@ -162,7 +162,7 @@
         // Close menu
         if ($body.is('body')){
           scrollTop = $html.scrollTop();
-          $html.removeAttr('style').scrollTop(scrollTop);
+          $html.css('overflow-x', '').scrollTop(scrollTop);
         }
         $body.addClass('sidr-animating').animate(bodyAnimation, {
           queue: false,

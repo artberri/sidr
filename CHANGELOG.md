@@ -16,6 +16,7 @@ Bug fixes:
 - Fixing bower structure
 - Adding continous integration
 - Fixing adding body classes when no displacing
+- Removing only the needed styles from html tag
 
 ## 1.2.1 2013-11-06
 

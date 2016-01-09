@@ -48,8 +48,12 @@
     <!-- Your code -->
     <script>
 
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('#simple-menu').sidr();
+    });
+
+    $( window ).resize(function () {
+      $.sidr('close', 'sidr');
     });
 
     </script>

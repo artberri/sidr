@@ -19,6 +19,6 @@ The browser should open automatically with the sample index.
 
 ## Example list
 
-- [Simple Menu](simple-menu.html)
+- [Simple Menu that closes the menu on window resize](simple-menu.html)
 - [No displaced menu that closes when tapping anywhere on the screen or in a menu item](nodisplaced-menu-with-close-options.html)
 
