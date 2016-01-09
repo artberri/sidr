@@ -87,3 +87,21 @@ ul li {
     height: 31px;
     text-indent: -9999px;
 }
+
+#overlay {
+    position: absolute;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 999998;
+    display: none;
+}
+
+.sidr-open #overlay {
+    display: block;
+}

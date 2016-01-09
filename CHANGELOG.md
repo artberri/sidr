@@ -7,6 +7,7 @@
 - Adding example
 - Fixing bower structure
 - Adding continous integration
+- Fixing adding body classes when no displacing
 
 ## 1.2.1 2013-11-06
 - Fixing tap event on touch devices

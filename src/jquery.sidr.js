@@ -120,7 +120,7 @@
           });
         } else {
           setTimeout(function() {
-            $(this).addClass(bodyClass);
+            $body.addClass(bodyClass);
           }, speed);
         }
         $menu.css('display', 'block').animate(menuAnimation, {
