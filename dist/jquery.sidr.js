@@ -173,8 +173,13 @@
           duration: speed,
           complete: function() {
             $menu.removeAttr('style').hide();
-            $body.removeAttr('style');
-            $('html').removeAttr('style');
+            $body.css({
+              width: '',
+              position: '',
+              right: '',
+              left: ''
+            });
+            $('html').css('overflow-x', '');
             sidrMoving = false;
             sidrOpened = false;
             // Callback
