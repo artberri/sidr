@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0 ???
+## 2.0.0 2016-01-10
 
 **Breaking changes** that require major version incrementation:
 
