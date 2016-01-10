@@ -5,7 +5,7 @@
   height: 100%;
   z-index: 999999;
   width: 260px;
-  overflow-x: none;
+  overflow-x: hidden;
   overflow-y: auto;
   font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
   font-size: 15px;

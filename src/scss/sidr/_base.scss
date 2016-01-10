@@ -8,7 +8,7 @@
     height: 100%;
     z-index: 999999;
     width: $sidebar-width;
-    overflow-x: none;
+    overflow-x: hidden;
     overflow-y: auto;
 
     .sidr-inner {

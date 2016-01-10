@@ -5,13 +5,12 @@ $sidebar-width-neg: -260px;
 
 .sidr {
     display: none;
-    position: absolute;
     position: fixed;
     top: 0;
     height: 100%;
     z-index: 999999;
     width: $sidebar-width;
-    overflow-x: none;
+    overflow-x: hidden;
     overflow-y: auto;
 
     &.right {
