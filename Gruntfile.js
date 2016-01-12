@@ -122,6 +122,15 @@ module.exports = function(grunt) {
      }
     },
 
+    karma: {
+        unit: {
+            configFile: 'karma.conf.js',
+            singleRun: true,
+            reporters: 'progress',
+            runnerPort: 9998
+        }
+    },
+
     connect: {
       options: {
           port: 9000,
@@ -141,8 +150,14 @@ module.exports = function(grunt) {
     'scsslint'
   ]);
 
+  grunt.registerTask('test', [
+    'karma'
+  ]);
+
+
   grunt.registerTask('qa', [
-    'lint'
+    'lint',
+    'test'
   ]);
 
   grunt.registerTask('build', [

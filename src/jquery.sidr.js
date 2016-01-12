@@ -81,13 +81,13 @@ import * as sidr from './js/sidr';
       $.error('Invalid Sidr Source');
     }
 
-    return this.each(function(){
+    return this.each(function () {
       var $this = $(this),
           data = $this.data('sidr'),
           flag = false;
 
       // If the plugin hasn't been initialized yet
-      if ( ! data ) {
+      if (!data) {
         status.moving = false;
         status.opened = false;
 
