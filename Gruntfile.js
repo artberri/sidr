@@ -16,12 +16,6 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      js: {
-        files: [{
-          src: 'src/jquery.<%= pkg.name %>.js',
-          dest: 'dist/jquery.<%= pkg.name %>.js'
-        }]
-      },
       cssmin: {
         files: [
           {
@@ -54,7 +48,8 @@ module.exports = function(grunt) {
     jshint: {
       all: ['Gruntfile.js', 'src/**/*.js'],
       options: {
-        jshintrc: true
+        jshintrc: true,
+        esnext: true
       }
     },
 
@@ -69,8 +64,8 @@ module.exports = function(grunt) {
 
     watch: {
       js: {
-        files: ['src/jquery.sidr.js'],
-        tasks: 'copy:js'
+        files: ['src/jquery.sidr.js', 'src/js/*.js'],
+        tasks: 'browserify'
       },
       compass: {
         files: ['src/scss/**/*.scss'],
@@ -109,6 +104,24 @@ module.exports = function(grunt) {
       }
     },
 
+    browserify: {
+     dist: {
+      options: {
+        transform: [
+          ['babelify', {
+            sourceMap: true,
+            presets: ['babel-preset-es2015']
+          }]
+        ]
+      },
+      files: {
+        'dist/jquery.<%= pkg.name %>.js': [
+          'src/jquery.<%= pkg.name %>.js'
+        ]
+      }
+     }
+    },
+
     connect: {
       options: {
           port: 9000,
@@ -133,7 +146,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'copy:js',
+    'browserify',
     'compass:distmin',
     'copy:cssmin',
     'clean:cssmin',
@@ -144,7 +157,7 @@ module.exports = function(grunt) {
   grunt.registerTask('serve', [
     'clean:dist',
     'compass:dev',
-    'copy:js',
+    'browserify',
     'connect:dist',
     'watch'
   ]);
