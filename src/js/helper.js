@@ -39,5 +39,3 @@ var helper = {
 };
 
 export default helper;
-
-module.exports = helper;
