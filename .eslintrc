@@ -1,0 +1,47 @@
+{
+    ecmaFeatures: {
+        "modules": true,
+        "jsx": true
+    },
+    "env": {
+        "es6": true,
+        "browser": true,
+        "node": true,
+        "mocha": true
+    },
+    "rules": {
+        "quotes": [2, "single", "avoid-escape"],
+        "no-empty":  0,
+        "semi": [2, "always"],
+        "no-extra-semi": 2,
+        "no-nested-ternary": 2,
+        "no-undef": 2,
+        "no-cond-assign": [2, "always"],
+        "no-dupe-args": 2,
+        "no-dupe-keys": 2,
+        "no-duplicate-case": 2,
+        "no-inner-declarations": [2, "both"],
+        "no-debugger": 2,
+        "eqeqeq": 2,
+        "new-cap": 2,
+        "no-redeclare": [2, {"builtinGlobals": true}],
+        "no-irregular-whitespace": 2,
+        "no-use-before-define": 2,
+        "comma-dangle": [2, "never"],
+        "no-unused-vars": [2, {"vars": "all", "args": "after-used"}],
+        // "no-warning-comments": [1, { "terms": ["todo", "fixme", "eslint", "global"], "location": "anywhere" }], // Discomment this line to lint possible refactoring tasks
+        "no-irregular-whitespace": 0,
+        "newline-after-var": [2, "always"],
+        "one-var": [2, "always"],
+        "vars-on-top": 2,
+        "curly": [2, "all"],
+        "camelcase": 2,
+        "operator-assignment": [2, "always"],
+        "space-after-keywords": [2, "always"],
+        "brace-style": [2, "1tbs", { "allowSingleLine": false }],
+        "wrap-iife": [2, "outside"]
+    },
+    globals: {
+        "jQuery": true
+    }
+}

@@ -5,6 +5,10 @@ var _helper = require('./js/helper');
 
 var _helper2 = _interopRequireDefault(_helper);
 
+var _view = require('./js/view');
+
+var _view2 = _interopRequireDefault(_view);
+
 var _status = require('./js/status');
 
 var _status2 = _interopRequireDefault(_status);
@@ -17,13 +21,13 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-; /*
-   * Sidr
-   * https://github.com/artberri/sidr
-   *
-   * Copyright (c) 2013-2016 Alberto Varela
-   * Licensed under the MIT license.
-   */
+/*
+ * Sidr
+ * https://github.com/artberri/sidr
+ *
+ * Copyright (c) 2013-2016 Alberto Varela
+ * Licensed under the MIT license.
+ */
 
 (function ($) {
 
@@ -41,9 +45,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
       displace: true, // Displace the body content or not
       onOpen: function onOpen() {}, // Callback when sidr opened
       onClose: function onClose() {} // Callback when sidr closed
-    }, options);
-
-    var name = settings.name,
+    }, options),
+        name = settings.name,
         $sideMenu = $('#' + name);
 
     // If the side menu do not exist create it
@@ -64,10 +67,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     // The menu content
     if (typeof settings.source === 'function') {
       var newContent = settings.source(name);
-      _helper2.default.loadContent($sideMenu, newContent);
+
+      _view2.default.loadContent($sideMenu, newContent);
     } else if (typeof settings.source === 'string' && _helper2.default.isUrl(settings.source)) {
       $.get(settings.source, function (data) {
-        _helper2.default.loadContent($sideMenu, data);
+        _view2.default.loadContent($sideMenu, data);
       });
     } else if (typeof settings.source === 'string') {
       var htmlContent = '',
@@ -80,13 +84,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
       // Renaming ids and classes
       if (settings.renaming) {
         var $htmlContent = $('<div />').html(htmlContent);
+
         $htmlContent.find('*').each(function (index, element) {
           var $element = $(element);
+
           _helper2.default.addPrefix($element);
         });
         htmlContent = $htmlContent.html();
       }
-      _helper2.default.loadContent($sideMenu, htmlContent);
+      _view2.default.loadContent($sideMenu, htmlContent);
     } else if (settings.source !== null) {
       $.error('Invalid Sidr Source');
     }
@@ -119,7 +125,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   };
 })(jQuery);
 
-},{"./js/helper":3,"./js/sidr":4,"./js/status":5}],2:[function(require,module,exports){
+},{"./js/helper":3,"./js/sidr":4,"./js/status":5,"./js/view":6}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -132,7 +138,7 @@ var _status2 = _interopRequireDefault(_status);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var $ = jQuery;
+var $ = jQuery; /* eslint vars-on-top:0 */
 
 function execute(action, name, callback) {
   // Check arguments
@@ -225,9 +231,9 @@ function execute(action, name, callback) {
 
     // onOpen callback
     onOpen();
-  }
-  // Close Sidr
-  else {
+
+    // When closing sidr
+  } else {
       // Check if we can close it
       if (!$menu.is(':visible') || _status2.default.moving) {
         return;
@@ -308,11 +314,6 @@ var helper = {
     }
   },
 
-  // Loads the content into the menu bar
-  loadContent: function loadContent($menu, content) {
-    $menu.html(content);
-  },
-
   // Add sidr prefixes
   addPrefix: function addPrefix($element) {
     var elementId = $element.attr('id'),
@@ -346,10 +347,9 @@ var _execute2 = _interopRequireDefault(_execute);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var $ = jQuery;
-
-// Sidr public methods
-var publicMethods = ['open', 'close', 'toggle'],
+var i,
+    $ = jQuery,
+    publicMethods = ['open', 'close', 'toggle'],
     methodName,
     methods = {},
     getMethod = function getMethod(methodName) {
@@ -358,29 +358,9 @@ var publicMethods = ['open', 'close', 'toggle'],
   };
 };
 
-var _iteratorNormalCompletion = true;
-var _didIteratorError = false;
-var _iteratorError = undefined;
-
-try {
-  for (var _iterator = publicMethods[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-    methodName = _step.value;
-
-    methods[methodName] = getMethod(methodName);
-  }
-} catch (err) {
-  _didIteratorError = true;
-  _iteratorError = err;
-} finally {
-  try {
-    if (!_iteratorNormalCompletion && _iterator.return) {
-      _iterator.return();
-    }
-  } finally {
-    if (_didIteratorError) {
-      throw _iteratorError;
-    }
-  }
+for (i = 0; i <= publicMethods.length; i++) {
+  methodName = publicMethods[i];
+  methods[methodName] = getMethod(methodName);
 }
 
 function combined(method) {
@@ -408,5 +388,21 @@ var sidrStatus = {
 };
 
 exports.default = sidrStatus;
+
+},{}],6:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var view = {
+    // Loads the content into the menu bar
+
+    loadContent: function loadContent($menu, content) {
+        $menu.html(content);
+    }
+};
+
+exports.default = view;
 
 },{}]},{},[1]);

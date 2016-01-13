@@ -1,9 +1,8 @@
 import execute from './execute';
 
-var $ = jQuery;
-
-// Sidr public methods
-var publicMethods = ['open', 'close', 'toggle'],
+var i,
+    $ = jQuery,
+    publicMethods = ['open', 'close', 'toggle'],
     methodName,
     methods = {},
     getMethod = function (methodName) {
@@ -12,7 +11,8 @@ var publicMethods = ['open', 'close', 'toggle'],
       };
     };
 
-for (methodName of publicMethods) {
+for (i = 0; i <= publicMethods.length; i++) {
+  methodName = publicMethods[i];
   methods[methodName] = getMethod(methodName);
 }
 

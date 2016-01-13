@@ -7,28 +7,28 @@
  */
 
 import helper from './js/helper';
+import view from './js/view';
 import status from './js/status';
 import * as sidr from './js/sidr';
 
-;(function( $ ){
+(function ($) {
 
   $.sidr = sidr.combined;
 
   $.fn.sidr = function( options ) {
 
     var settings = $.extend( {
-      name          : 'sidr',         // Name for the 'sidr'
-      speed         : 200,            // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-      side          : 'left',         // Accepts 'left' or 'right'
-      source        : null,           // Override the source of the content.
-      renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
-      body          : 'body',         // Page container selector,
-      displace      : true,           // Displace the body content or not
-      onOpen        : function() {},  // Callback when sidr opened
-      onClose       : function() {}   // Callback when sidr closed
-    }, options);
-
-    var name = settings.name,
+          name          : 'sidr',         // Name for the 'sidr'
+          speed         : 200,            // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+          side          : 'left',         // Accepts 'left' or 'right'
+          source        : null,           // Override the source of the content.
+          renaming      : true,           // The ids and classes will be prepended with a prefix when loading existent content
+          body          : 'body',         // Page container selector,
+          displace      : true,           // Displace the body content or not
+          onOpen        : function() {},  // Callback when sidr opened
+          onClose       : function() {}   // Callback when sidr closed
+        }, options),
+        name = settings.name,
         $sideMenu = $('#' + name);
 
     // If the side menu do not exist create it
@@ -53,14 +53,15 @@ import * as sidr from './js/sidr';
 
     // The menu content
     if (typeof settings.source === 'function') {
-      var newContent = settings.source(name);
-      helper.loadContent($sideMenu, newContent);
+      let newContent = settings.source(name);
+
+      view.loadContent($sideMenu, newContent);
     } else if (typeof settings.source === 'string' && helper.isUrl(settings.source)) {
       $.get(settings.source, function(data) {
-        helper.loadContent($sideMenu, data);
+        view.loadContent($sideMenu, data);
       });
     } else if (typeof settings.source === 'string') {
-      var htmlContent = '',
+      let htmlContent = '',
           selectors = settings.source.split(',');
 
       $.each(selectors, function(index, element) {
@@ -69,14 +70,16 @@ import * as sidr from './js/sidr';
 
       // Renaming ids and classes
       if (settings.renaming) {
-        var $htmlContent = $('<div />').html(htmlContent);
+        let $htmlContent = $('<div />').html(htmlContent);
+
         $htmlContent.find('*').each(function(index, element) {
-          var $element = $(element);
+          let $element = $(element);
+
           helper.addPrefix($element);
         });
         htmlContent = $htmlContent.html();
       }
-      helper.loadContent($sideMenu, htmlContent);
+      view.loadContent($sideMenu, htmlContent);
     } else if (settings.source !== null) {
       $.error('Invalid Sidr Source');
     }
@@ -108,4 +111,4 @@ import * as sidr from './js/sidr';
     });
   };
 
-})( jQuery );
+}( jQuery ));

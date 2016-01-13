@@ -16,11 +16,6 @@ var helper = {
       }
     },
 
-    // Loads the content into the menu bar
-    loadContent($menu, content) {
-      $menu.html(content);
-    },
-
     // Add sidr prefixes
     addPrefix($element) {
       var elementId = $element.attr('id'),

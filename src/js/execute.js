@@ -1,3 +1,5 @@
+/* eslint vars-on-top:0 */
+
 import status from './status';
 
 var $ = jQuery;
@@ -93,9 +95,9 @@ function execute(action, name, callback) {
 
     // onOpen callback
     onOpen();
-  }
-  // Close Sidr
-  else {
+
+  // When closing sidr
+  } else {
     // Check if we can close it
     if ( !$menu.is(':visible') || status.moving ) {
       return;

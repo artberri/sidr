@@ -45,12 +45,15 @@ module.exports = function(grunt) {
       }
     },
 
-    jshint: {
-      all: ['Gruntfile.js', 'src/**/*.js'],
+    eslint: {
       options: {
-        jshintrc: true,
-        esnext: true
-      }
+        configFile: '.eslintrc'
+      },
+      target: [
+        '*.js',
+        'src/**/*.js',
+        'spec/*.js'
+      ]
     },
 
     scsslint: {
@@ -105,29 +108,29 @@ module.exports = function(grunt) {
     },
 
     browserify: {
-     dist: {
-      options: {
-        transform: [
-          ['babelify', {
-            sourceMap: true,
-            presets: ['babel-preset-es2015']
-          }]
-        ]
-      },
-      files: {
-        'dist/jquery.<%= pkg.name %>.js': [
-          'src/jquery.<%= pkg.name %>.js'
-        ]
+      dist: {
+        options: {
+          transform: [
+            ['babelify', {
+              sourceMap: true,
+              presets: ['babel-preset-es2015']
+            }]
+          ]
+        },
+        files: {
+          'dist/jquery.<%= pkg.name %>.js': [
+            'src/jquery.<%= pkg.name %>.js'
+          ]
+        }
       }
-     }
     },
 
     karma: {
-        unit: {
-            configFile: 'karma.conf.js',
-            singleRun: true,
-            runnerPort: 9998
-        }
+      unit: {
+        configFile: 'karma.conf.js',
+        singleRun: true,
+        runnerPort: 9998
+      }
     },
 
     connect: {
@@ -145,14 +148,13 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('lint', [
-    'jshint',
+    'eslint',
     'scsslint'
   ]);
 
   grunt.registerTask('test', [
     'karma'
   ]);
-
 
   grunt.registerTask('qa', [
     'lint',

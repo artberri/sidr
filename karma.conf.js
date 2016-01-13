@@ -5,8 +5,7 @@ module.exports = function (config) {
 
         basePath: './',
 
-        frameworks: ['browserify', 'mocha', 'chai'],
-
+        frameworks: ['browserify', 'mocha', 'chai', 'sinon-chai', 'jquery-1.8.3'],
 
         files: [
             'spec/*.spec.js'
@@ -16,12 +15,12 @@ module.exports = function (config) {
           'spec/*.spec.js': ['browserify']
         },
 
-        reporters: ['mocha'],
+        reporters: ['mocha', 'coverage'],
 
         port: 9876,
         colors: true,
         autoWatch: false,
-        singleRun: false,
+        singleRun: true,
 
         // level of logging
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
@@ -35,9 +34,24 @@ module.exports = function (config) {
                 ['babelify', {
                     sourceMap: true,
                     presets: ['babel-preset-es2015']
+                }],
+                ['browserify-istanbul', {
+                    ignore: ['**/*.spec.js'],
+                    instrumenterConfig: {
+                        embedSource: true
+                    }
                 }]
             ]
-        }
+        },
 
+        coverageReporter: {
+            dir: 'dist/reports/coverage',
+            includeAllSources: true,
+            reporters: [
+                {'type': 'text'},
+                {'type': 'html', subdir: 'html'},
+                {'type': 'lcov', subdir: 'lcov'}
+            ]
+        }
     });
 };
