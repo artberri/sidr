@@ -3,9 +3,10 @@ module.exports = function (config) {
 
     config.set({
 
-        basePath: '',
+        basePath: './',
 
         frameworks: ['browserify', 'mocha', 'chai'],
+
 
         files: [
             'spec/*.spec.js'
@@ -15,7 +16,7 @@ module.exports = function (config) {
           'spec/*.spec.js': ['browserify']
         },
 
-        reporters: ['progress'],
+        reporters: ['mocha'],
 
         port: 9876,
         colors: true,
