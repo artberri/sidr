@@ -45,12 +45,12 @@ module.exports = function (config) {
         },
 
         coverageReporter: {
-            dir: 'dist/reports/coverage',
+            dir: 'dist/coverage',
             includeAllSources: true,
             reporters: [
                 {'type': 'text'},
                 {'type': 'html', subdir: 'html'},
-                {'type': 'lcov', subdir: 'lcov'}
+                {'type': 'lcov', subdir: './'}
             ]
         }
     });

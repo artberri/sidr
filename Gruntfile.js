@@ -133,6 +133,15 @@ module.exports = function(grunt) {
       }
     },
 
+    coveralls: {
+      options: {
+        force: false
+      },
+      spec: {
+        src: 'dist/coverage/lcov.info'
+      }
+    },
+
     connect: {
       options: {
           port: 9000,
@@ -180,5 +189,7 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('default', ['clean:dist', 'qa', 'build']);
+
+  grunt.registerTask('travis', ['default', 'coveralls']);
 
 };
