@@ -23,6 +23,7 @@
   "devDependencies": {
     "babel-preset-es2015": "^6.3.13",
     "babelify": "^7.2.0",
+    "browserify-istanbul": "^0.2.1",
     "chai": "^3.4.1",
     "grunt": "^0.4.5",
     "grunt-browserify": "^4.0.1",
