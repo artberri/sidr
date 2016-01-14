@@ -1,23 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var _helper = require('./js/helper');
-
-var _helper2 = _interopRequireDefault(_helper);
-
-var _view = require('./js/view');
-
-var _view2 = _interopRequireDefault(_view);
-
-var _status = require('./js/status');
-
-var _status2 = _interopRequireDefault(_status);
-
 var _sidr = require('./js/sidr');
 
-var sidr = _interopRequireWildcard(_sidr);
+var _fn = require('./js/fn');
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _fn2 = _interopRequireDefault(_fn);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29,103 +17,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Licensed under the MIT license.
  */
 
-(function ($) {
+var $ = jQuery;
 
-  $.sidr = sidr.combined;
+$.sidr = _sidr.combined;
+$.fn.sidr = _fn2.default;
 
-  $.fn.sidr = function (options) {
-
-    var settings = $.extend({
-      name: 'sidr', // Name for the 'sidr'
-      speed: 200, // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-      side: 'left', // Accepts 'left' or 'right'
-      source: null, // Override the source of the content.
-      renaming: true, // The ids and classes will be prepended with a prefix when loading existent content
-      body: 'body', // Page container selector,
-      displace: true, // Displace the body content or not
-      onOpen: function onOpen() {}, // Callback when sidr opened
-      onClose: function onClose() {} // Callback when sidr closed
-    }, options),
-        name = settings.name,
-        $sideMenu = $('#' + name);
-
-    // If the side menu do not exist create it
-    if ($sideMenu.length === 0) {
-      $sideMenu = $('<div />').attr('id', name).appendTo($('body'));
-    }
-
-    // Adding styles and options
-    $sideMenu.addClass('sidr').addClass(settings.side).data({
-      speed: settings.speed,
-      side: settings.side,
-      body: settings.body,
-      displace: settings.displace,
-      onOpen: settings.onOpen,
-      onClose: settings.onClose
-    });
-
-    // The menu content
-    if (typeof settings.source === 'function') {
-      var newContent = settings.source(name);
-
-      _view2.default.loadContent($sideMenu, newContent);
-    } else if (typeof settings.source === 'string' && _helper2.default.isUrl(settings.source)) {
-      $.get(settings.source, function (data) {
-        _view2.default.loadContent($sideMenu, data);
-      });
-    } else if (typeof settings.source === 'string') {
-      var htmlContent = '',
-          selectors = settings.source.split(',');
-
-      $.each(selectors, function (index, element) {
-        htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
-      });
-
-      // Renaming ids and classes
-      if (settings.renaming) {
-        var $htmlContent = $('<div />').html(htmlContent);
-
-        $htmlContent.find('*').each(function (index, element) {
-          var $element = $(element);
-
-          _helper2.default.addPrefix($element);
-        });
-        htmlContent = $htmlContent.html();
-      }
-      _view2.default.loadContent($sideMenu, htmlContent);
-    } else if (settings.source !== null) {
-      $.error('Invalid Sidr Source');
-    }
-
-    return this.each(function () {
-      var $this = $(this),
-          data = $this.data('sidr'),
-          flag = false;
-
-      // If the plugin hasn't been initialized yet
-      if (!data) {
-        _status2.default.moving = false;
-        _status2.default.opened = false;
-
-        $this.data('sidr', name);
-
-        $this.bind('touchstart click', function (event) {
-          event.preventDefault();
-
-          if (!flag) {
-            flag = true;
-            sidr.methods.toggle(name);
-            setTimeout(function () {
-              flag = false;
-            }, 100);
-          }
-        });
-      }
-    });
-  };
-})(jQuery);
-
-},{"./js/helper":3,"./js/sidr":4,"./js/status":5,"./js/view":6}],2:[function(require,module,exports){
+},{"./js/fn":3,"./js/sidr":5}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -289,7 +186,126 @@ function execute(action, name, callback) {
 
 exports.default = execute;
 
-},{"./status":5}],3:[function(require,module,exports){
+},{"./status":6}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _helper = require('./helper');
+
+var _helper2 = _interopRequireDefault(_helper);
+
+var _view = require('./view');
+
+var _view2 = _interopRequireDefault(_view);
+
+var _status = require('./status');
+
+var _status2 = _interopRequireDefault(_status);
+
+var _sidr = require('./sidr');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var $ = jQuery;
+
+function fn(options) {
+  var settings = $.extend({
+    name: 'sidr', // Name for the 'sidr'
+    speed: 200, // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+    side: 'left', // Accepts 'left' or 'right'
+    source: null, // Override the source of the content.
+    renamin: true, // The ids and classes will be prepended with a prefix when loading existent content
+    body: 'body', // Page container selector,
+    displace: true, // Displace the body content or not
+    onOpen: function onOpen() {},
+    // Callback when sidr opened
+    onClose: function onClose() {} // Callback when sidr closed
+
+  }, options),
+      name = settings.name,
+      $sideMenu = $('#' + name);
+
+  // If the side menu do not exist create it
+  if ($sideMenu.length === 0) {
+    $sideMenu = $('<div />').attr('id', name).appendTo($('body'));
+  }
+
+  // Adding styles and options
+  $sideMenu.addClass('sidr').addClass(settings.side).data({
+    speed: settings.speed,
+    side: settings.side,
+    body: settings.body,
+    displace: settings.displace,
+    onOpen: settings.onOpen,
+    onClose: settings.onClose
+  });
+
+  // The menu content
+  if (typeof settings.source === 'function') {
+    var newContent = settings.source(name);
+
+    _view2.default.loadContent($sideMenu, newContent);
+  } else if (typeof settings.source === 'string' && _helper2.default.isUrl(settings.source)) {
+    $.get(settings.source, function (data) {
+      _view2.default.loadContent($sideMenu, data);
+    });
+  } else if (typeof settings.source === 'string') {
+    var htmlContent = '',
+        selectors = settings.source.split(',');
+
+    $.each(selectors, function (index, element) {
+      htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
+    });
+
+    // Renaming ids and classes
+    if (settings.renaming) {
+      var $htmlContent = $('<div />').html(htmlContent);
+
+      $htmlContent.find('*').each(function (index, element) {
+        var $element = $(element);
+
+        _helper2.default.addPrefix($element);
+      });
+      htmlContent = $htmlContent.html();
+    }
+    _view2.default.loadContent($sideMenu, htmlContent);
+  } else if (settings.source !== null) {
+    $.error('Invalid Sidr Source');
+  }
+
+  return this.each(function () {
+    var $this = $(this),
+        data = $this.data('sidr'),
+        flag = false;
+
+    // If the plugin hasn't been initialized yet
+    if (!data) {
+      _status2.default.moving = false;
+      _status2.default.opened = false;
+
+      $this.data('sidr', name);
+
+      $this.bind('touchstart click', function (event) {
+        event.preventDefault();
+
+        if (!flag) {
+          flag = true;
+          _sidr.methods.toggle(name);
+          setTimeout(function () {
+            flag = false;
+          }, 100);
+        }
+      });
+    }
+  });
+}
+
+exports.default = fn;
+
+},{"./helper":4,"./sidr":5,"./status":6,"./view":7}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -333,7 +349,7 @@ var helper = {
 
 exports.default = helper;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -376,7 +392,7 @@ function combined(method) {
 exports.methods = methods;
 exports.combined = combined;
 
-},{"./execute":2}],5:[function(require,module,exports){
+},{"./execute":2}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -389,7 +405,7 @@ var sidrStatus = {
 
 exports.default = sidrStatus;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

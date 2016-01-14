@@ -37,7 +37,6 @@
     "grunt-eslint": "^17.3.1",
     "grunt-karma": "^0.12.1",
     "grunt-scss-lint": "^0.3.8",
-    "jsdom": "^7.2.2",
     "karma": "^0.13.19",
     "karma-browserify": "^4.4.2",
     "karma-chai": "^0.1.0",
