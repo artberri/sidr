@@ -1,6 +1,6 @@
 #Sidr
 
-[![Build Status](https://travis-ci.org/artberri/sidr.svg?branch=master)](https://travis-ci.org/artberri/sidr)
+[![Build Status](https://travis-ci.org/artberri/sidr.svg?branch=master)](https://travis-ci.org/artberri/sidr) [![Code Climate](https://codeclimate.com/github/artberri/sidr/badges/gpa.svg)](https://codeclimate.com/github/artberri/sidr) [![Test Coverage](https://codeclimate.com/github/artberri/sidr/badges/coverage.svg)](https://codeclimate.com/github/artberri/sidr/coverage)
 
 Sidr is a jQuery plugin for creating side menus and the easiest way for doing your menu responsive. For a further description, documentation and others visit: [http://www.berriart.com/sidr](http://www.berriart.com/sidr)
 

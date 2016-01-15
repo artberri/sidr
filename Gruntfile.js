@@ -133,12 +133,12 @@ module.exports = function(grunt) {
       }
     },
 
-    coveralls: {
-      options: {
-        force: false
-      },
-      spec: {
-        src: 'dist/coverage/lcov.info'
+    codeclimate: {
+      main: {
+        options: {
+          file: 'dist/coverage/lcov.info',
+          token: process.env.CODECLIMATE_TOKEN
+        }
       }
     },
 
@@ -190,6 +190,6 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', ['clean:dist', 'qa', 'build']);
 
-  grunt.registerTask('travis', ['default', 'coveralls']);
+  grunt.registerTask('travis', ['default', 'codeclimate']);
 
 };
