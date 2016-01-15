@@ -42,6 +42,7 @@
         "wrap-iife": [2, "outside"]
     },
     globals: {
-        "jQuery": true
+        "jQuery": true,
+        "sinon": true
     }
 }

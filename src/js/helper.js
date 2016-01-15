@@ -17,19 +17,18 @@ var helper = {
     },
 
     // Add sidr prefixes
-    addPrefix($element) {
-      var elementId = $element.attr('id'),
-          elementClass = $element.attr('class');
-
-      if (typeof elementId === 'string' && '' !== elementId) {
-        $element.attr('id', elementId.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-id-$1'));
-      }
-
-      if (typeof elementClass === 'string' && '' !== elementClass && 'sidr-inner' !== elementClass) {
-        $element.attr('class', elementClass.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-class-$1'));
-      }
-
+    addPrefixes($element) {
+      this.addPrefix($element, 'id');
+      this.addPrefix($element, 'class');
       $element.removeAttr('style');
+    },
+
+    addPrefix($element, attribute) {
+      var toReplace = $element.attr(attribute);
+
+      if (typeof toReplace === 'string' && toReplace !== '' && toReplace !== 'sidr-inner') {
+        $element.attr(attribute, toReplace.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-' + attribute + '-$1'));
+      }
     }
 };
 

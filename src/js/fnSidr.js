@@ -1,17 +1,16 @@
 import helper from './helper';
-import view from './view';
 import status from './status';
-import { methods as sidr } from './sidr';
+import sidr from './sidr';
 
 var $ = jQuery;
 
-function fn(options) {
+function fnSidr(options) {
   var settings = $.extend({
         name: 'sidr',   // Name for the 'sidr'
         speed: 200,     // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
         side: 'left',   // Accepts 'left' or 'right'
         source: null,   // Override the source of the content.
-        renamin: true,  // The ids and classes will be prepended with a prefix when loading existent content
+        renaming: true,  // The ids and classes will be prepended with a prefix when loading existent content
         body: 'body',   // Page container selector,
         displace: true, // Displace the body content or not
         onOpen() {},    // Callback when sidr opened
@@ -44,10 +43,10 @@ function fn(options) {
   if (typeof settings.source === 'function') {
     let newContent = settings.source(name);
 
-    view.loadContent($sideMenu, newContent);
+    $sideMenu.html(newContent);
   } else if (typeof settings.source === 'string' && helper.isUrl(settings.source)) {
     $.get(settings.source, function(data) {
-      view.loadContent($sideMenu, data);
+      $sideMenu.html(data);
     });
   } else if (typeof settings.source === 'string') {
     let htmlContent = '',
@@ -64,11 +63,12 @@ function fn(options) {
       $htmlContent.find('*').each(function(index, element) {
         let $element = $(element);
 
-        helper.addPrefix($element);
+        helper.addPrefixes($element);
       });
       htmlContent = $htmlContent.html();
     }
-    view.loadContent($sideMenu, htmlContent);
+
+    $sideMenu.html(htmlContent);
   } else if (settings.source !== null) {
     $.error('Invalid Sidr Source');
   }
@@ -90,7 +90,8 @@ function fn(options) {
 
         if (!flag) {
           flag = true;
-          sidr.toggle(name);
+          sidr('toggle', name);
+
           setTimeout(function () {
             flag = false;
           }, 100);
@@ -100,4 +101,4 @@ function fn(options) {
   });
 }
 
-export default fn;
+export default fnSidr;

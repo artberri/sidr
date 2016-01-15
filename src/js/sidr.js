@@ -16,7 +16,7 @@ for (i = 0; i <= publicMethods.length; i++) {
   methods[methodName] = getMethod(methodName);
 }
 
-function combined(method) {
+function sidr(method) {
   if (methods[method]) {
     return methods[method].apply( this, Array.prototype.slice.call( arguments, 1 ));
   } else if (typeof method === 'function' || typeof method === 'string' || ! method) {
@@ -26,6 +26,4 @@ function combined(method) {
   }
 }
 
-export { methods };
-
-export { combined };
+export default sidr;

@@ -6,10 +6,10 @@
  * Licensed under the MIT license.
  */
 
-import { combined as sidr } from './js/sidr';
-import fn from './js/fn';
+import sidr from './js/sidr';
+import fnSidr from './js/fnSidr';
 
 var $ = jQuery;
 
 $.sidr = sidr;
-$.fn.sidr = fn;
+$.fn.sidr = fnSidr;
