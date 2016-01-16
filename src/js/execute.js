@@ -3,17 +3,7 @@ import Menu from './menu';
 var $ = jQuery;
 
 function execute(action, name, callback) {
-  var sidr;
-
-  // Check arguments
-  if (typeof name === 'function') {
-    callback = name;
-    name = 'sidr';
-  } else if (!name) {
-    name = 'sidr';
-  }
-
-  sidr = new Menu(name);
+  var sidr = new Menu(name);
 
   switch (action) {
     case 'open':

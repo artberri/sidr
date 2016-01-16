@@ -40,17 +40,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var $ = jQuery;
 
 function execute(action, name, callback) {
-  var sidr;
-
-  // Check arguments
-  if (typeof name === 'function') {
-    callback = name;
-    name = 'sidr';
-  } else if (!name) {
-    name = 'sidr';
-  }
-
-  sidr = new _menu2.default(name);
+  var sidr = new _menu2.default(name);
 
   switch (action) {
     case 'open':
@@ -467,11 +457,19 @@ var i,
     methods = {},
     getMethod = function getMethod(methodName) {
   return function (name, callback) {
+    // Check arguments
+    if (typeof name === 'function') {
+      callback = name;
+      name = 'sidr';
+    } else if (!name) {
+      name = 'sidr';
+    }
+
     (0, _execute2.default)(methodName, name, callback);
   };
 };
 
-for (i = 0; i <= publicMethods.length; i++) {
+for (i = 0; i < publicMethods.length; i++) {
   methodName = publicMethods[i];
   methods[methodName] = getMethod(methodName);
 }

@@ -7,11 +7,19 @@ var i,
     methods = {},
     getMethod = function (methodName) {
       return function(name, callback) {
+        // Check arguments
+        if (typeof name === 'function') {
+          callback = name;
+          name = 'sidr';
+        } else if (!name) {
+          name = 'sidr';
+        }
+
         execute(methodName, name, callback);
       };
     };
 
-for (i = 0; i <= publicMethods.length; i++) {
+for (i = 0; i < publicMethods.length; i++) {
   methodName = publicMethods[i];
   methods[methodName] = getMethod(methodName);
 }

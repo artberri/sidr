@@ -4,11 +4,12 @@
 
 Bug fixes:
 - Launch callback when a menu open is delayed until another one is closed
+- Fixes bug introduced in 2.0.0 that added a method called 'undefined' in addition to the methods close, open, toggle
 
 This version has a complete code refactor for code quality improvements:
 - ES2015 syntax supported
 - jquery.sidr.js file split
-- Unit testing
+- Start Unit testing
 
 ## 2.0.0 2016-01-10
 
