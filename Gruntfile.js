@@ -137,7 +137,8 @@ module.exports = function(grunt) {
       main: {
         options: {
           file: 'dist/coverage/lcov.info',
-          token: process.env.CODECLIMATE_TOKEN
+          token: process.env.CODECLIMATE_TOKEN,
+          executable: 'node_modules/grunt-codeclimate-reporter/node_modules/.bin/codeclimate-test-reporter'
         }
       }
     },
