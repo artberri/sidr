@@ -85,9 +85,109 @@ describe('menu.js', () => {
     });
 
     describe('#getAnimation()', () => {
+        var animation,
+            element;
+
         beforeEach(() => {
             m = new Menu('sidr');
+            m.menuWidth = 200;
         });
 
+        describe('when is a left menu', () => {
+            beforeEach(() => {
+                m.side = 'left';
+            });
+
+            describe('and the element is the menu', () => {
+                before(() => {
+                    element = 'menu';
+                });
+
+                it('should set left property to 0 when open', () => {
+                    animation = m.getAnimation('open', element);
+
+                    animation.should.deep.equal({
+                        left: 0
+                    });
+                });
+                it('should set left property to the menuWidth when close', () => {
+                    animation = m.getAnimation('close', element);
+
+                    animation.should.deep.equal({
+                        left: '-200px'
+                    });
+                });
+            });
+
+            describe('and the element is the body', () => {
+                before(() => {
+                    element = 'body';
+                });
+
+                it('should set left property to the menuWidth when open', () => {
+                    animation = m.getAnimation('open', element);
+
+                    animation.should.deep.equal({
+                        left: '200px'
+                    });
+                });
+                it('should set left property to 0 when close', () => {
+                    animation = m.getAnimation('close', element);
+
+                    animation.should.deep.equal({
+                        left: 0
+                    });
+                });
+            });
+        });
+
+
+        describe('when is a right menu', () => {
+            beforeEach(() => {
+                m.side = 'right';
+            });
+
+            describe('and the element is the menu', () => {
+                before(() => {
+                    element = 'menu';
+                });
+
+                it('should set right property to 0 when open', () => {
+                    animation = m.getAnimation('open', element);
+
+                    animation.should.deep.equal({
+                        right: 0
+                    });
+                });
+                it('should set right property to the menuWidth when close', () => {
+                    animation = m.getAnimation('close', element);
+
+                    animation.should.deep.equal({
+                        right: '-200px'
+                    });
+                });
+            });
+
+            describe('and the element is the body', () => {
+                before(() => {
+                    element = 'body';
+                });
+
+                it('should set right property to the menuWidth when open', () => {
+                    animation = m.getAnimation('open', element);
+
+                    animation.should.deep.equal({
+                        right: '200px'
+                    });
+                });
+                it('should set right property to 0 when close', () => {
+                    animation = m.getAnimation('close', element);
+
+                    animation.should.deep.equal({
+                        right: 0
+                    });
+                });
+            });
+        });
     });
 });
