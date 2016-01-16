@@ -1,4 +1,5 @@
 import Menu from '../src/js/menu';
+import status from '../src/js/status';
 
 var $ = jQuery;
 
@@ -241,6 +242,213 @@ describe('menu.js', () => {
         });
     });
 
+    describe('#move()', () => {
+        var prepareBodyStub,
+            moveBodyStub,
+            moveMenuStub;
+
+        beforeEach(() => {
+            m = new Menu('sidr');
+            status.moving = false;
+            prepareBodyStub = sinon.stub(m, 'prepareBody');
+            moveBodyStub = sinon.stub(m, 'moveBody');
+            moveMenuStub = sinon.stub(m, 'moveMenu');
+        });
+
+        afterEach(() => {
+            m.prepareBody.restore();
+            m.moveBody.restore();
+            m.moveMenu.restore();
+        });
+
+        it('should set the status to moving', () => {
+            m.move('action', 'callback');
+
+            status.moving.should.equal(true);
+        });
+
+        it('should prepare the body', () => {
+            m.move('action', 'callback');
+
+            prepareBodyStub.should.be.calledWith('action');
+        });
+
+        it('should move the body', () => {
+            m.move('action', 'callback');
+
+            moveBodyStub.should.be.calledWith('action');
+        });
+
+        it('should move the menu', () => {
+            m.move('action', 'callback');
+
+            moveMenuStub.should.be.calledWith('action', 'callback');
+        });
+    });
+
+    describe('#open()', () => {
+        var moveStub;
+
+        beforeEach(() => {
+            m = new Menu('sidr');
+            m.onOpen = sinon.spy();
+            moveStub = sinon.stub(m, 'move');
+        });
+
+        describe('when the menu is already moving', () => {
+            beforeEach(() => {
+                status.moving = true;
+                m.item = $('<div />')
+                            .appendTo($('body'));
+            });
+
+            it('should not move the menu', () => {
+                m.open('callback');
+
+                moveStub.notCalled.should.equal(true);
+            });
+            it('should not call the onOpen callback', () => {
+                m.open('callback');
+
+                m.onOpen.notCalled.should.equal(true);
+            });
+        });
+
+        describe('when the menu is not moving', () => {
+            beforeEach(() => {
+                status.moving = false;
+            });
+
+            describe('and another menu is opened', () => {
+                beforeEach(() => {
+                    status.opened = true;
+                });
+
+                it('should not move the menu', () => {
+                    m.open('callback');
+
+                    moveStub.notCalled.should.equal(true);
+                });
+                it('should not call the onOpen callback', () => {
+                    m.open('callback');
+
+                    m.onOpen.notCalled.should.equal(true);
+                });
+            });
+
+            describe('and there is not another menu opened', () => {
+                beforeEach(() => {
+                    status.opened = false;
+                });
+
+                describe('and the menu is already visible', () => {
+                    beforeEach(() => {
+                        m.item = $('<div />')
+                                    .appendTo($('body'));
+                    });
+                    it('should not move the menu', () => {
+                        m.open('callback');
+
+                        moveStub.notCalled.should.equal(true);
+                    });
+                    it('should not call the onOpen callback', () => {
+                        m.open('callback');
+
+                        m.onOpen.notCalled.should.equal(true);
+                    });
+                });
+
+                describe('and the menu is hidden', () => {
+                    beforeEach(() => {
+                        m.item = $('<div />')
+                                    .css('display', 'none')
+                                    .appendTo($('body'));
+                    });
+                    it('should open the menu', () => {
+                        m.open('callback');
+
+                        moveStub.should.be.calledWith('open', 'callback');
+                    });
+                    it('should call the onOpen callback', () => {
+                        m.open('callback');
+
+                        m.onOpen.called.should.equal(true);
+                    });
+                });
+            });
+        });
+    });
+
+    describe('#close()', () => {
+        var moveStub;
+
+        beforeEach(() => {
+            m = new Menu('sidr');
+            m.onClose = sinon.spy();
+            moveStub = sinon.stub(m, 'move');
+        });
+
+        describe('when the menu is already moving', () => {
+            beforeEach(() => {
+                status.moving = true;
+                m.item = $('<div />')
+                            .appendTo($('body'));
+            });
+
+            it('should not move the menu', () => {
+                m.close('callback');
+
+                moveStub.notCalled.should.equal(true);
+            });
+            it('should not call the onClose callback', () => {
+                m.close('callback');
+
+                m.onClose.notCalled.should.equal(true);
+            });
+        });
+
+        describe('when the menu is not moving', () => {
+            beforeEach(() => {
+                status.moving = false;
+            });
+
+            describe('and the menu is already closed', () => {
+                beforeEach(() => {
+                    m.item = $('<div />')
+                                .css('display', 'none')
+                                .appendTo($('body'));
+                });
+                it('should not move the menu', () => {
+                    m.close('callback');
+
+                    moveStub.notCalled.should.equal(true);
+                });
+                it('should not call the onClose callback', () => {
+                    m.close('callback');
+
+                    m.onClose.notCalled.should.equal(true);
+                });
+            });
+
+            describe('and the menu is visible', () => {
+                beforeEach(() => {
+                    m.item = $('<div />')
+                                .appendTo($('body'));
+                });
+                it('should close the menu', () => {
+                    m.close('callback');
+
+                    moveStub.should.be.calledWith('close', 'callback');
+                });
+                it('should call the onClose callback', () => {
+                    m.close('callback');
+
+                    m.onClose.called.should.equal(true);
+                });
+            });
+        });
+    });
+
     describe('#toggle()', () => {
         var closeStub,
             openStub;
@@ -249,6 +457,11 @@ describe('menu.js', () => {
             m = new Menu('sidr');
             closeStub = sinon.stub(m, 'close');
             openStub = sinon.stub(m, 'open');
+        });
+
+        afterEach(() => {
+            m.close.restore();
+            m.open.restore();
         });
 
         describe('when the menu container is not visible', () => {

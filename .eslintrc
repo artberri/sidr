@@ -215,3 +215,4 @@ rules:
 globals:
   jQuery: true
   sinon: true
+  should: true

@@ -18,13 +18,13 @@ class Menu {
     this.body = $(this.item.data('body'));
   }
 
-  getAnimation(type, element) {
+  getAnimation(action, element) {
     var animation = {},
         prop = this.side;
 
-    if (type === 'open' && element === 'body') {
+    if (action === 'open' && element === 'body') {
       animation[prop] = this.menuWidth + 'px';
-    } else if (type === 'close' && element === 'menu') {
+    } else if (action === 'close' && element === 'menu') {
       animation[prop] = '-' + this.menuWidth + 'px';
     } else {
       animation[prop] = 0;
@@ -33,8 +33,8 @@ class Menu {
     return animation;
   }
 
-  prepareBody(type) {
-    var prop = (type === 'open') ? 'hidden' : '';
+  prepareBody(action) {
+    var prop = (action === 'open') ? 'hidden' : '';
 
     // Prepare page if container is body
     if (this.body.is('body')) {
@@ -45,12 +45,93 @@ class Menu {
     }
   }
 
-  open(callback) {
-    var bodyAnimation,
-        menuAnimation;
+  moveBody(action) {
+    var bodyAnimationClass = 'sidr-animating',
+        bodyAnimation = this.getAnimation(action, 'body');
 
-    // Check if we can open it
-    if ( this.item.is(':visible') || status.moving ) {
+    if (action === 'open') {
+      if (this.displace){
+        this.body.addClass(bodyAnimationClass).css({
+          width: this.body.width(),
+          position: 'absolute'
+        }).animate(bodyAnimation, {
+          queue: false,
+          duration: this.speed,
+          complete: () => {
+            this.body.addClass(this.openClass);
+          }
+        });
+      } else {
+        setTimeout(() => {
+          this.body.addClass(this.openClass);
+        }, this.speed);
+      }
+    } else {
+      this.body.addClass(bodyAnimationClass).animate(bodyAnimation, {
+        queue: false,
+        duration: this.speed
+      }).removeClass(this.openClass);
+    }
+  }
+
+  moveMenu(action, callback) {
+    var menuAnimation = this.getAnimation(action, 'menu');
+
+    if (action === 'open') {
+      this.item.css('display', 'block').animate(menuAnimation, {
+        queue: false,
+        duration: this.speed,
+        complete: () => {
+          status.moving = false;
+          status.opened = name;
+
+          // Callback
+          if (typeof callback === 'function') {
+            callback(name);
+          }
+
+          this.body.removeClass('sidr-animating');
+        }
+      });
+    } else {
+      this.item.animate(menuAnimation, {
+        queue: false,
+        duration: this.speed,
+        complete: () => {
+          this.item.removeAttr('style').hide();
+          this.body.css({
+            width: '',
+            position: '',
+            right: '',
+            left: ''
+          });
+          $('html').css('overflow-x', '');
+          status.moving = false;
+          status.opened = false;
+
+          // Callback
+          if (typeof callback === 'function') {
+            callback(name);
+          }
+
+          this.body.removeClass('sidr-animating');
+        }
+      });
+    }
+  }
+
+  move(action, callback) {
+    // Lock sidr
+    status.moving = true;
+
+    this.prepareBody(action);
+    this.moveBody(action);
+    this.moveMenu(action, callback);
+  }
+
+  open(callback) {
+    // Check if is already opened or moving
+    if (this.item.is(':visible') || status.moving) {
       return;
     }
 
@@ -65,102 +146,19 @@ class Menu {
       return;
     }
 
-    // Lock sidr
-    status.moving = true;
-
-    // Prepare page if container is body
-    this.prepareBody('open');
-
-    bodyAnimation = this.getAnimation('open', 'body');
-    menuAnimation = this.getAnimation('open', 'menu');
-
-    // Move body if needed
-    if (this.displace){
-      this.body.addClass('sidr-animating').css({
-        width: this.body.width(),
-        position: 'absolute'
-      }).animate(bodyAnimation, {
-        queue: false,
-        duration: this.speed,
-        complete: () => {
-          this.body.addClass(this.openClass);
-        }
-      });
-    } else {
-      setTimeout(function() {
-        this.body.addClass(this.openClass);
-      }, this.speed);
-    }
-
-    // Move menu
-    this.item.css('display', 'block').animate(menuAnimation, {
-      queue: false,
-      duration: this.speed,
-      complete: () => {
-        status.moving = false;
-        status.opened = name;
-
-        // Callback
-        if (typeof callback === 'function') {
-          callback(name);
-        }
-
-        this.body.removeClass('sidr-animating');
-      }
-    });
+    this.move('open', callback);
 
     // onOpen callback
     this.onOpen();
   }
 
   close(callback) {
-    var bodyAnimation,
-        menuAnimation;
-
-    // Check if we can close it
-    if ( !this.item.is(':visible') || status.moving ) {
+    // Check if is already closed or moving
+    if (!this.item.is(':visible') || status.moving) {
       return;
     }
 
-    // Lock sidr
-    status.moving = true;
-
-    // Prepare page if container is body
-    this.prepareBody('close');
-
-    bodyAnimation = this.getAnimation('close', 'body');
-    menuAnimation = this.getAnimation('close', 'menu');
-
-    // Move body
-    this.body.addClass('sidr-animating').animate(bodyAnimation, {
-      queue: false,
-      duration: this.speed
-    }).removeClass(this.openClass);
-
-    // Move menu
-    this.item.animate(menuAnimation, {
-      queue: false,
-      duration: this.speed,
-      complete: () => {
-        this.item.removeAttr('style').hide();
-        this.body.css({
-          width: '',
-          position: '',
-          right: '',
-          left: ''
-        });
-        $('html').css('overflow-x', '');
-        status.moving = false;
-        status.opened = false;
-
-        // Callback
-        if (typeof callback === 'function') {
-          callback(name);
-        }
-
-        this.body.removeClass('sidr-animating');
-      }
-    });
+    this.move('close', callback);
 
     // onClose callback
     this.onClose();
