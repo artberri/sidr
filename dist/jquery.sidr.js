@@ -93,38 +93,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var $ = jQuery;
 
-function fnSidr(options) {
-  var settings = $.extend({
-    name: 'sidr', // Name for the 'sidr'
-    speed: 200, // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-    side: 'left', // Accepts 'left' or 'right'
-    source: null, // Override the source of the content.
-    renaming: true, // The ids and classes will be prepended with a prefix when loading existent content
-    body: 'body', // Page container selector,
-    displace: true, // Displace the body content or not
-    onOpen: function onOpen() {},
-    // Callback when sidr opened
-    onClose: function onClose() {} // Callback when sidr closed
-
-  }, options),
-      name = settings.name,
-      $sideMenu = $('#' + name);
-
-  // If the side menu do not exist create it
-  if ($sideMenu.length === 0) {
-    $sideMenu = $('<div />').attr('id', name).appendTo($('body'));
-  }
-
-  // Adding styles and options
-  $sideMenu.addClass('sidr').addClass(settings.side).data({
-    speed: settings.speed,
-    side: settings.side,
-    body: settings.body,
-    displace: settings.displace,
-    onOpen: settings.onOpen,
-    onClose: settings.onClose
-  });
-
+function fillContent($sideMenu, settings) {
   // The menu content
   if (typeof settings.source === 'function') {
     var newContent = settings.source(name);
@@ -158,6 +127,43 @@ function fnSidr(options) {
   } else if (settings.source !== null) {
     $.error('Invalid Sidr Source');
   }
+
+  return $sideMenu;
+}
+
+function fnSidr(options) {
+  var settings = $.extend({
+    name: 'sidr', // Name for the 'sidr'
+    speed: 200, // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+    side: 'left', // Accepts 'left' or 'right'
+    source: null, // Override the source of the content.
+    renaming: true, // The ids and classes will be prepended with a prefix when loading existent content
+    body: 'body', // Page container selector,
+    displace: true, // Displace the body content or not
+    onOpen: function onOpen() {},
+    // Callback when sidr opened
+    onClose: function onClose() {} // Callback when sidr closed
+
+  }, options),
+      name = settings.name,
+      $sideMenu = $('#' + name);
+
+  // If the side menu do not exist create it
+  if ($sideMenu.length === 0) {
+    $sideMenu = $('<div />').attr('id', name).appendTo($('body'));
+  }
+
+  // Adding styles and options
+  $sideMenu.addClass('sidr').addClass(settings.side).data({
+    speed: settings.speed,
+    side: settings.side,
+    body: settings.body,
+    displace: settings.displace,
+    onOpen: settings.onOpen,
+    onClose: settings.onClose
+  });
+
+  $sideMenu = fillContent($sideMenu, settings);
 
   return this.each(function () {
     var $this = $(this),
@@ -234,7 +240,7 @@ exports.default = helper;
 },{}],5:[function(require,module,exports){
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*eslint callback-return: 0*/
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -267,6 +273,48 @@ var Menu = function () {
   }
 
   _createClass(Menu, [{
+    key: 'getBodyAnimation',
+    value: function getBodyAnimation(type) {
+      var bodyAnimation = {};
+
+      if (type === 'open') {
+        if (this.side === 'left') {
+          bodyAnimation.left = this.menuWidth + 'px';
+        } else {
+          bodyAnimation.right = this.menuWidth + 'px';
+        }
+      } else {
+        if (this.side === 'left') {
+          bodyAnimation.left = 0;
+        } else {
+          bodyAnimation.right = 0;
+        }
+      }
+
+      return bodyAnimation;
+    }
+  }, {
+    key: 'getMenuAnimation',
+    value: function getMenuAnimation(type) {
+      var menuAnimation = {};
+
+      if (type === 'open') {
+        if (this.side === 'left') {
+          menuAnimation.left = 0;
+        } else {
+          menuAnimation.right = 0;
+        }
+      } else {
+        if (this.side === 'left') {
+          menuAnimation.left = '-' + this.menuWidth + 'px';
+        } else {
+          menuAnimation.right = '-' + this.menuWidth + 'px';
+        }
+      }
+
+      return menuAnimation;
+    }
+  }, {
     key: 'open',
     value: function open(callback) {
       var _this = this;
@@ -283,7 +331,7 @@ var Menu = function () {
         var alreadyOpenedMenu = new Menu(_status2.default.opened);
 
         alreadyOpenedMenu.close(function () {
-          this.open(callback);
+          _this.open(callback);
         });
 
         return;
@@ -292,21 +340,15 @@ var Menu = function () {
       // Lock sidr
       _status2.default.moving = true;
 
-      // Left or right?
-      if (this.side === 'left') {
-        bodyAnimation = { left: this.menuWidth + 'px' };
-        menuAnimation = { left: '0px' };
-      } else {
-        bodyAnimation = { right: this.menuWidth + 'px' };
-        menuAnimation = { right: '0px' };
-      }
-
       // Prepare page if container is body
       if (this.body.is('body')) {
         $html = $('html');
         scrollTop = $html.scrollTop();
         $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
       }
+
+      bodyAnimation = this.getBodyAnimation('open');
+      menuAnimation = this.getMenuAnimation('open');
 
       // Move body if needed
       if (this.displace) {
@@ -361,21 +403,15 @@ var Menu = function () {
       // Lock sidr
       _status2.default.moving = true;
 
-      // Right or left menu?
-      if (this.side === 'left') {
-        bodyAnimation = { left: 0 };
-        menuAnimation = { left: '-' + this.menuWidth + 'px' };
-      } else {
-        bodyAnimation = { right: 0 };
-        menuAnimation = { right: '-' + this.menuWidth + 'px' };
-      }
-
       // Prepare page if container is body
       if (this.body.is('body')) {
         $html = $('html');
         scrollTop = $html.scrollTop();
         $html.css('overflow-x', '').scrollTop(scrollTop);
       }
+
+      bodyAnimation = this.getBodyAnimation('close');
+      menuAnimation = this.getMenuAnimation('close');
 
       // Move body
       this.body.addClass('sidr-animating').animate(bodyAnimation, {

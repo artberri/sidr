@@ -1,5 +1,9 @@
 import menu from '../src/js/menu';
 
 describe('menu.js', () => {
-    menu;
+    var m = {
+        menu
+    };
+
+    delete m.menu;
 });

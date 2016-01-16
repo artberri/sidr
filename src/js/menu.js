@@ -1,3 +1,5 @@
+/*eslint callback-return: 0*/
+
 import status from './status';
 
 var $ = jQuery;
@@ -16,6 +18,46 @@ class Menu {
     this.body = $(this.item.data('body'));
   }
 
+  getBodyAnimation(type) {
+    var bodyAnimation = {};
+
+    if (type === 'open') {
+      if (this.side === 'left') {
+        bodyAnimation.left = this.menuWidth + 'px';
+      } else {
+        bodyAnimation.right = this.menuWidth + 'px';
+      }
+    } else {
+      if (this.side === 'left') {
+        bodyAnimation.left = 0;
+      } else {
+        bodyAnimation.right = 0;
+      }
+    }
+
+    return bodyAnimation;
+  }
+
+  getMenuAnimation(type) {
+    var menuAnimation = {};
+
+    if (type === 'open') {
+      if (this.side === 'left') {
+        menuAnimation.left = 0;
+      } else {
+        menuAnimation.right = 0;
+      }
+    } else {
+      if (this.side === 'left') {
+        menuAnimation.left = '-' + this.menuWidth + 'px';
+      } else {
+        menuAnimation.right = '-' + this.menuWidth + 'px';
+      }
+    }
+
+    return menuAnimation;
+  }
+
   open(callback) {
     var bodyAnimation,
         menuAnimation,
@@ -31,7 +73,7 @@ class Menu {
     if (status.opened !== false) {
       let alreadyOpenedMenu = new Menu(status.opened);
 
-      alreadyOpenedMenu.close(function() {
+      alreadyOpenedMenu.close(() => {
         this.open(callback);
       });
 
@@ -41,21 +83,15 @@ class Menu {
     // Lock sidr
     status.moving = true;
 
-    // Left or right?
-    if (this.side === 'left') {
-      bodyAnimation = {left: this.menuWidth + 'px'};
-      menuAnimation = {left: '0px'};
-    } else {
-      bodyAnimation = {right: this.menuWidth + 'px'};
-      menuAnimation = {right: '0px'};
-    }
-
     // Prepare page if container is body
     if (this.body.is('body')){
       $html = $('html');
       scrollTop = $html.scrollTop();
       $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
     }
+
+    bodyAnimation = this.getBodyAnimation('open');
+    menuAnimation = this.getMenuAnimation('open');
 
     // Move body if needed
     if (this.displace){
@@ -110,21 +146,15 @@ class Menu {
     // Lock sidr
     status.moving = true;
 
-    // Right or left menu?
-    if (this.side === 'left') {
-      bodyAnimation = {left: 0};
-      menuAnimation = {left: '-' + this.menuWidth + 'px'};
-    } else {
-      bodyAnimation = {right: 0};
-      menuAnimation = {right: '-' + this.menuWidth + 'px'};
-    }
-
     // Prepare page if container is body
     if (this.body.is('body')){
       $html = $('html');
       scrollTop = $html.scrollTop();
       $html.css('overflow-x', '').scrollTop(scrollTop);
     }
+
+    bodyAnimation = this.getBodyAnimation('close');
+    menuAnimation = this.getMenuAnimation('close');
 
     // Move body
     this.body.addClass('sidr-animating').animate(bodyAnimation, {

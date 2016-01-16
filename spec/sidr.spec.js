@@ -1,5 +1,9 @@
 import sidr from '../src/js/sidr';
 
 describe('sidr.js', () => {
-    sidr;
+    var s = {
+        sidr
+    };
+
+    delete s.sidr;
 });

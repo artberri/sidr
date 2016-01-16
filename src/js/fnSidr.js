@@ -4,6 +4,44 @@ import sidr from './sidr';
 
 var $ = jQuery;
 
+function fillContent($sideMenu, settings) {
+  // The menu content
+  if (typeof settings.source === 'function') {
+    let newContent = settings.source(name);
+
+    $sideMenu.html(newContent);
+  } else if (typeof settings.source === 'string' && helper.isUrl(settings.source)) {
+    $.get(settings.source, function(data) {
+      $sideMenu.html(data);
+    });
+  } else if (typeof settings.source === 'string') {
+    let htmlContent = '',
+        selectors = settings.source.split(',');
+
+    $.each(selectors, function(index, element) {
+      htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
+    });
+
+    // Renaming ids and classes
+    if (settings.renaming) {
+      let $htmlContent = $('<div />').html(htmlContent);
+
+      $htmlContent.find('*').each(function(index, element) {
+        let $element = $(element);
+
+        helper.addPrefixes($element);
+      });
+      htmlContent = $htmlContent.html();
+    }
+
+    $sideMenu.html(htmlContent);
+  } else if (settings.source !== null) {
+    $.error('Invalid Sidr Source');
+  }
+
+  return $sideMenu;
+}
+
 function fnSidr(options) {
   var settings = $.extend({
         name: 'sidr',   // Name for the 'sidr'
@@ -39,39 +77,7 @@ function fnSidr(options) {
       onClose        : settings.onClose
     });
 
-  // The menu content
-  if (typeof settings.source === 'function') {
-    let newContent = settings.source(name);
-
-    $sideMenu.html(newContent);
-  } else if (typeof settings.source === 'string' && helper.isUrl(settings.source)) {
-    $.get(settings.source, function(data) {
-      $sideMenu.html(data);
-    });
-  } else if (typeof settings.source === 'string') {
-    let htmlContent = '',
-        selectors = settings.source.split(',');
-
-    $.each(selectors, function(index, element) {
-      htmlContent += '<div class="sidr-inner">' + $(element).html() + '</div>';
-    });
-
-    // Renaming ids and classes
-    if (settings.renaming) {
-      let $htmlContent = $('<div />').html(htmlContent);
-
-      $htmlContent.find('*').each(function(index, element) {
-        let $element = $(element);
-
-        helper.addPrefixes($element);
-      });
-      htmlContent = $htmlContent.html();
-    }
-
-    $sideMenu.html(htmlContent);
-  } else if (settings.source !== null) {
-    $.error('Invalid Sidr Source');
-  }
+  $sideMenu = fillContent($sideMenu, settings);
 
   return this.each(function () {
     var $this = $(this),

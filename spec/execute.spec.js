@@ -1,5 +1,9 @@
 import execute from '../src/js/execute';
 
 describe('execute.js', () => {
-    execute;
+    var e = {
+        execute
+    };
+
+    delete e.execute;
 });
