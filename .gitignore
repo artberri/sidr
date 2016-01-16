@@ -9,3 +9,4 @@ node_modules
 .bundle/
 vendor/
 bower_components/
+dist/coverage/

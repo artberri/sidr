@@ -1,4 +1,4 @@
-/*global module:false, require:false*/
+/* eslint global-require:0 */
 module.exports = function(grunt) {
 
   require('load-grunt-tasks')(grunt);
@@ -16,12 +16,6 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      js: {
-        files: [{
-          src: 'src/jquery.<%= pkg.name %>.js',
-          dest: 'dist/jquery.<%= pkg.name %>.js'
-        }]
-      },
       cssmin: {
         files: [
           {
@@ -51,11 +45,15 @@ module.exports = function(grunt) {
       }
     },
 
-    jshint: {
-      all: ['Gruntfile.js', 'src/**/*.js'],
+    eslint: {
       options: {
-        jshintrc: true
-      }
+        configFile: '.eslintrc'
+      },
+      target: [
+        '*.js',
+        'src/**/*.js',
+        'spec/*.js'
+      ]
     },
 
     scsslint: {
@@ -69,8 +67,8 @@ module.exports = function(grunt) {
 
     watch: {
       js: {
-        files: ['src/jquery.sidr.js'],
-        tasks: 'copy:js'
+        files: ['src/jquery.sidr.js', 'src/js/*.js'],
+        tasks: 'browserify'
       },
       compass: {
         files: ['src/scss/**/*.scss'],
@@ -109,6 +107,42 @@ module.exports = function(grunt) {
       }
     },
 
+    browserify: {
+      dist: {
+        options: {
+          transform: [
+            ['babelify', {
+              sourceMap: true,
+              presets: ['babel-preset-es2015']
+            }]
+          ]
+        },
+        files: {
+          'dist/jquery.<%= pkg.name %>.js': [
+            'src/jquery.<%= pkg.name %>.js'
+          ]
+        }
+      }
+    },
+
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        singleRun: true,
+        runnerPort: 9998
+      }
+    },
+
+    codeclimate: {
+      main: {
+        options: {
+          file: 'dist/coverage/lcov.info',
+          token: process.env.CODECLIMATE_TOKEN,
+          executable: 'node_modules/codeclimate-test-reporter/bin/codeclimate.js'
+        }
+      }
+    },
+
     connect: {
       options: {
           port: 9000,
@@ -124,16 +158,21 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('lint', [
-    'jshint',
+    'eslint',
     'scsslint'
   ]);
 
+  grunt.registerTask('test', [
+    'karma'
+  ]);
+
   grunt.registerTask('qa', [
-    'lint'
+    'lint',
+    'test'
   ]);
 
   grunt.registerTask('build', [
-    'copy:js',
+    'browserify',
     'compass:distmin',
     'copy:cssmin',
     'clean:cssmin',
@@ -144,12 +183,14 @@ module.exports = function(grunt) {
   grunt.registerTask('serve', [
     'clean:dist',
     'compass:dev',
-    'copy:js',
+    'browserify',
     'connect:dist',
     'watch'
   ]);
 
   // Default task.
   grunt.registerTask('default', ['clean:dist', 'qa', 'build']);
+
+  grunt.registerTask('ci', ['default', 'codeclimate']);
 
 };
