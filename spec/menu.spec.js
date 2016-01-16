@@ -6,7 +6,6 @@ describe('menu.js', () => {
     var m;
 
     describe('#constructor()', () => {
-
         before(() => {
             $('<div />')
               .attr('id', 'sidr')
@@ -70,5 +69,25 @@ describe('menu.js', () => {
 
             m.body.prop('tagName').should.be.equal('BODY');
         });
+
+        describe('when the name is not "sidr"', () => {
+            before(() => {
+                $('#sidr')
+                  .attr('id', 'nosidr');
+            });
+
+            it('should set the sidr open class that will be added to body', () => {
+                m = new Menu('nosidr');
+
+                m.openClass.should.be.equal('sidr-open nosidr-open');
+            });
+        });
+    });
+
+    describe('#getAnimation()', () => {
+        beforeEach(() => {
+            m = new Menu('sidr');
+        });
+
     });
 });
