@@ -37,7 +37,7 @@ class Menu {
     var prop = (type === 'open') ? 'hidden' : '';
 
     // Prepare page if container is body
-    if (this.body.is('body')){
+    if (this.body.is('body')) {
       let $html = $('html'),
           scrollTop = $html.scrollTop();
 

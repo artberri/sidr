@@ -190,4 +190,102 @@ describe('menu.js', () => {
             });
         });
     });
+
+    describe('#prepareBody()', () => {
+        var type;
+
+        beforeEach(() => {
+            m = new Menu('sidr');
+        });
+
+        describe('when the menu container is not body', () => {
+            beforeEach(() => {
+                m.body = $('<div />');
+            });
+
+            it('should do nothing', () => {
+                m.prepareBody();
+
+                $('html').css('overflow-x').should.equal('visible');
+            });
+        });
+
+        describe('when the menu container is the body', () => {
+            beforeEach(() => {
+                m.body = $('body');
+            });
+
+            describe('and the menu is opening', () => {
+                beforeEach(() => {
+                    type = 'open';
+                });
+
+                it('should hide overflow-x', () => {
+                    m.prepareBody(type);
+
+                    $('html').css('overflow-x').should.equal('hidden');
+                });
+            });
+
+            describe('and the menu is closing', () => {
+                beforeEach(() => {
+                    type = 'close';
+                });
+
+                it('should restore overflow-x', () => {
+                    m.prepareBody(type);
+
+                    $('html').css('overflow-x').should.equal('visible');
+                });
+            });
+        });
+    });
+
+    describe('#toggle()', () => {
+        var closeStub,
+            openStub;
+
+        beforeEach(() => {
+            m = new Menu('sidr');
+            closeStub = sinon.stub(m, 'close');
+            openStub = sinon.stub(m, 'open');
+        });
+
+        describe('when the menu container is not visible', () => {
+            beforeEach(() => {
+                m.item = $('<div />')
+                    .css('display', 'none')
+                    .appendTo($('body'));
+            });
+
+            it('should open the menu', () => {
+                m.toggle('callback');
+
+                openStub.should.be.calledWith('callback');
+            });
+            it('should not close the menu', () => {
+                m.toggle('callback');
+
+                closeStub.notCalled.should.equal(true);
+            });
+        });
+
+        describe('when the menu container is visible', () => {
+            beforeEach(() => {
+                m.item = $('<div />')
+                    .appendTo($('body'));
+            });
+
+            it('should close the menu', () => {
+                m.toggle('callback');
+
+                closeStub.should.be.calledWith('callback');
+            });
+            it('should not open the menu', () => {
+                m.toggle('callback');
+
+                openStub.notCalled.should.equal(true);
+            });
+        });
+    });
 });
