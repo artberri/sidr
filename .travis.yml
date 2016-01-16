@@ -12,6 +12,6 @@ before_install:
   - npm install -g bower grunt-cli
   - bower install
 cache: bundler
-script: grunt travis
+script: grunt ci
 notifications:
   email: false

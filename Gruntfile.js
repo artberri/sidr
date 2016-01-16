@@ -190,6 +190,6 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', ['clean:dist', 'qa', 'build']);
 
-  grunt.registerTask('travis', ['default', 'codeclimate']);
+  grunt.registerTask('ci', ['default', 'codeclimate']);
 
 };

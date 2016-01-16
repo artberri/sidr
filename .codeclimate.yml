@@ -18,3 +18,4 @@ ratings:
   - "**.js"
 exclude_paths:
 - dist/**/*
+- spec/**/*

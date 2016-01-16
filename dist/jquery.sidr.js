@@ -273,53 +273,40 @@ var Menu = function () {
   }
 
   _createClass(Menu, [{
-    key: 'getBodyAnimation',
-    value: function getBodyAnimation(type) {
-      var bodyAnimation = {};
+    key: 'getAnimation',
+    value: function getAnimation(type, element) {
+      var animation = {},
+          prop = this.side;
 
-      if (type === 'open') {
-        if (this.side === 'left') {
-          bodyAnimation.left = this.menuWidth + 'px';
-        } else {
-          bodyAnimation.right = this.menuWidth + 'px';
-        }
+      if (type === 'open' && element === 'body') {
+        animation[prop] = this.menuWidth + 'px';
+      } else if (type === 'close' && element === 'menu') {
+        animation[prop] = '-' + this.menuWidth + 'px';
       } else {
-        if (this.side === 'left') {
-          bodyAnimation.left = 0;
-        } else {
-          bodyAnimation.right = 0;
-        }
+        animation[prop] = 0;
       }
 
-      return bodyAnimation;
+      return animation;
     }
   }, {
-    key: 'getMenuAnimation',
-    value: function getMenuAnimation(type) {
-      var menuAnimation = {};
+    key: 'prepareBody',
+    value: function prepareBody(type) {
+      var prop = type === 'open' ? 'hidden' : '';
 
-      if (type === 'open') {
-        if (this.side === 'left') {
-          menuAnimation.left = 0;
-        } else {
-          menuAnimation.right = 0;
-        }
-      } else {
-        if (this.side === 'left') {
-          menuAnimation.left = '-' + this.menuWidth + 'px';
-        } else {
-          menuAnimation.right = '-' + this.menuWidth + 'px';
-        }
+      // Prepare page if container is body
+      if (this.body.is('body')) {
+        var $html = $('html'),
+            scrollTop = $html.scrollTop();
+
+        $html.css('overflow-x', prop).scrollTop(scrollTop);
       }
-
-      return menuAnimation;
     }
   }, {
     key: 'open',
     value: function open(callback) {
       var _this = this;
 
-      var bodyAnimation, menuAnimation, scrollTop, $html;
+      var bodyAnimation, menuAnimation;
 
       // Check if we can open it
       if (this.item.is(':visible') || _status2.default.moving) {
@@ -341,14 +328,10 @@ var Menu = function () {
       _status2.default.moving = true;
 
       // Prepare page if container is body
-      if (this.body.is('body')) {
-        $html = $('html');
-        scrollTop = $html.scrollTop();
-        $html.css('overflow-x', 'hidden').scrollTop(scrollTop);
-      }
+      this.prepareBody('open');
 
-      bodyAnimation = this.getBodyAnimation('open');
-      menuAnimation = this.getMenuAnimation('open');
+      bodyAnimation = this.getAnimation('open', 'body');
+      menuAnimation = this.getAnimation('open', 'menu');
 
       // Move body if needed
       if (this.displace) {
@@ -393,7 +376,7 @@ var Menu = function () {
     value: function close(callback) {
       var _this2 = this;
 
-      var bodyAnimation, menuAnimation, scrollTop, $html;
+      var bodyAnimation, menuAnimation;
 
       // Check if we can close it
       if (!this.item.is(':visible') || _status2.default.moving) {
@@ -404,14 +387,10 @@ var Menu = function () {
       _status2.default.moving = true;
 
       // Prepare page if container is body
-      if (this.body.is('body')) {
-        $html = $('html');
-        scrollTop = $html.scrollTop();
-        $html.css('overflow-x', '').scrollTop(scrollTop);
-      }
+      this.prepareBody('close');
 
-      bodyAnimation = this.getBodyAnimation('close');
-      menuAnimation = this.getMenuAnimation('close');
+      bodyAnimation = this.getAnimation('close', 'body');
+      menuAnimation = this.getAnimation('close', 'menu');
 
       // Move body
       this.body.addClass('sidr-animating').animate(bodyAnimation, {

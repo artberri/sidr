@@ -1,11 +1,21 @@
 # Changelog
 
+## Next version 2016-??-??
+
+Bug fixes:
+- Launch callback when a menu open is delayed until another one is closed
+
+This version has a complete code refactor for code quality improvements:
+- ES2015 syntax supported
+- jquery.sidr.js file split
+- Unit testing
+
 ## 2.0.0 2016-01-10
 
 **Breaking changes** that require major version incrementation:
 
 - Removing position:absolute fallback that added support for very old mobile browsers
-- Removing toogle method that was a typo, you need
+- Removing toogle method that was a typo, use toggle instead
 
 Bug fixes:
 
