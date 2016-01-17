@@ -43,16 +43,19 @@ function fillContent($sideMenu, settings) {
 }
 
 function fnSidr(options) {
-  var settings = $.extend({
-        name: 'sidr',   // Name for the 'sidr'
-        speed: 200,     // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-        side: 'left',   // Accepts 'left' or 'right'
-        source: null,   // Override the source of the content.
-        renaming: true,  // The ids and classes will be prepended with a prefix when loading existent content
-        body: 'body',   // Page container selector,
-        displace: true, // Displace the body content or not
-        onOpen() {},    // Callback when sidr opened
-        onClose() {}    // Callback when sidr closed
+  var transitions = helper.transitions,
+      settings = $.extend({
+        name: 'sidr',     // Name for the 'sidr'
+        speed: 200,       // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+        side: 'left',     // Accepts 'left' or 'right'
+        source: null,     // Override the source of the content.
+        renaming: true,   // The ids and classes will be prepended with a prefix when loading existent content
+        body: 'body',     // Page container selector,
+        displace: true,   // Displace the body content or not
+        timing: 'ease',   // Timing function for CSS transitions
+        method: 'toggle', // The method to call when element is clicked
+        onOpen() {},      // Callback when sidr opened
+        onClose() {}      // Callback when sidr closed
       }, options),
       name = settings.name,
       $sideMenu = $('#' + name);
@@ -64,6 +67,11 @@ function fnSidr(options) {
       .appendTo($('body'));
   }
 
+  // Add transition to menu if are supported
+  if (transitions.supported) {
+    $sideMenu.css(transitions.property, settings.side + ' ' + (settings.speed/1000) + 's ' + settings.timing);
+  }
+
   // Adding styles and options
   $sideMenu
     .addClass('sidr')
@@ -72,7 +80,9 @@ function fnSidr(options) {
       speed          : settings.speed,
       side           : settings.side,
       body           : settings.body,
-      displace      : settings.displace,
+      displace       : settings.displace,
+      timing         : settings.timing,
+      method         : settings.method,
       onOpen         : settings.onOpen,
       onClose        : settings.onClose
     });
@@ -96,7 +106,7 @@ function fnSidr(options) {
 
         if (!flag) {
           flag = true;
-          sidr('toggle', name);
+          sidr(settings.method, name);
 
           setTimeout(function () {
             flag = false;

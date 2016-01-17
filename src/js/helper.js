@@ -29,7 +29,41 @@ var helper = {
       if (typeof toReplace === 'string' && toReplace !== '' && toReplace !== 'sidr-inner') {
         $element.attr(attribute, toReplace.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-' + attribute + '-$1'));
       }
-    }
+    },
+
+     // Check if transitions is supported
+    transitions: (function() {
+      var body = document.body || document.documentElement,
+          style = body.style,
+          supported = false,
+          property = 'transition';
+
+      if (property in style) {
+        supported = true;
+      } else {
+        let prefixes = ['moz', 'webkit', 'o', 'ms'],
+            prefix,
+            i;
+
+        property = property.charAt(0).toUpperCase() + property.substr(1);
+        supported = (function() {
+          for (i = 0; i < prefixes.length; i++) {
+            prefix = prefixes[i];
+            if ((prefix + property) in style) {
+              return true;
+            }
+          }
+
+          return false;
+        }());
+        property = supported ? '-' + prefix.toLowerCase() + '-' + property.toLowerCase() : null;
+      }
+
+      return {
+        supported: supported,
+        property: property
+      };
+    }())
 };
 
 export default helper;

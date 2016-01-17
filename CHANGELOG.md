@@ -2,6 +2,11 @@
 
 ## Next version 2016-??-??
 
+New features:
+- Now it works with CSS3 transitions by default and fallbacks to jQUery.animate when not supported
+- Added `timing` option that can be used to indicate the transition timing function for the CSS3 transitions
+- Added `method` option to change the default behaviour of the button (that is currently the toggle method)
+
 Bug fixes:
 - Launch callback when a menu open is delayed until another one is closed
 - Fixes bug introduced in 2.0.0 that added a method called 'undefined' in addition to the methods close, open, toggle

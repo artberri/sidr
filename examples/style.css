@@ -67,6 +67,13 @@ h1 {
     line-height: 1.5em;
 }
 
+h2 {
+    font-size: 24px;
+    color: #444;
+    margin-bottom: 20px;
+    line-height: 1.5em;
+}
+
 p {
     font-size: 16px;
     margin-bottom: 20px;
@@ -88,6 +95,19 @@ ul li {
     text-indent: -9999px;
 }
 
+.menu-button.right {
+    right: 20px;
+    left: auto;
+}
+
+.menu-button.bottom {
+    top: 100px;
+}
+
+.menu-button.fixed {
+    position: fixed;
+}
+
 #overlay {
     position: absolute;
     position: fixed;
@@ -105,3 +125,17 @@ ul li {
 .sidr-open #overlay {
     display: block;
 }
+
+/* Settings for fullwidth */
+.sidr.fullwidth {
+    width: 100%;
+}
+
+.sidr.left.fullwidth {
+    left: -100%;
+}
+
+.sidr.right.fullwidth {
+    right: -100%;
+}
+/* END Settings for fullwidth */
