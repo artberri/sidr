@@ -67,6 +67,13 @@ h1 {
     line-height: 1.5em;
 }
 
+h2 {
+    font-size: 24px;
+    color: #444;
+    margin-bottom: 20px;
+    line-height: 1.5em;
+}
+
 p {
     font-size: 16px;
     margin-bottom: 20px;
@@ -95,6 +102,10 @@ ul li {
 
 .menu-button.bottom {
     top: 100px;
+}
+
+.menu-button.fixed {
+    position: fixed;
 }
 
 #overlay {
