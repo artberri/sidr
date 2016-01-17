@@ -49,7 +49,10 @@
     <script>
 
     $(document).ready(function () {
-      $('#simple-menu').sidr();
+      $('#simple-menu').sidr({
+        timing: 'ease-in-out',
+        speed: 500
+      });
     });
 
     $( window ).resize(function () {

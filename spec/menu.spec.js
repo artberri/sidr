@@ -319,9 +319,36 @@ describe('menu.js', () => {
                 status.moving = false;
             });
 
-            describe('and another menu is opened', () => {
+            describe('but is already opened', () => {
                 beforeEach(() => {
-                    status.opened = true;
+                    status.opened = 'sidr';
+                });
+
+                it('should not move the menu', () => {
+                    m.open('callback');
+
+                    moveStub.notCalled.should.equal(true);
+                });
+                it('should not call the onOpen callback', () => {
+                    m.open('callback');
+
+                    m.onOpen.notCalled.should.equal(true);
+                });
+            });
+
+            describe('and another menu is opened', () => {
+                var onCloseSpy;
+
+                beforeEach(() => {
+                    onCloseSpy = sinon.spy();
+                    status.opened = 'other';
+                    $('<div />')
+                        .attr('id', status.opened)
+                        .data({
+                            side: 'right',
+                            onClose: onCloseSpy
+                        })
+                        .appendTo($('body'));
                 });
 
                 it('should not move the menu', () => {
@@ -339,23 +366,6 @@ describe('menu.js', () => {
             describe('and there is not another menu opened', () => {
                 beforeEach(() => {
                     status.opened = false;
-                });
-
-                describe('and the menu is already visible', () => {
-                    beforeEach(() => {
-                        m.item = $('<div />')
-                                    .appendTo($('body'));
-                    });
-                    it('should not move the menu', () => {
-                        m.open('callback');
-
-                        moveStub.notCalled.should.equal(true);
-                    });
-                    it('should not call the onOpen callback', () => {
-                        m.open('callback');
-
-                        m.onOpen.notCalled.should.equal(true);
-                    });
                 });
 
                 describe('and the menu is hidden', () => {
@@ -414,9 +424,9 @@ describe('menu.js', () => {
 
             describe('and the menu is already closed', () => {
                 beforeEach(() => {
+                    status.opened = false;
                     m.item = $('<div />')
-                                .css('display', 'none')
-                                .appendTo($('body'));
+                        .appendTo($('body'));
                 });
                 it('should not move the menu', () => {
                     m.close('callback');
@@ -432,6 +442,7 @@ describe('menu.js', () => {
 
             describe('and the menu is visible', () => {
                 beforeEach(() => {
+                    status.opened = 'sidr';
                     m.item = $('<div />')
                                 .appendTo($('body'));
                 });
@@ -464,10 +475,10 @@ describe('menu.js', () => {
             m.open.restore();
         });
 
-        describe('when the menu container is not visible', () => {
+        describe('when the menu is closed', () => {
             beforeEach(() => {
+                status.opened = false;
                 m.item = $('<div />')
-                    .css('display', 'none')
                     .appendTo($('body'));
             });
 
@@ -483,8 +494,9 @@ describe('menu.js', () => {
             });
         });
 
-        describe('when the menu container is visible', () => {
+        describe('when the menu is opened', () => {
             beforeEach(() => {
+                status.opened = 'sidr';
                 m.item = $('<div />')
                     .appendTo($('body'));
             });

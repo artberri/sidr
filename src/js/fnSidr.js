@@ -43,14 +43,16 @@ function fillContent($sideMenu, settings) {
 }
 
 function fnSidr(options) {
-  var settings = $.extend({
+  var transitions = helper.transitions,
+      settings = $.extend({
         name: 'sidr',   // Name for the 'sidr'
         speed: 200,     // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
         side: 'left',   // Accepts 'left' or 'right'
         source: null,   // Override the source of the content.
-        renaming: true,  // The ids and classes will be prepended with a prefix when loading existent content
+        renaming: true, // The ids and classes will be prepended with a prefix when loading existent content
         body: 'body',   // Page container selector,
         displace: true, // Displace the body content or not
+        timing: 'ease', // Timing function for CSS transitions
         onOpen() {},    // Callback when sidr opened
         onClose() {}    // Callback when sidr closed
       }, options),
@@ -64,6 +66,12 @@ function fnSidr(options) {
       .appendTo($('body'));
   }
 
+  // Add transition to body if are supported
+  if (transitions.supported) {
+    $(settings.body).css(transitions.property, settings.side + ' ' + (settings.speed/1000) + 's ' + settings.timing);
+    $sideMenu.css(transitions.property, settings.side + ' ' + (settings.speed/1000) + 's ' + settings.timing);
+  }
+
   // Adding styles and options
   $sideMenu
     .addClass('sidr')
@@ -72,7 +80,8 @@ function fnSidr(options) {
       speed          : settings.speed,
       side           : settings.side,
       body           : settings.body,
-      displace      : settings.displace,
+      displace       : settings.displace,
+      timing         : settings.timing,
       onOpen         : settings.onOpen,
       onClose        : settings.onClose
     });
