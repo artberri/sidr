@@ -172,15 +172,17 @@ class Menu {
   }
 
   closeMenu(callback) {
+    var item = this.item;
+
     if (helper.transitions.supported) {
-      this.item.css(this.side, '')
+      item.css(this.side, '')
         .one(transitionEndEvent, () => {
           this.onCloseMenu(callback);
         });
     } else {
       let menuAnimation = this.getAnimation(closeAction, 'menu');
 
-      this.item.animate(menuAnimation, {
+      item.animate(menuAnimation, {
         queue: false,
         duration: this.speed,
         complete: () => {

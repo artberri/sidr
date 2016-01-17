@@ -59,6 +59,10 @@ function fnSidr(options) {
       name = settings.name,
       $sideMenu = $('#' + name);
 
+  function addTransition($element) {
+    $element.css(transitions.property, settings.side + ' ' + (settings.speed/1000) + 's ' + settings.timing);
+  }
+
   // If the side menu do not exist create it
   if ($sideMenu.length === 0) {
     $sideMenu = $('<div />')
@@ -68,8 +72,8 @@ function fnSidr(options) {
 
   // Add transition to body if are supported
   if (transitions.supported) {
-    $(settings.body).css(transitions.property, settings.side + ' ' + (settings.speed/1000) + 's ' + settings.timing);
-    $sideMenu.css(transitions.property, settings.side + ' ' + (settings.speed/1000) + 's ' + settings.timing);
+    addTransition($(settings.body));
+    addTransition($sideMenu);
   }
 
   // Adding styles and options

@@ -140,6 +140,10 @@ function fnSidr(options) {
       name = settings.name,
       $sideMenu = $('#' + name);
 
+  function addTransition($element) {
+    $element.css(transitions.property, settings.side + ' ' + settings.speed / 1000 + 's ' + settings.timing);
+  }
+
   // If the side menu do not exist create it
   if ($sideMenu.length === 0) {
     $sideMenu = $('<div />').attr('id', name).appendTo($('body'));
@@ -147,8 +151,8 @@ function fnSidr(options) {
 
   // Add transition to body if are supported
   if (transitions.supported) {
-    $(settings.body).css(transitions.property, settings.side + ' ' + settings.speed / 1000 + 's ' + settings.timing);
-    $sideMenu.css(transitions.property, settings.side + ' ' + settings.speed / 1000 + 's ' + settings.timing);
+    addTransition($(settings.body));
+    addTransition($sideMenu);
   }
 
   // Adding styles and options
@@ -476,14 +480,16 @@ var Menu = function () {
     value: function closeMenu(callback) {
       var _this3 = this;
 
+      var item = this.item;
+
       if (_helper2.default.transitions.supported) {
-        this.item.css(this.side, '').one(transitionEndEvent, function () {
+        item.css(this.side, '').one(transitionEndEvent, function () {
           _this3.onCloseMenu(callback);
         });
       } else {
         var menuAnimation = this.getAnimation(closeAction, 'menu');
 
-        this.item.animate(menuAnimation, {
+        item.animate(menuAnimation, {
           queue: false,
           duration: this.speed,
           complete: function complete() {
