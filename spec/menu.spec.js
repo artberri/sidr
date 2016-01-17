@@ -13,6 +13,8 @@ describe('menu.js', () => {
               .data('speed', 'speed')
               .data('side', 'side')
               .data('displace', 'displace')
+              .data('timing', 'timing')
+              .data('method', 'method')
               .data('onOpen', 'onOpen')
               .data('onClose', 'onClose')
               .data('body', 'body')
@@ -54,6 +56,16 @@ describe('menu.js', () => {
             m = new Menu('sidr');
 
             m.displace.should.be.equal('displace');
+        });
+        it('should set the timing property with the timing data property of the menu element', () => {
+            m = new Menu('sidr');
+
+            m.timing.should.be.equal('timing');
+        });
+        it('should set the method property with the method data property of the menu element', () => {
+            m = new Menu('sidr');
+
+            m.method.should.be.equal('method');
         });
         it('should set the onOpen property with the onOpen data property of the menu element', () => {
             m = new Menu('sidr');

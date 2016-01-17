@@ -20,6 +20,7 @@ class Menu {
     this.side = this.item.data('side');
     this.displace = this.item.data('displace');
     this.timing = this.item.data('timing');
+    this.method = this.item.data('method');
     this.onOpen = this.item.data('onOpen');
     this.onClose = this.item.data('onClose');
     this.body = $(this.item.data('body'));

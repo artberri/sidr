@@ -45,16 +45,17 @@ function fillContent($sideMenu, settings) {
 function fnSidr(options) {
   var transitions = helper.transitions,
       settings = $.extend({
-        name: 'sidr',   // Name for the 'sidr'
-        speed: 200,     // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
-        side: 'left',   // Accepts 'left' or 'right'
-        source: null,   // Override the source of the content.
-        renaming: true, // The ids and classes will be prepended with a prefix when loading existent content
-        body: 'body',   // Page container selector,
-        displace: true, // Displace the body content or not
-        timing: 'ease', // Timing function for CSS transitions
-        onOpen() {},    // Callback when sidr opened
-        onClose() {}    // Callback when sidr closed
+        name: 'sidr',     // Name for the 'sidr'
+        speed: 200,       // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
+        side: 'left',     // Accepts 'left' or 'right'
+        source: null,     // Override the source of the content.
+        renaming: true,   // The ids and classes will be prepended with a prefix when loading existent content
+        body: 'body',     // Page container selector,
+        displace: true,   // Displace the body content or not
+        timing: 'ease',   // Timing function for CSS transitions
+        method: 'toggle', // The method to call when element is clicked
+        onOpen() {},      // Callback when sidr opened
+        onClose() {}      // Callback when sidr closed
       }, options),
       name = settings.name,
       $sideMenu = $('#' + name);
@@ -81,6 +82,7 @@ function fnSidr(options) {
       body           : settings.body,
       displace       : settings.displace,
       timing         : settings.timing,
+      method         : settings.method,
       onOpen         : settings.onOpen,
       onClose        : settings.onClose
     });
@@ -104,7 +106,7 @@ function fnSidr(options) {
 
         if (!flag) {
           flag = true;
-          sidr('toggle', name);
+          sidr(settings.method, name);
 
           setTimeout(function () {
             flag = false;

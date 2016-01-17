@@ -132,6 +132,7 @@ function fnSidr(options) {
     body: 'body', // Page container selector,
     displace: true, // Displace the body content or not
     timing: 'ease', // Timing function for CSS transitions
+    method: 'toggle', // The method to call when element is clicked
     onOpen: function onOpen() {},
     // Callback when sidr opened
     onClose: function onClose() {} // Callback when sidr closed
@@ -157,6 +158,7 @@ function fnSidr(options) {
     body: settings.body,
     displace: settings.displace,
     timing: settings.timing,
+    method: settings.method,
     onOpen: settings.onOpen,
     onClose: settings.onClose
   });
@@ -180,7 +182,7 @@ function fnSidr(options) {
 
         if (!flag) {
           flag = true;
-          (0, _sidr2.default)('toggle', name);
+          (0, _sidr2.default)(settings.method, name);
 
           setTimeout(function () {
             flag = false;
@@ -311,6 +313,7 @@ var Menu = function () {
     this.side = this.item.data('side');
     this.displace = this.item.data('displace');
     this.timing = this.item.data('timing');
+    this.method = this.item.data('method');
     this.onOpen = this.item.data('onOpen');
     this.onClose = this.item.data('onClose');
     this.body = $(this.item.data('body'));
