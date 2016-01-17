@@ -114,3 +114,17 @@ ul li {
 .sidr-open #overlay {
     display: block;
 }
+
+/* Settings for fullwidth */
+.sidr.fullwidth {
+    width: 100%;
+}
+
+.sidr.left.fullwidth {
+    left: -100%;
+}
+
+.sidr.right.fullwidth {
+    right: -100%;
+}
+/* END Settings for fullwidth */
