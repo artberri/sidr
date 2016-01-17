@@ -19,6 +19,7 @@ class Menu {
     this.speed = this.item.data('speed');
     this.side = this.item.data('side');
     this.displace = this.item.data('displace');
+    this.timing = this.item.data('timing');
     this.onOpen = this.item.data('onOpen');
     this.onClose = this.item.data('onClose');
     this.body = $(this.item.data('body'));
@@ -53,10 +54,12 @@ class Menu {
 
   openBody() {
     if (this.displace){
-      let $body = this.body;
+      let transitions = helper.transitions,
+          $body = this.body;
 
-      if (helper.transitions.supported) {
-        $body.css(this.side, 0)
+      if (transitions.supported) {
+        $body.css(transitions.property, this.side + ' ' + (this.speed/1000) + 's ' + this.timing)
+          .css(this.side, 0)
           .css({
             width: $body.width(),
             position: 'absolute'
@@ -77,12 +80,20 @@ class Menu {
   }
 
   onCloseBody() {
-    this.body.css({
-      width: '',
-      position: '',
-      right: '',
-      left: ''
-    }).unbind(transitionEndEvent);
+    var transitions = helper.transitions,
+        resetStyles = {
+          width: '',
+          position: '',
+          right: '',
+          left: ''
+        };
+
+    if (transitions.supported) {
+      resetStyles[transitions.property] = '';
+    }
+
+    this.body.css(resetStyles)
+      .unbind(transitionEndEvent);
   }
 
   closeBody() {

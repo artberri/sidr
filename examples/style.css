@@ -88,6 +88,15 @@ ul li {
     text-indent: -9999px;
 }
 
+.menu-button.right {
+    right: 20px;
+    left: auto;
+}
+
+.menu-button.bottom {
+    top: 100px;
+}
+
 #overlay {
     position: absolute;
     position: fixed;

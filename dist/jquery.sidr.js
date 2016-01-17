@@ -140,19 +140,14 @@ function fnSidr(options) {
       name = settings.name,
       $sideMenu = $('#' + name);
 
-  function addTransition($element) {
-    $element.css(transitions.property, settings.side + ' ' + settings.speed / 1000 + 's ' + settings.timing);
-  }
-
   // If the side menu do not exist create it
   if ($sideMenu.length === 0) {
     $sideMenu = $('<div />').attr('id', name).appendTo($('body'));
   }
 
-  // Add transition to body if are supported
+  // Add transition to menu if are supported
   if (transitions.supported) {
-    addTransition($(settings.body));
-    addTransition($sideMenu);
+    $sideMenu.css(transitions.property, settings.side + ' ' + settings.speed / 1000 + 's ' + settings.timing);
   }
 
   // Adding styles and options
@@ -315,6 +310,7 @@ var Menu = function () {
     this.speed = this.item.data('speed');
     this.side = this.item.data('side');
     this.displace = this.item.data('displace');
+    this.timing = this.item.data('timing');
     this.onOpen = this.item.data('onOpen');
     this.onClose = this.item.data('onClose');
     this.body = $(this.item.data('body'));
@@ -353,10 +349,11 @@ var Menu = function () {
     key: 'openBody',
     value: function openBody() {
       if (this.displace) {
-        var $body = this.body;
+        var transitions = _helper2.default.transitions,
+            $body = this.body;
 
-        if (_helper2.default.transitions.supported) {
-          $body.css(this.side, 0).css({
+        if (transitions.supported) {
+          $body.css(transitions.property, this.side + ' ' + this.speed / 1000 + 's ' + this.timing).css(this.side, 0).css({
             width: $body.width(),
             position: 'absolute'
           });
@@ -377,12 +374,19 @@ var Menu = function () {
   }, {
     key: 'onCloseBody',
     value: function onCloseBody() {
-      this.body.css({
+      var transitions = _helper2.default.transitions,
+          resetStyles = {
         width: '',
         position: '',
         right: '',
         left: ''
-      }).unbind(transitionEndEvent);
+      };
+
+      if (transitions.supported) {
+        resetStyles[transitions.property] = '';
+      }
+
+      this.body.css(resetStyles).unbind(transitionEndEvent);
     }
   }, {
     key: 'closeBody',
