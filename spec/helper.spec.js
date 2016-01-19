@@ -1,6 +1,6 @@
 import helper from '../src/js/helper';
 
-describe('helper.js', () => {
+describe.only('helper.js', () => {
     describe('#isUrl()', () => {
         it('should not identify a number as a URL', () => {
             helper.isUrl(4).should.equal(false);
@@ -27,6 +27,9 @@ describe('helper.js', () => {
         });
         it('should identify a URL with a long path and query params', () => {
             helper.isUrl('http://whatever.com/foo/bar/hey.html?hey=ho&me&you=ok').should.equal(true);
+        });
+        it('should identify a URL with a long path and query params and the port', () => {
+            helper.isUrl('http://whatever.com:9000/foo/bar/hey.html?hey=ho&me&you=ok').should.equal(true);
         });
     });
 
