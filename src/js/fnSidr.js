@@ -54,8 +54,10 @@ function fnSidr(options) {
         displace: true,   // Displace the body content or not
         timing: 'ease',   // Timing function for CSS transitions
         method: 'toggle', // The method to call when element is clicked
-        onOpen() {},      // Callback when sidr opened
-        onClose() {}      // Callback when sidr closed
+        onOpen() {},      // Callback when sidr start opening
+        onClose() {},     // Callback when sidr start closing
+        onOpenEnd() {},   // Callback when sidr end opening
+        onCloseEnd() {}   // Callback when sidr end closing
       }, options),
       name = settings.name,
       $sideMenu = $('#' + name);
@@ -84,7 +86,9 @@ function fnSidr(options) {
       timing         : settings.timing,
       method         : settings.method,
       onOpen         : settings.onOpen,
-      onClose        : settings.onClose
+      onClose        : settings.onClose,
+      onOpenEnd      : settings.onOpenEnd,
+      onCloseEnd     : settings.onCloseEnd
     });
 
   $sideMenu = fillContent($sideMenu, settings);

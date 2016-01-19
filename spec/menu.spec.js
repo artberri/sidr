@@ -17,6 +17,8 @@ describe('menu.js', () => {
               .data('method', 'method')
               .data('onOpen', 'onOpen')
               .data('onClose', 'onClose')
+              .data('onOpenEnd', 'onOpenEnd')
+              .data('onCloseEnd', 'onCloseEnd')
               .data('body', 'body')
               .width(200)
               .appendTo($('body'));
@@ -70,12 +72,22 @@ describe('menu.js', () => {
         it('should set the onOpen property with the onOpen data property of the menu element', () => {
             m = new Menu('sidr');
 
-            m.onOpen.should.be.equal('onOpen');
+            m.onOpenCallback.should.be.equal('onOpen');
         });
         it('should set the onClose property with the onClose data property of the menu element', () => {
             m = new Menu('sidr');
 
-            m.onClose.should.be.equal('onClose');
+            m.onCloseCallback.should.be.equal('onClose');
+        });
+        it('should set the onOpenEnd property with the onOpen data property of the menu element', () => {
+            m = new Menu('sidr');
+
+            m.onOpenEndCallback.should.be.equal('onOpenEnd');
+        });
+        it('should set the onCloseEnd property with the onClose data property of the menu element', () => {
+            m = new Menu('sidr');
+
+            m.onCloseEndCallback.should.be.equal('onCloseEnd');
         });
         it('should set the body property with the jquery element using the body data property of the menu element as selector', () => {
             m = new Menu('sidr');
@@ -303,7 +315,7 @@ describe('menu.js', () => {
 
         beforeEach(() => {
             m = new Menu('sidr');
-            m.onOpen = sinon.spy();
+            m.onOpenCallback = sinon.spy();
             moveStub = sinon.stub(m, 'move');
         });
 
@@ -322,7 +334,7 @@ describe('menu.js', () => {
             it('should not call the onOpen callback', () => {
                 m.open('callback');
 
-                m.onOpen.notCalled.should.equal(true);
+                m.onOpenCallback.notCalled.should.equal(true);
             });
         });
 
@@ -344,7 +356,7 @@ describe('menu.js', () => {
                 it('should not call the onOpen callback', () => {
                     m.open('callback');
 
-                    m.onOpen.notCalled.should.equal(true);
+                    m.onOpenCallback.notCalled.should.equal(true);
                 });
             });
 
@@ -371,7 +383,7 @@ describe('menu.js', () => {
                 it('should not call the onOpen callback', () => {
                     m.open('callback');
 
-                    m.onOpen.notCalled.should.equal(true);
+                    m.onOpenCallback.notCalled.should.equal(true);
                 });
             });
 
@@ -394,7 +406,7 @@ describe('menu.js', () => {
                     it('should call the onOpen callback', () => {
                         m.open('callback');
 
-                        m.onOpen.called.should.equal(true);
+                        m.onOpenCallback.called.should.equal(true);
                     });
                 });
             });
@@ -406,7 +418,7 @@ describe('menu.js', () => {
 
         beforeEach(() => {
             m = new Menu('sidr');
-            m.onClose = sinon.spy();
+            m.onCloseCallback = sinon.spy();
             moveStub = sinon.stub(m, 'move');
         });
 
@@ -425,7 +437,7 @@ describe('menu.js', () => {
             it('should not call the onClose callback', () => {
                 m.close('callback');
 
-                m.onClose.notCalled.should.equal(true);
+                m.onCloseCallback.notCalled.should.equal(true);
             });
         });
 
@@ -448,7 +460,7 @@ describe('menu.js', () => {
                 it('should not call the onClose callback', () => {
                     m.close('callback');
 
-                    m.onClose.notCalled.should.equal(true);
+                    m.onCloseCallback.notCalled.should.equal(true);
                 });
             });
 
@@ -466,7 +478,7 @@ describe('menu.js', () => {
                 it('should call the onClose callback', () => {
                     m.close('callback');
 
-                    m.onClose.called.should.equal(true);
+                    m.onCloseCallback.called.should.equal(true);
                 });
             });
         });

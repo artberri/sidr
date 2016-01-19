@@ -134,8 +134,12 @@ function fnSidr(options) {
     timing: 'ease', // Timing function for CSS transitions
     method: 'toggle', // The method to call when element is clicked
     onOpen: function onOpen() {},
-    // Callback when sidr opened
-    onClose: function onClose() {} // Callback when sidr closed
+    // Callback when sidr start opening
+    onClose: function onClose() {},
+    // Callback when sidr start closing
+    onOpenEnd: function onOpenEnd() {},
+    // Callback when sidr end opening
+    onCloseEnd: function onCloseEnd() {} // Callback when sidr end closing
 
   }, options),
       name = settings.name,
@@ -160,7 +164,9 @@ function fnSidr(options) {
     timing: settings.timing,
     method: settings.method,
     onOpen: settings.onOpen,
-    onClose: settings.onClose
+    onClose: settings.onClose,
+    onOpenEnd: settings.onOpenEnd,
+    onCloseEnd: settings.onCloseEnd
   });
 
   $sideMenu = fillContent($sideMenu, settings);
@@ -314,8 +320,10 @@ var Menu = function () {
     this.displace = this.item.data('displace');
     this.timing = this.item.data('timing');
     this.method = this.item.data('method');
-    this.onOpen = this.item.data('onOpen');
-    this.onClose = this.item.data('onClose');
+    this.onOpenCallback = this.item.data('onOpen');
+    this.onCloseCallback = this.item.data('onClose');
+    this.onOpenEndCallback = this.item.data('onOpenEnd');
+    this.onCloseEndCallback = this.item.data('onCloseEnd');
     this.body = $(this.item.data('body'));
   }
 
@@ -433,12 +441,13 @@ var Menu = function () {
 
       this.item.unbind(transitionEndEvent);
 
-      // Callback
+      this.body.removeClass(bodyAnimationClass).addClass(this.openClass);
+
+      this.onOpenEndCallback();
+
       if (typeof callback === 'function') {
         callback(name);
       }
-
-      this.body.removeClass(bodyAnimationClass).addClass(this.openClass);
     }
   }, {
     key: 'openMenu',
@@ -475,12 +484,14 @@ var Menu = function () {
       _status2.default.moving = false;
       _status2.default.opened = false;
 
+      this.body.removeClass(bodyAnimationClass).removeClass(this.openClass);
+
+      this.onCloseEndCallback();
+
       // Callback
       if (typeof callback === 'function') {
         callback(name);
       }
-
-      this.body.removeClass(bodyAnimationClass).removeClass(this.openClass);
     }
   }, {
     key: 'closeMenu',
@@ -550,7 +561,7 @@ var Menu = function () {
       this.move('open', callback);
 
       // onOpen callback
-      this.onOpen();
+      this.onOpenCallback();
     }
   }, {
     key: 'close',
@@ -563,7 +574,7 @@ var Menu = function () {
       this.move('close', callback);
 
       // onClose callback
-      this.onClose();
+      this.onCloseCallback();
     }
   }, {
     key: 'toggle',
