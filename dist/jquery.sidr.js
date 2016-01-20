@@ -90,7 +90,6 @@ function fillContent($sideMenu, settings) {
 
     $sideMenu.html(newContent);
   } else if (typeof settings.source === 'string' && _helper2.default.isUrl(settings.source)) {
-    console.log(settings.source);
     $.get(settings.source, function (data) {
       $sideMenu.html(data);
     });
