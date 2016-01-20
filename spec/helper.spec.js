@@ -1,6 +1,6 @@
 import helper from '../src/js/helper';
 
-describe.only('helper.js', () => {
+describe('helper.js', () => {
     describe('#isUrl()', () => {
         it('should not identify a number as a URL', () => {
             helper.isUrl(4).should.equal(false);
