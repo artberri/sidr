@@ -21,4 +21,8 @@ The browser should open automatically with the sample index.
 
 - [Simple Menu that closes the menu on window resize](simple-menu.html)
 - [No displaced menu that closes when tapping anywhere on the screen or in a menu item](nodisplaced-menu-with-close-options.html)
+- [Multiple menus on both sides with different sources](multiple-menus.html)
+- [Full Width menu](full-width.html)
+- [Menu with anchors instead of links](anchor-menu.html)
+- [Menu with multiple callbacks](menu-with-callbacks.html)
 
