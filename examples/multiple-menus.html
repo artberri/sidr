@@ -4,40 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiple Menus - Sidr Example</title>
+    <title>Multiple Menus with different sources - Sidr Example</title>
     <!-- Include Sidr bundled CSS theme -->
     <link rel="stylesheet" href="../dist/stylesheets/jquery.sidr.dark.css">
     <!-- Your CSS -->
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-
-    <nav id="sidr-left-top">
-      <h1>Sidr Left Top</h1>
-      <ul>
-        <li><a href="index.html">All Examples</a></li>
-        <li class="active"><a href="#">Dummy 2</a></li>
-        <li><a href="#">Dummy 3</a></li>
-      </ul>
-    </nav>
-
-    <nav id="sidr-left-bottom">
-      <h1>Sidr Left Bottom</h1>
-      <ul>
-        <li><a href="index.html">All Examples</a></li>
-        <li class="active"><a href="#">Dummy 2</a></li>
-        <li><a href="#">Dummy 3</a></li>
-      </ul>
-    </nav>
-
-    <nav id="sidr-right-top">
-      <h1>Sidr Right Top</h1>
-      <ul>
-        <li><a href="index.html">All Examples</a></li>
-        <li class="active"><a href="#">Dummy 2</a></li>
-        <li><a href="#">Dummy 3</a></li>
-      </ul>
-    </nav>
 
     <nav id="sidr-right-bottom">
       <h1>Sidr Right Bottom</h1>
@@ -54,13 +27,24 @@
     <a id="sidr-right-bottom-button" class="menu-button bottom right" href="#sidr-right-bottom">Toggle menu</a>
 
     <div class="wrapper">
-      <h1>Sidr Multiple Menus Example</h1>
+      <h1>Sidr Multiple Menus with different sources Example</h1>
 
       <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
 
-      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+      <nav class="nav-sample">
+        <h4>This content will be inside</h4>
+        <ul class="classSample">
+          <li><a href="index.html">All Examples</a></li>
+          <li class="active"><a href="#">Dummy 2</a></li>
+          <li><a href="#">Dummy 3</a></li>
+        </ul>
+      </nav>
 
-      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+      <div id="sample2">
+        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+
+        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+      </div>
 
       <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
 
@@ -83,24 +67,31 @@
       $('#sidr-left-top-button').sidr({
         name: 'sidr-left-top',
         timing: 'ease-in-out',
-        speed: 500
+        speed: 500,
+        source: '.nav-sample, #sample2'
       });
 
       $('#sidr-left-bottom-button').sidr({
         name: 'sidr-left-bottom',
-        speed: 100
+        speed: 300,
+        source: '.nav-sample',
+        renaming: false
       });
 
       $('#sidr-right-top-button').sidr({
         name: 'sidr-right-top',
-        speed: 300,
-        side: 'right'
+        speed: 800,
+        side: 'right',
+        source: function () {
+          return '<p>This is the Sidr content generated with a callback</p>';
+        }
       });
 
       $('#sidr-right-bottom-button').sidr({
         name: 'sidr-right-bottom',
-        speed: 200,
-        side: 'right'
+        speed: 400,
+        side: 'right',
+        source: 'http://localhost:9000/examples/remote-content.html'
       });
     });
 

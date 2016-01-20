@@ -11,6 +11,7 @@ function fillContent($sideMenu, settings) {
 
     $sideMenu.html(newContent);
   } else if (typeof settings.source === 'string' && helper.isUrl(settings.source)) {
+    console.log(settings.source);
     $.get(settings.source, function(data) {
       $sideMenu.html(data);
     });
