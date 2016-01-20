@@ -8,6 +8,7 @@ describe('menu.js', () => {
 
     describe('#constructor()', () => {
         before(() => {
+            $('body').html('');
             $('<div />')
               .attr('id', 'sidr')
               .data('speed', 'speed')
