@@ -1,11 +1,13 @@
 # Changelog
 
-## Next version 2016-??-??
+## 2.1.0 2016-01-20
 
 New features:
-- Now it works with CSS3 transitions by default and fallbacks to jQUery.animate when not supported
+- Now it works with CSS3 transitions by default and fallbacks to jQuery.animate when not supported
 - Added `timing` option that can be used to indicate the transition timing function for the CSS3 transitions
 - Added `method` option to change the default behaviour of the button (that is currently the toggle method)
+- Added `onOpenEnd` option to add a callback that will be fired when the menu ends opening
+- Added `onCloseEnd` option to add a callback that will be fired when the menu ends closing
 
 Bug fixes:
 - Launch callback when a menu open is delayed until another one is closed
