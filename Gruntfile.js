@@ -1,4 +1,6 @@
 /* eslint global-require:0 */
+var babel = require('rollup-plugin-babel');
+
 module.exports = function(grunt) {
 
   require('load-grunt-tasks')(grunt);
@@ -6,6 +8,12 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
+    banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
+        '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
+        ' * Copyright (c) 2013-<%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+        ' Licensed <%= pkg.license %> */\n',
 
     clean: {
       dist: ['dist'],
@@ -32,11 +40,7 @@ module.exports = function(grunt) {
 
     uglify: {
       options: {
-        banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-        '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
-        ' * Copyright (c) 2013-<%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= pkg.license %> */\n'
+        banner: '<%= banner %>'
       },
       dist: {
         files: {
@@ -68,7 +72,7 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: ['src/jquery.sidr.js', 'src/js/*.js'],
-        tasks: 'browserify'
+        tasks: 'rollup'
       },
       compass: {
         files: ['src/scss/**/*.scss'],
@@ -107,24 +111,6 @@ module.exports = function(grunt) {
       }
     },
 
-    browserify: {
-      dist: {
-        options: {
-          transform: [
-            ['babelify', {
-              sourceMap: true,
-              presets: ['babel-preset-es2015']
-            }]
-          ]
-        },
-        files: {
-          'dist/jquery.<%= pkg.name %>.js': [
-            'src/jquery.<%= pkg.name %>.js'
-          ]
-        }
-      }
-    },
-
     karma: {
       unit: {
         configFile: 'karma.conf.js',
@@ -153,6 +139,25 @@ module.exports = function(grunt) {
               open: 'http://localhost:9000/examples/index.html'
           }
       }
+    },
+
+    rollup: {
+      options: {
+        banner: '<%= banner %>',
+        format: 'iife',
+        globals: {
+          jquery: 'jQuery'
+        },
+        plugins: [
+          babel({
+              exclude: './node_modules/**'
+          })
+        ]
+      },
+      files: {
+        dest: 'dist/jquery.<%= pkg.name %>.js',
+        src: 'src/jquery.<%= pkg.name %>.js'
+      }
     }
 
   });
@@ -172,7 +177,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'browserify',
+    'rollup',
     'compass:distmin',
     'copy:cssmin',
     'clean:cssmin',
@@ -183,7 +188,7 @@ module.exports = function(grunt) {
   grunt.registerTask('serve', [
     'clean:dist',
     'compass:dev',
-    'browserify',
+    'rollup',
     'connect:dist',
     'watch'
   ]);
