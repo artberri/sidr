@@ -1,4 +1,4 @@
-/*! sidr - v2.1.0 - 2016-01-23
+/*! sidr - v2.1.0 - 2016-01-24
  * http://www.berriart.com/sidr/
  * Copyright (c) 2013-2016 Alberto Varela; Licensed MIT */
 
