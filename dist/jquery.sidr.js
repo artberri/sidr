@@ -1,4 +1,4 @@
-/*! sidr - v2.1.0 - 2016-01-24
+/*! sidr - v2.1.0 - 2016-02-15
  * http://www.berriart.com/sidr/
  * Copyright (c) 2013-2016 Alberto Varela; Licensed MIT */
 
@@ -57,6 +57,7 @@
         }
       },
 
+
       // Add sidr prefixes
       addPrefixes: function addPrefixes($element) {
         this.addPrefix($element, 'id');
@@ -70,6 +71,7 @@
           $element.attr(attribute, toReplace.replace(/([A-Za-z0-9_.\-]+)/g, 'sidr-' + attribute + '-$1'));
         }
       },
+
 
       // Check if transitions is supported
       transitions: function () {
@@ -108,7 +110,7 @@
       }()
     };
 
-    var $$3 = jQuery;
+    var $$2 = jQuery;
 
     var bodyAnimationClass = 'sidr-animating';
     var openAction = 'open';
@@ -119,7 +121,7 @@
         babelHelpers.classCallCheck(this, Menu);
 
         this.name = name;
-        this.item = $$3('#' + name);
+        this.item = $$2('#' + name);
         this.openClass = name === 'sidr' ? 'sidr-open' : 'sidr-open ' + name + '-open';
         this.menuWidth = this.item.outerWidth(true);
         this.speed = this.item.data('speed');
@@ -131,7 +133,7 @@
         this.onCloseCallback = this.item.data('onClose');
         this.onOpenEndCallback = this.item.data('onOpenEnd');
         this.onCloseEndCallback = this.item.data('onCloseEnd');
-        this.body = $$3(this.item.data('body'));
+        this.body = $$2(this.item.data('body'));
       }
 
       babelHelpers.createClass(Menu, [{
@@ -157,7 +159,7 @@
 
           // Prepare page if container is body
           if (this.body.is('body')) {
-            var $html = $$3('html'),
+            var $html = $$2('html'),
                 scrollTop = $html.scrollTop();
 
             $html.css('overflow-x', prop).scrollTop(scrollTop);
@@ -286,7 +288,7 @@
             left: '',
             right: ''
           }).unbind(transitionEndEvent);
-          $$3('html').css('overflow-x', '');
+          $$2('html').css('overflow-x', '');
 
           sidrStatus.moving = false;
           sidrStatus.opened = false;
@@ -396,7 +398,7 @@
       return Menu;
     }();
 
-    var $$2 = jQuery;
+    var $$1 = jQuery;
 
     function execute(action, name, callback) {
       var sidr = new Menu(name);
@@ -412,7 +414,7 @@
           sidr.toggle(callback);
           break;
         default:
-          $$2.error('Method ' + action + ' does not exist on jQuery.sidr');
+          $$1.error('Method ' + action + ' does not exist on jQuery.sidr');
           break;
       }
     }
@@ -450,7 +452,7 @@
       }
     }
 
-    var $$1 = jQuery;
+    var $$3 = jQuery;
 
     function fillContent($sideMenu, settings) {
       // The menu content
@@ -459,23 +461,23 @@
 
         $sideMenu.html(newContent);
       } else if (typeof settings.source === 'string' && helper.isUrl(settings.source)) {
-        $$1.get(settings.source, function (data) {
+        $$3.get(settings.source, function (data) {
           $sideMenu.html(data);
         });
       } else if (typeof settings.source === 'string') {
         var htmlContent = '',
             selectors = settings.source.split(',');
 
-        $$1.each(selectors, function (index, element) {
-          htmlContent += '<div class="sidr-inner">' + $$1(element).html() + '</div>';
+        $$3.each(selectors, function (index, element) {
+          htmlContent += '<div class="sidr-inner">' + $$3(element).html() + '</div>';
         });
 
         // Renaming ids and classes
         if (settings.renaming) {
-          var $htmlContent = $$1('<div />').html(htmlContent);
+          var $htmlContent = $$3('<div />').html(htmlContent);
 
           $htmlContent.find('*').each(function (index, element) {
-            var $element = $$1(element);
+            var $element = $$3(element);
 
             helper.addPrefixes($element);
           });
@@ -484,7 +486,7 @@
 
         $sideMenu.html(htmlContent);
       } else if (settings.source !== null) {
-        $$1.error('Invalid Sidr Source');
+        $$3.error('Invalid Sidr Source');
       }
 
       return $sideMenu;
@@ -492,7 +494,7 @@
 
     function fnSidr(options) {
       var transitions = helper.transitions,
-          settings = $$1.extend({
+          settings = $$3.extend({
         name: 'sidr', // Name for the 'sidr'
         speed: 200, // Accepts standard jQuery effects speeds (i.e. fast, normal or milliseconds)
         side: 'left', // Accepts 'left' or 'right'
@@ -512,11 +514,11 @@
 
       }, options),
           name = settings.name,
-          $sideMenu = $$1('#' + name);
+          $sideMenu = $$3('#' + name);
 
       // If the side menu do not exist create it
       if ($sideMenu.length === 0) {
-        $sideMenu = $$1('<div />').attr('id', name).appendTo($$1('body'));
+        $sideMenu = $$3('<div />').attr('id', name).appendTo($$3('body'));
       }
 
       // Add transition to menu if are supported
@@ -541,7 +543,7 @@
       $sideMenu = fillContent($sideMenu, settings);
 
       return this.each(function () {
-        var $this = $$1(this),
+        var $this = $$3(this),
             data = $this.data('sidr'),
             flag = false;
 
