@@ -13,8 +13,9 @@
     "node_modules",
     "bower_components",
     "vendor",
-    "test",
-    "tests"
+    "dist/coverage/",
+    "spec",
+    "examples"
   ],
   "keywords": [
     "menu",
