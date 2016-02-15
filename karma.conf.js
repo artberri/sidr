@@ -1,3 +1,7 @@
+/* eslint global-require:0 */
+var babel = require('rollup-plugin-babel'),
+    istanbul = require('rollup-plugin-istanbul');
+
 module.exports = function (config) {
     'use strict';
 
@@ -5,14 +9,14 @@ module.exports = function (config) {
 
         basePath: './',
 
-        frameworks: ['browserify', 'mocha', 'chai', 'sinon-chai', 'jquery-1.8.3'],
+        frameworks: ['mocha', 'chai', 'sinon-chai', 'jquery-1.8.3'],
 
         files: [
             'spec/*.spec.js'
         ],
 
         preprocessors: {
-          'spec/*.spec.js': ['browserify']
+            'spec/*.spec.js': ['rollup']
         },
 
         reporters: ['mocha', 'coverage'],
@@ -28,20 +32,22 @@ module.exports = function (config) {
 
         browsers: ['PhantomJS'],
 
-        browserify: {
-            debug: true,
-            transform: [
-                ['babelify', {
-                    sourceMap: true,
-                    presets: ['babel-preset-es2015']
-                }],
-                ['browserify-istanbul', {
-                    ignore: ['**/*.spec.js'],
-                    instrumenterConfig: {
-                        embedSource: true
-                    }
-                }]
-            ]
+        rollupPreprocessor: {
+            rollup: {
+                plugins: [
+                    babel({
+                        presets: [
+                            require('babel-preset-es2015-rollup')
+                        ]
+                    }),
+                    istanbul({
+                        exclude: ['spec/*.spec.js']
+                    })
+                ]
+            },
+            bundle: {
+                sourceMap: 'inline'
+            }
         },
 
         coverageReporter: {

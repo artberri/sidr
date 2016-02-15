@@ -9,7 +9,5 @@
 import sidr from './js/sidr';
 import fnSidr from './js/fnSidr';
 
-var $ = jQuery;
-
-$.sidr = sidr;
-$.fn.sidr = fnSidr;
+jQuery.sidr = sidr;
+jQuery.fn.sidr = fnSidr;
