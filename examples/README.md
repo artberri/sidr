@@ -25,4 +25,5 @@ The browser should open automatically with the sample index.
 - [Full Width menu](full-width.html)
 - [Menu with anchors instead of links](anchor-menu.html)
 - [Menu with multiple callbacks](menu-with-callbacks.html)
+- [Menu with fastclick disabled](only-click.html)
 

@@ -6,9 +6,9 @@ import helper from './helper';
 var $ = jQuery;
 
 const bodyAnimationClass = 'sidr-animating',
-      openAction = 'open',
-      closeAction = 'close',
-      transitionEndEvent = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
+  openAction = 'open',
+  closeAction = 'close',
+  transitionEndEvent = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 
 class Menu {
   constructor(name) {
@@ -30,7 +30,7 @@ class Menu {
 
   getAnimation(action, element) {
     var animation = {},
-        prop = this.side;
+      prop = this.side;
 
     if (action === 'open' && element === 'body') {
       animation[prop] = this.menuWidth + 'px';
@@ -49,19 +49,19 @@ class Menu {
     // Prepare page if container is body
     if (this.body.is('body')) {
       let $html = $('html'),
-          scrollTop = $html.scrollTop();
+        scrollTop = $html.scrollTop();
 
       $html.css('overflow-x', prop).scrollTop(scrollTop);
     }
   }
 
   openBody() {
-    if (this.displace){
+    if (this.displace) {
       let transitions = helper.transitions,
-          $body = this.body;
+        $body = this.body;
 
       if (transitions.supported) {
-        $body.css(transitions.property, this.side + ' ' + (this.speed/1000) + 's ' + this.timing)
+        $body.css(transitions.property, this.side + ' ' + (this.speed / 1000) + 's ' + this.timing)
           .css(this.side, 0)
           .css({
             width: $body.width(),
@@ -84,12 +84,12 @@ class Menu {
 
   onCloseBody() {
     var transitions = helper.transitions,
-        resetStyles = {
-          width: '',
-          position: '',
-          right: '',
-          left: ''
-        };
+      resetStyles = {
+        width: '',
+        position: '',
+        right: '',
+        left: ''
+      };
 
     if (transitions.supported) {
       resetStyles[transitions.property] = '';
@@ -100,7 +100,7 @@ class Menu {
   }
 
   closeBody() {
-    if (this.displace){
+    if (this.displace) {
       if (helper.transitions.supported) {
         this.body.css(this.side, 0)
           .one(transitionEndEvent, () => {

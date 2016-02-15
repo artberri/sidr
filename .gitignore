@@ -10,3 +10,4 @@ node_modules
 vendor/
 bower_components/
 dist/coverage/
+dist/stylesheets/*.map

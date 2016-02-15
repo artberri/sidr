@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Only Click - Sidr Example</title>
+    <!-- Include Sidr bundled CSS theme -->
+    <link rel="stylesheet" href="../dist/stylesheets/jquery.sidr.dark.css">
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <div id="other-name">
+      <ul>
+          <li><a href="index.html">All Examples</a></li>
+          <li>
+              <a href="#">Sample link 2</a>
+              <ul>
+                  <li><a href="#">Child link 1</a></li>
+                  <li><a href="#">Child link 2</a></li>
+              </ul>
+          </li>
+          <li><a href="#">Sample link 3</a></li>
+      </ul>
+      <form>
+          <input type="text" placeholder="Search..." />
+      </form>
+      <h2>Sample heading</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mollis sapien non nisi sodales pulvinar. Curabitur odio velit, porta sit amet lobortis sit amet, volutpat ut justo.</p>
+    </div>
+
+    <a id="only-click" class="menu-button" href="#sidr">Toggle menu</a>
+
+    <div class="wrapper">
+      <h1>Sidr Only Click Example</h1>
+
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+
+      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+    </div>
+
+    <!-- Include jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <!-- Try it also with jQuery 1.x or other version from the CDN -->
+    <!-- <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script> -->
+    <!-- Include the Sidr JS -->
+    <script src="../dist/jquery.sidr.js"></script>
+
+    <!-- Your code -->
+    <script>
+
+    $(document).ready(function () {
+      $('#only-click').sidr({
+        name: 'other-name',
+        bind: 'click',
+        onOpen: function () {
+          console.log($.sidr('status'));
+        },
+        onClose: function () {
+          console.log($.sidr('status'));
+        },
+        onOpenEnd: function () {
+          console.log($.sidr('status'));
+        },
+        onCloseEnd: function () {
+          console.log($.sidr('status'));
+        }
+      });
+    });
+
+    $( window ).resize(function () {
+      $.sidr('close', 'sidr');
+    });
+
+    </script>
+
+  </body>
+</html>
