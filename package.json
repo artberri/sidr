@@ -1,7 +1,7 @@
 {
   "name": "sidr",
   "description": "jQuery plugin for creating side menus and the easiest way for doing your menu responsive",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "homepage": "http://www.berriart.com/sidr/",
   "author": {
     "name": "Alberto Varela",
@@ -18,7 +18,6 @@
     "node": ">= 0.6.0"
   },
   "scripts": {
-    "preinstall": "bundle install --path=vendor/bundle && npm install -g bower grunt-cli && bower install",
     "test": "grunt"
   },
   "dependencies": {

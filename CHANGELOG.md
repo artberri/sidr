@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.2.1 2016-02-17
+
+Bug fixes:
+- Removed the preinstall script that was generating problems when installing from npm
+
+## 2.2.0 2016-02-16
+
+New features:
+- Added `bind` option that can be used to change the button event that will trigger the menu toggle
+- Added the `status` method to get the Sidr status object
+
+From this version the bundling is done with rollup instead of browserify.
+
 ## 2.1.0 2016-01-20
 
 New features:
