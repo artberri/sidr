@@ -2,9 +2,8 @@
   "name": "sidr",
   "description": "jQuery plugin for creating side menus and the easiest way for doing your menu responsive",
   "main": [
-    "src/jquery.sidr.js",
-    "src/scss/jquery.sidr.dark.scss",
-    "src/scss/jquery.sidr.light.scss"
+    "dist/jquery.sidr.js",
+    "dist/stylesheets/jquery.sidr.dark.css"
   ],
   "moduleType": [],
   "license": "MIT",

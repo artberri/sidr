@@ -24,8 +24,11 @@
     "jquery": ">=1.4.3"
   },
   "devDependencies": {
-    "babel-preset-es2015-rollup": "^1.1.1",
+    "babel-cli": "^6.14.0",
+    "babel-plugin-external-helpers": "^6.8.0",
+    "babel-preset-es2015": "^6.14.0",
     "babelify": "^7.2.0",
+    "babelrc-rollup": "^3.0.0",
     "chai": "^3.4.1",
     "codeclimate-test-reporter": "^0.3.1",
     "grunt": "^0.4.5",
@@ -38,7 +41,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-eslint": "^17.3.1",
     "grunt-karma": "^0.12.1",
-    "grunt-rollup": "^0.6.1",
+    "grunt-rollup": "^0.6.2",
     "grunt-scss-lint": "^0.3.8",
     "karma": "^0.13.19",
     "karma-chai": "^0.1.0",
@@ -47,14 +50,14 @@
     "karma-mocha": "^0.2.1",
     "karma-mocha-reporter": "^1.1.5",
     "karma-phantomjs-launcher": "^0.2.3",
-    "karma-rollup-preprocessor": "^2.0.1",
+    "karma-rollup-plugin": "^0.2.3",
     "karma-sinon-chai": "^1.1.0",
     "load-grunt-tasks": "^3.4.0",
     "mocha": "^2.3.4",
     "phantomjs": "^1.9.19",
     "rollup": "^0.25.1",
     "rollup-plugin-babel": "^2.3.9",
-    "rollup-plugin-istanbul": "^1.0.0"
+    "rollup-plugin-istanbul": "git@github.com:artberri/rollup-plugin-istanbul.git#master"
   },
   "keywords": [
     "menu",

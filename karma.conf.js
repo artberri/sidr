@@ -1,5 +1,6 @@
 /* eslint global-require:0 */
-var babel = require('rollup-plugin-babel'),
+var babelrc = require('babelrc-rollup').default,
+    babel = require('rollup-plugin-babel'),
     istanbul = require('rollup-plugin-istanbul');
 
 module.exports = function (config) {
@@ -33,21 +34,14 @@ module.exports = function (config) {
         browsers: ['PhantomJS'],
 
         rollupPreprocessor: {
-            rollup: {
-                plugins: [
-                    babel({
-                        presets: [
-                            require('babel-preset-es2015-rollup')
-                        ]
-                    }),
-                    istanbul({
-                        exclude: ['spec/*.spec.js']
-                    })
-                ]
-            },
-            bundle: {
-                sourceMap: 'inline'
-            }
+            plugins: [
+                istanbul({
+                    exclude: ['spec/*.spec.js']
+                }),
+                babel(babelrc())
+            ],
+            format: 'iife',
+            sourceMap: 'inline'
         },
 
         coverageReporter: {

@@ -1,37 +1,9 @@
-/*! sidr - v2.2.1 - 2016-02-17
+/*! sidr - v2.2.1 - 2016-09-24
  * http://www.berriart.com/sidr/
  * Copyright (c) 2013-2016 Alberto Varela; Licensed MIT */
 
 (function () {
   'use strict';
-
-  var babelHelpers = {};
-
-  babelHelpers.classCallCheck = function (instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  };
-
-  babelHelpers.createClass = function () {
-    function defineProperties(target, props) {
-      for (var i = 0; i < props.length; i++) {
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-      }
-    }
-
-    return function (Constructor, protoProps, staticProps) {
-      if (protoProps) defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) defineProperties(Constructor, staticProps);
-      return Constructor;
-    };
-  }();
-
-  babelHelpers;
 
   var sidrStatus = {
     moving: false,
@@ -41,7 +13,6 @@
   var helper = {
     // Check for valids urls
     // From : http://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
-
     isUrl: function isUrl(str) {
       var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
       '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
@@ -85,8 +56,8 @@
       } else {
         (function () {
           var prefixes = ['moz', 'webkit', 'o', 'ms'],
-              prefix = undefined,
-              i = undefined;
+              prefix = void 0,
+              i = void 0;
 
           property = property.charAt(0).toUpperCase() + property.substr(1);
           supported = function () {
@@ -110,6 +81,30 @@
     }()
   };
 
+  var classCallCheck = function (instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  };
+
+  var createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
   var $$2 = jQuery;
 
   var bodyAnimationClass = 'sidr-animating';
@@ -118,7 +113,7 @@
   var transitionEndEvent = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
   var Menu = function () {
     function Menu(name) {
-      babelHelpers.classCallCheck(this, Menu);
+      classCallCheck(this, Menu);
 
       this.name = name;
       this.item = $$2('#' + name);
@@ -136,7 +131,7 @@
       this.body = $$2(this.item.data('body'));
     }
 
-    babelHelpers.createClass(Menu, [{
+    createClass(Menu, [{
       key: 'getAnimation',
       value: function getAnimation(action, element) {
         var animation = {},
