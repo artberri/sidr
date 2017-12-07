@@ -1,0 +1,12 @@
+@import '../common/variables';
+
+:root {
+  --sidrFontFamily: 'lucida grande', tahoma, verdana, arial, sans-serif;
+  --sidrFontSize: 15px;
+
+  --sidrBackground: #f8f8f8;
+  --sidrBackgroundShadowColor: #ebebeb;
+  --sidrTextColor: #333;
+  --sidrBoxShadowColor: #000;
+  --sidrInputBackgroundColor: #000;
+}

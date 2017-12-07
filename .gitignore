@@ -4,10 +4,8 @@
 .DS_Store
 .tags
 .tags_sorted_by_file
+package-lock.json
 node_modules
-.sass-cache
-.bundle/
-vendor/
-bower_components/
 dist/coverage/
 dist/stylesheets/*.map
+dist/vendor/

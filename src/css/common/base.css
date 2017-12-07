@@ -1,0 +1,183 @@
+.sidr {
+    /* Default Settings */
+    display: block;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: 999999;
+    width: var(--sidrSidebarWidth);
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    & .sidr-inner {
+        padding: 0 0 15px;
+
+        & > p {
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+    }
+
+    &.sidr-right {
+        left: auto;
+        right: -var(--sidrSidebarWidth);
+    }
+
+    &.sidr-left {
+        left: -var(--sidrSidebarWidth);
+        right: auto;
+    }
+
+    /* Theme Settings */
+    font-family: var(--sidrFontFamily);
+    font-size: var(--sidrFontSize);
+    background: var(--sidrBackground);
+    color: var(--sidrTextColor);
+    box-shadow: 0 0 5px 5px var(--sidrBackgroundShadowColor) inset;
+
+    & h1,
+    & h2,
+    & h3,
+    & h4,
+    & h5,
+    & h6 {
+        font-size: var(--sidrFontSize) - 4;
+        font-weight: normal;
+        padding: 0 15px;
+        margin: 0 0 5px;
+        color: var(--sidrTextColor);
+        line-height: 24px;
+        box-shadow: 0 5px 5px 3px rgba(var(--sidrBoxShadowColor), .2);
+    }
+
+    & p {
+        font-size: var(--sidrFontSize) - 2;
+        margin: 0 0 12px;
+
+        & a {
+            color: rgba(var(--sidrTextColor), .9);
+        }
+    }
+
+    & > p {
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    & ul {
+        display: block;
+        margin: 0 0 15px;
+        padding: 0;
+        border-top: 1px solid darken(var(--sidrBackground), 10%);
+        border-bottom: 1px solid lighten(var(--sidrBackground), 10%);
+
+        & li {
+            display: block;
+            margin: 0;
+            line-height: 48px;
+            border-top: 1px solid lighten(var(--sidrBackground), 10%);
+            border-bottom: 1px solid darken(var(--sidrBackground), 10%);
+
+            &:hover,
+            &.active,
+            &.sidr-class-active {
+                border-top: 0;
+                line-height: 49px;
+
+                & > a,
+                & > span {
+                    box-shadow: 0 0 15px 3px var(--sidrBackgroundShadowColor) inset;
+                }
+            }
+
+            & a,
+            & span {
+                padding: 0 15px;
+                display: block;
+                text-decoration: none;
+                color: var(--sidrTextColor);
+            }
+
+            & ul {
+                border-bottom: 0;
+                margin: 0;
+
+                & li {
+                    line-height: 40px;
+                    font-size: var(--sidrFontSize) - 2;
+
+                    &:last-child {
+                        border-bottom: 0;
+                    }
+
+                    &:hover,
+                    &.active,
+                    &.sidr-class-active {
+                        border-top: 0;
+                        line-height: 41px;
+
+                        & > a,
+                        & > span {
+                            box-shadow: 0 0 15px 3px var(--sidrBackgroundShadowColor) inset;
+                        }
+                    }
+
+                    & a,
+                    & span {
+                        color: rgba(var(--sidrTextColor), .8);
+                        padding-left: 30px;
+                    }
+                }
+            }
+        }
+    }
+
+    & form {
+        margin: 0 15px;
+    }
+
+    & label {
+        font-size: var(--sidrFontSize) - 2;
+    }
+
+    & input[type="text"],
+    & input[type="password"],
+    & input[type="date"],
+    & input[type="datetime"],
+    & input[type="email"],
+    & input[type="number"],
+    & input[type="search"],
+    & input[type="tel"],
+    & input[type="time"],
+    & input[type="url"],
+    & textarea,
+    & select {
+        width: 100%;
+        font-size: var(--sidrFontSize) - 2;
+        padding: 5px;
+        box-sizing: border-box;
+        margin: 0 0 10px;
+        border-radius: 2px;
+        border: 0;
+        background: rgba(var(--sidrInputBackgroundColor), .1);
+        color: rgba(var(--sidrTextColor), .6);
+        display: block;
+        clear: both;
+    }
+
+    & input[type=checkbox] {
+        width: auto;
+        display: inline;
+        clear: none;
+    }
+
+    & input[type=button],
+    & input[type=submit] {
+        color: var(--sidrBackground);
+        background: var(--sidrTextColor);
+
+        &:hover {
+            background: rgba(var(--sidrTextColor), .9);
+        }
+    }
+}

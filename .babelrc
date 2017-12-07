@@ -10,5 +10,10 @@
   ],
   "plugins": [
     "external-helpers"
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": ["external-helpers", "istanbul"]
+    }
+  }
 }

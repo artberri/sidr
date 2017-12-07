@@ -1,0 +1,22 @@
+@import 'common/variables';
+
+.sidr {
+    display: block;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: 999999;
+    width: var(--sidrSidebarWidth);
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &.sidr-right {
+        left: auto;
+        right: -var(--sidrSidebarWidth);
+    }
+
+    &.sidr-left {
+        left: -var(--sidrSidebarWidth);
+        right: auto;
+    }
+}

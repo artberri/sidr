@@ -1,16 +1,14 @@
 sudo: false
 language: node_js
-rvm:
-- 2.2.0
 node_js:
-- 5.4.1
-before_install:
-- gem update --system
-- gem install bundler
-- bundle install
-- npm install -g bower grunt-cli
-- bower install
-cache: bundler
+- "8"
+before_script:
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter; fi
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then chmod +x ./cc-test-reporter; fi
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter before-build; fi
+script: npm run dist
+after_script:
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 notifications:
   email: false
 deploy:
