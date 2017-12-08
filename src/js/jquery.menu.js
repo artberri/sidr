@@ -7,7 +7,6 @@ var $ = jQuery
 
 const bodyAnimationClass = 'sidr-animating'
 const openAction = 'open'
-const closeAction = 'close'
 const transitionEndEvent = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend'
 
 class Menu {
@@ -28,21 +27,6 @@ class Menu {
     this.body = $(this.item.data('body'))
   }
 
-  getAnimation (action, element) {
-    let animation = {}
-    let prop = this.side
-
-    if (action === 'open' && element === 'body') {
-      animation[prop] = this.menuWidth + 'px'
-    } else if (action === 'close' && element === 'menu') {
-      animation[prop] = '-' + this.menuWidth + 'px'
-    } else {
-      animation[prop] = 0
-    }
-
-    return animation
-  }
-
   prepareBody (action) {
     var prop = (action === 'open') ? 'hidden' : ''
 
@@ -60,25 +44,13 @@ class Menu {
       let transitions = helper.transitions
       let $body = this.body
 
-      if (transitions.supported) {
-        $body.css(transitions.property, this.side + ' ' + (this.speed / 1000) + 's ' + this.timing)
-          .css(this.side, 0)
-          .css({
-            width: $body.width(),
-            position: 'absolute'
-          })
-        $body.css(this.side, this.menuWidth + 'px')
-      } else {
-        let bodyAnimation = this.getAnimation(openAction, 'body')
-
-        $body.css({
+      $body.css(transitions.property, this.side + ' ' + (this.speed / 1000) + 's ' + this.timing)
+        .css(this.side, 0)
+        .css({
           width: $body.width(),
           position: 'absolute'
-        }).animate(bodyAnimation, {
-          queue: false,
-          duration: this.speed
         })
-      }
+      $body.css(this.side, this.menuWidth + 'px')
     }
   }
 
@@ -91,9 +63,7 @@ class Menu {
       left: ''
     }
 
-    if (transitions.supported) {
-      resetStyles[transitions.property] = ''
-    }
+    resetStyles[transitions.property] = ''
 
     this.body.css(resetStyles)
       .unbind(transitionEndEvent)
@@ -101,22 +71,10 @@ class Menu {
 
   closeBody () {
     if (this.displace) {
-      if (helper.transitions.supported) {
-        this.body.css(this.side, 0)
-          .one(transitionEndEvent, () => {
-            this.onCloseBody()
-          })
-      } else {
-        let bodyAnimation = this.getAnimation(closeAction, 'body')
-
-        this.body.animate(bodyAnimation, {
-          queue: false,
-          duration: this.speed,
-          complete: () => {
-            this.onCloseBody()
-          }
+      this.body.css(this.side, 0)
+        .one(transitionEndEvent, () => {
+          this.onCloseBody()
         })
-      }
     }
   }
 
@@ -149,22 +107,10 @@ class Menu {
   openMenu (callback) {
     var $item = this.item
 
-    if (helper.transitions.supported) {
-      $item.css(this.side, 0)
-        .one(transitionEndEvent, () => {
-          this.onOpenMenu(callback)
-        })
-    } else {
-      let menuAnimation = this.getAnimation(openAction, 'menu')
-
-      $item.css('display', 'block').animate(menuAnimation, {
-        queue: false,
-        duration: this.speed,
-        complete: () => {
-          this.onOpenMenu(callback)
-        }
+    $item.css(this.side, 0)
+      .one(transitionEndEvent, () => {
+        this.onOpenMenu(callback)
       })
-    }
   }
 
   onCloseMenu (callback) {
@@ -191,22 +137,10 @@ class Menu {
   closeMenu (callback) {
     var item = this.item
 
-    if (helper.transitions.supported) {
-      item.css(this.side, '')
-        .one(transitionEndEvent, () => {
-          this.onCloseMenu(callback)
-        })
-    } else {
-      let menuAnimation = this.getAnimation(closeAction, 'menu')
-
-      item.animate(menuAnimation, {
-        queue: false,
-        duration: this.speed,
-        complete: () => {
-          this.onCloseMenu()
-        }
+    item.css(this.side, '')
+      .one(transitionEndEvent, () => {
+        this.onCloseMenu(callback)
       })
-    }
   }
 
   moveMenu (action, callback) {

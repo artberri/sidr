@@ -6,8 +6,6 @@
  * Licensed under the MIT license.
  */
 
-import sidr from './js/jquery.sidr'
-import fnSidr from './js/jquery.fnSidr'
+import sidr from './js/sidr'
 
-jQuery.sidr = sidr
-jQuery.fn.sidr = fnSidr
+window.sidr = sidr

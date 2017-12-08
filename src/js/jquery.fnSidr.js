@@ -1,6 +1,6 @@
 import helper from './helper'
 import status from './status'
-import sidr from './sidr'
+import sidr from './jquery.sidr'
 
 var $ = jQuery
 
@@ -70,10 +70,8 @@ function fnSidr (options) {
       .appendTo($('body'))
   }
 
-  // Add transition to menu if are supported
-  if (transitions.supported) {
-    $sideMenu.css(transitions.property, settings.side + ' ' + (settings.speed / 1000) + 's ' + settings.timing)
-  }
+  // Add transition to menu
+  $sideMenu.css(transitions.property, settings.side + ' ' + (settings.speed / 1000) + 's ' + settings.timing)
 
   // Adding styles and options
   $sideMenu

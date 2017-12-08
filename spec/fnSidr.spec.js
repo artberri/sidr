@@ -1,4 +1,4 @@
-import fnSidr from '../src/js/fnSidr'
+import fnSidr from '../src/js/jquery.fnSidr'
 
 var $ = jQuery
 

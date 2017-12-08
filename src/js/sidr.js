@@ -1,40 +1,30 @@
-import execute from './execute'
-import status from './status'
+import defaultOptions from './default.options'
+import store from './menu.store'
+import utils from './utils/utils'
+import Menu from './models/menu'
+import events from './events'
+import runner from './runner'
 
-let i
-let $ = jQuery
-let publicMethods = ['open', 'close', 'toggle']
-let methodName
-let methods = {}
-let getMethod = function (methodName) {
-  return function (name, callback) {
-    // Check arguments
-    if (typeof name === 'function') {
-      callback = name
-      name = 'sidr'
-    } else if (!name) {
-      name = 'sidr'
-    }
+export default {
+  new (selector, options) {
+    let settings = utils.extend(defaultOptions, options)
+    store.add(settings.name, new Menu(settings))
+    events.init(selector, settings)
+  },
 
-    execute(methodName, name, callback)
+  status () {
+    return runner('status', ...arguments)
+  },
+
+  close () {
+    return runner('close', ...arguments)
+  },
+
+  open () {
+    return runner('open', ...arguments)
+  },
+
+  toggle () {
+    return runner('toggle', ...arguments)
   }
 }
-
-for (i = 0; i < publicMethods.length; i++) {
-  methodName = publicMethods[i]
-  methods[methodName] = getMethod(methodName)
-}
-
-function sidr (method) {
-  if (method === 'status') {
-    return status
-  } else if (methods[method]) {
-    return methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
-  } else if (typeof method === 'function' || typeof method === 'string' || !method) {
-    return methods.toggle.apply(this, arguments)
-  } else {
-    $.error('Method ' + method + ' does not exist on jQuery.sidr')
-  }
-}
-
-export default sidr

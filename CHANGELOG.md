@@ -2,6 +2,17 @@
 
 ## 3.0.0 XXXX-XX-XX (Unreleased)
 
+Breaking changes:
+
+- Option 'bind' (event that triggers the menu) allows only a single event
+- Default value for 'bind' (event that triggers the menu) is now `click` (it was `touchstart click`, both)
+- Drop support for browsers not supporting animations
+- Classes added to the menus change from `left` and `right` to `sidr-left` and `sidr-right` to avoid collisions
+- Supports only browsers that natively support the following features:
+  - <https://caniuse.com/#search=querySelectorAll>
+  - <https://caniuse.com/#feat=classlist>
+  - <https://caniuse.com/#search=transitions>
+
 Internals:
 
 - Update dev dependencies

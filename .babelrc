@@ -2,8 +2,11 @@
   "sourceMap": true,
   "presets": [
     [
-      "es2015",
+      "env",
       {
+        "targets": {
+          "browsers": ["last 2 versions", "IE >= 10", "Safari >= 6", "iOS >= 5", "> 1%", "Android >= 3"]
+        },
         "modules": false
       }
     ]

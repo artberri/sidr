@@ -1,22 +1,20 @@
-import Menu from './menu'
-
-var $ = jQuery
+import store from './menu.store'
 
 function execute (action, name, callback) {
-  var sidr = new Menu(name)
+  let menu = store.get(name)
 
   switch (action) {
     case 'open':
-      sidr.open(callback)
+      menu.open(callback)
       break
     case 'close':
-      sidr.close(callback)
+      menu.close(callback)
       break
     case 'toggle':
-      sidr.toggle(callback)
+      menu.toggle(callback)
       break
     default:
-      $.error('Method ' + action + ' does not exist on jQuery.sidr')
+      console.error('Method ' + action + ' does not exist on sidr')
       break
   }
 }
