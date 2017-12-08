@@ -6,6 +6,6 @@
 .tags_sorted_by_file
 package-lock.json
 node_modules
-dist/coverage/
+coverage/
 dist/stylesheets/*.map
 dist/vendor/

@@ -2,6 +2,11 @@
 
 ## 3.0.0 XXXX-XX-XX (Unreleased)
 
+New features:
+
+- jQuery is not needed anymore, now, Sidr is just a JS library which is available also as a jQuery Plugin
+- New `reload` method to make easier to handle dynamic data, eliminating the need of destroying it and reinstantiate the slider. Thanks to @liladani: <https://github.com/artberri/sidr/pull/176> (TODO)
+
 Breaking changes:
 
 - Option 'bind' (event that triggers the menu) allows only a single event

@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Only Click - Sidr Example</title>
     <!-- Include Sidr bundled CSS theme -->
-    <link rel="stylesheet" href="../dist/stylesheets/sidr.dark.css">
+    <link rel="stylesheet" href="../../dist/stylesheets/sidr.dark.css">
     <!-- Your CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
   </head>
   <body>
 
@@ -34,7 +34,9 @@
     <a id="only-click" class="menu-button" href="#sidr">Toggle menu</a>
 
     <div class="wrapper">
-      <h1>Sidr Only Click Example</h1>
+      <h1>Sidr Only Touch Example</h1>
+
+      <h2>Needs to be tested on a touch device or with the browser dev tools and emulation enabled</h2>
 
       <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
 
@@ -50,11 +52,11 @@
     </div>
 
     <!-- Include jQuery -->
-    <script src="../dist/vendor/jquery.js"></script>
+    <script src="../../dist/vendor/jquery.js"></script>
     <!-- Try it also with jQuery 1.x or other version from the CDN -->
     <!-- <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script> -->
     <!-- Include the Sidr JS -->
-    <script src="../dist/jquery.sidr.js"></script>
+    <script src="../../dist/jquery.sidr.js"></script>
 
     <!-- Your code -->
     <script>
@@ -62,7 +64,7 @@
     $(document).ready(function () {
       $('#only-click').sidr({
         name: 'other-name',
-        bind: 'click',
+        bind: 'touchstart',
         onOpen: function () {
           console.log($.sidr('status'));
         },
@@ -79,7 +81,7 @@
     });
 
     $( window ).resize(function () {
-      $.sidr('close', 'sidr');
+      $.sidr('close', 'other-name');
     });
 
     </script>

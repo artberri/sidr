@@ -578,29 +578,28 @@ function runner(method) {
   }
 }
 
-function initEvents(button, settings) {
-  var data = button.getAttribute('data-sidr');
-
-  // If the plugin hasn't been initialized yet
-  if (!data) {
-    var name = settings.name;
-    var bind = settings.bind;
-    var method = settings.method;
-
-    button.setAttribute('data-sidr', name);
-    dom.bind(button, bind, function (event) {
-      event.preventDefault();
-
-      runner(method, name);
-    });
-  }
-}
-
 var events = {
   init: function init(selector, settings) {
     var buttons = dom.qsa(selector);
     for (var i = 0; i < buttons.length; i++) {
-      initEvents(buttons[i], settings);
+      this.addEvent(buttons[i], settings);
+    }
+  },
+  addEvent: function addEvent(button, settings) {
+    var data = button.getAttribute('data-sidr');
+
+    // If the plugin hasn't been initialized yet
+    if (!data) {
+      var name = settings.name;
+      var bind = settings.bind;
+      var method = settings.method;
+
+      button.setAttribute('data-sidr', name);
+      dom.bind(button, bind, function (event) {
+        event.preventDefault();
+
+        runner(method, name);
+      });
     }
   }
 };
