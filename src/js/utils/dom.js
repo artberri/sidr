@@ -1,3 +1,11 @@
+function addPrefix (item, attribute) {
+  let toReplace = item.getAttribute(attribute)
+
+  if (typeof toReplace === 'string' && toReplace !== '' && toReplace !== 'sidr-inner') {
+    item.setAttribute(attribute, toReplace.replace(/([A-Za-z0-9_.-]+)/g, 'sidr-' + attribute + '-$1'))
+  }
+}
+
 export default {
   id (elementId) {
     return document.getElementById(elementId)
@@ -50,20 +58,12 @@ export default {
 
     let items = elem.querySelectorAll('*')
     for (let i = 0; i < items.length; i++) {
-      this.addPrefix(items[i], 'id')
-      this.addPrefix(items[i], 'class')
+      addPrefix(items[i], 'id')
+      addPrefix(items[i], 'class')
       items[i].removeAttribute('style')
     }
 
     return elem.innerHTML
-  },
-
-  addPrefix (item, attribute) {
-    let toReplace = item.getAttribute(attribute)
-
-    if (typeof toReplace === 'string' && toReplace !== '' && toReplace !== 'sidr-inner') {
-      item.setAttribute(attribute, toReplace.replace(/([A-Za-z0-9_.-]+)/g, 'sidr-' + attribute + '-$1'))
-    }
   },
 
   transitions: (function () {

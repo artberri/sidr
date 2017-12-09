@@ -5,7 +5,10 @@
 New features:
 
 - jQuery is not needed anymore, now, Sidr is just a JS library which is available also as a jQuery Plugin
+- `left`/`right` transforms replaced with CSS3 2D Transforms (translateX) (TODO)
 - New `reload` method to make easier to handle dynamic data, eliminating the need of destroying it and reinstantiate the slider. Thanks to @liladani: <https://github.com/artberri/sidr/pull/176> (TODO)
+- New displace format resizing body. Thanks to @p0lar-bear: <https://github.com/artberri/sidr/pull/150> (TODO)
+- Allow to keep menus opened. Thanks to @wtfred: https://github.com/artberri/sidr/pull/181 (TODO)
 
 Breaking changes:
 
@@ -17,12 +20,14 @@ Breaking changes:
   - <https://caniuse.com/#search=querySelectorAll>
   - <https://caniuse.com/#feat=classlist>
   - <https://caniuse.com/#search=transitions>
+  - <https://caniuse.com/#search=CSS3%202D%20Transforms>
 
 Internals:
 
 - Update dev dependencies
 - Switch from Grunt to NPM Scripts
 - Switch from SASS + COMPASS to PostCSS
+- Switch from PhantomJS to Headless Chrome for testing
 
 ## 2.2.1 2016-02-17
 

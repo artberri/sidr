@@ -3,6 +3,8 @@ let babelrc = require('babelrc-rollup').default
 let babel = require('rollup-plugin-babel')
 let istanbul = require('rollup-plugin-istanbul')
 
+process.env.CHROME_BIN = require('puppeteer').executablePath()
+
 module.exports = function (config) {
   config.set({
 
@@ -11,11 +13,11 @@ module.exports = function (config) {
     frameworks: ['mocha', 'chai', 'sinon-chai', 'jquery-1.8.3'],
 
     files: [
-      { pattern: 'spec/*.spec.js', watched: false }
+      { pattern: 'spec/**/*.spec.js', watched: false }
     ],
 
     preprocessors: {
-      'spec/*.spec.js': ['rollup']
+      'spec/**/*.spec.js': ['rollup']
     },
 
     reporters: ['mocha', 'coverage'],
@@ -29,12 +31,12 @@ module.exports = function (config) {
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
-    browsers: ['PhantomJS'],
+    browsers: ['ChromeHeadless'],
 
     rollupPreprocessor: {
       plugins: [
         istanbul({
-          exclude: ['spec/*.spec.js']
+          exclude: ['spec/**/*.spec.js']
         }),
         babel(babelrc())
       ],

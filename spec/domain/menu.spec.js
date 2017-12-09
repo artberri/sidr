@@ -1,5 +1,5 @@
-import Menu from '../src/js/models/menu'
-import status from '../src/js/status'
+import Menu from '../../src/js/models/menu'
+import status from '../../src/js/status'
 
 var $ = jQuery
 

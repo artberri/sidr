@@ -1,123 +1,54 @@
 import fnSidr from '../src/js/jquery.fnSidr'
+import store from '../src/js/menu.store'
+import Menu from '../src/js/models/menu'
+import events from '../src/js/events'
 
-var $ = jQuery
-
-$.fn.sidr = fnSidr
-
-describe.skip('fnSidr.js', () => {
+describe('fnSidr.js', () => {
   describe('#fnSidr()', () => {
-    var button
+    let sandbox = sinon.sandbox.create()
+    let items = []
 
     beforeEach(() => {
-      $('body').html('')
-      button = $('<a />')
-        .appendTo($('body'))
+      sandbox.stub(Menu.prototype, 'init')
     })
 
     afterEach(() => {
-      button.remove()
+      sandbox.restore()
+      items = []
+      document.body.innerHTML = ''
+      document.body.style = ''
     })
 
-    describe('when the sidr element does not exist', () => {
-      it('should create a sidr div', () => {
-        button.sidr()
-
-        $('#sidr').prop('tagName').should.equal('DIV')
+    it('should add the new Menu to the menu store', () => {
+      sandbox.stub(events, 'addEvent')
+      let addStub = sandbox.stub(store, 'add').callsFake((name, menu) => {
+        items.push(menu)
       })
+
+      fnSidr.apply({
+        each: () => {}
+      }, {
+        name: 'acme'
+      })
+
+      sandbox.assert.calledOnce(addStub)
+      items.length.should.equal(1)
     })
 
-    describe('when the sidr element already exists', () => {
-      var existentSidr
+    it('should call addEvent on each jquery element', (done) => {
+      sandbox.stub(store, 'add')
+      let addEventStub = sandbox.stub(events, 'addEvent')
 
-      beforeEach(() => {
-        existentSidr = $('<nav />')
-          .attr('id', 'sidr')
-          .appendTo($('body'))
+      fnSidr.apply({
+        each: (callback) => {
+          callback()
+          done()
+        }
+      }, {
+        name: 'acme'
       })
 
-      it('should use the existent element', () => {
-        button.sidr()
-
-        existentSidr.data('speed').should.equal(200)
-      })
-    })
-
-    describe('when no options are set', () => {
-      it('should set the default speed', () => {
-        button.sidr()
-
-        $('#sidr').data('speed').should.equal(200)
-      })
-      it('should set the default side', () => {
-        button.sidr()
-
-        $('#sidr').data('side').should.equal('left')
-      })
-      it('should set the default body', () => {
-        button.sidr()
-
-        $('#sidr').data('body').should.equal('body')
-      })
-      it('should set the default displace', () => {
-        button.sidr()
-
-        $('#sidr').data('displace').should.equal(true)
-      })
-      it('should set the default timing', () => {
-        button.sidr()
-
-        $('#sidr').data('timing').should.equal('ease')
-      })
-      it('should set the default method', () => {
-        button.sidr()
-
-        $('#sidr').data('method').should.equal('toggle')
-      })
-    })
-
-    describe('when options are set', () => {
-      it('should accept custom speed', () => {
-        button.sidr({
-          speed: 500
-        })
-
-        $('#sidr').data('speed').should.equal(500)
-      })
-      it('should accept custom side', () => {
-        button.sidr({
-          side: 'right'
-        })
-
-        $('#sidr').data('side').should.equal('right')
-      })
-      it('should accept custom body', () => {
-        button.sidr({
-          body: '.otherclass'
-        })
-
-        $('#sidr').data('body').should.equal('.otherclass')
-      })
-      it('should accept custom displace', () => {
-        button.sidr({
-          displace: false
-        })
-
-        $('#sidr').data('displace').should.equal(false)
-      })
-      it('should accept custom timing', () => {
-        button.sidr({
-          timing: 'ease-in-out'
-        })
-
-        $('#sidr').data('timing').should.equal('ease-in-out')
-      })
-      it('should accept custom method', () => {
-        button.sidr({
-          method: 'open'
-        })
-
-        $('#sidr').data('method').should.equal('open')
-      })
+      sandbox.assert.calledOnce(addEventStub)
     })
   })
 })

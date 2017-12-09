@@ -6,3 +6,7 @@ env:
   jquery: true
   node: true
   mocha: true
+
+globals:
+  sinon: true
+  should: true

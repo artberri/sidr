@@ -1,4 +1,4 @@
-/*! sidr - v3.0.0 - 2017-12-08
+/*! sidr - v3.0.0 - 2017-12-09
   http://www.berriart.com/sidr/
   * Copyright (c) 2013-2017 Alberto Varela; Licensed MIT */
 (function () {
@@ -74,6 +74,14 @@ var utils = {
   }
 };
 
+function addPrefix(item, attribute) {
+  var toReplace = item.getAttribute(attribute);
+
+  if (typeof toReplace === 'string' && toReplace !== '' && toReplace !== 'sidr-inner') {
+    item.setAttribute(attribute, toReplace.replace(/([A-Za-z0-9_.-]+)/g, 'sidr-' + attribute + '-$1'));
+  }
+}
+
 var dom = {
   id: function id(elementId) {
     return document.getElementById(elementId);
@@ -118,19 +126,12 @@ var dom = {
 
     var items = elem.querySelectorAll('*');
     for (var i = 0; i < items.length; i++) {
-      this.addPrefix(items[i], 'id');
-      this.addPrefix(items[i], 'class');
+      addPrefix(items[i], 'id');
+      addPrefix(items[i], 'class');
       items[i].removeAttribute('style');
     }
 
     return elem.innerHTML;
-  },
-  addPrefix: function addPrefix(item, attribute) {
-    var toReplace = item.getAttribute(attribute);
-
-    if (typeof toReplace === 'string' && toReplace !== '' && toReplace !== 'sidr-inner') {
-      item.setAttribute(attribute, toReplace.replace(/([A-Za-z0-9_.-]+)/g, 'sidr-' + attribute + '-$1'));
-    }
   },
 
 
