@@ -1,12 +1,28 @@
 import dom from '../utils/dom'
+import BaseElement from './base.element'
 
 const bodyAnimationClass = 'sidr-animating'
 const openAction = 'open'
 
-class Body {
+function isBody (element) {
+  return element.tagName === 'BODY'
+}
+
+function openClasses (name) {
+  let classes = 'sidr-open'
+
+  if (name !== 'sidr') {
+    classes += ' ' + name + '-open'
+  }
+
+  return classes
+}
+
+class Body extends BaseElement {
   constructor (settings, menuWidth) {
+    super(dom.qs(settings.body))
+
     this.name = settings.name
-    this.item = dom.qs(settings.body)
     this.side = settings.side
     this.speed = settings.speed
     this.timing = settings.timing
@@ -18,24 +34,23 @@ class Body {
     var prop = (action === openAction) ? 'hidden' : ''
 
     // Prepare page if container is body
-    if (this.item.tagName === 'BODY') {
-      let html = dom.qs('html')
-      let scrollTop = html.scrollTop
-
-      html.style.overflowX = prop
-      html.scrollTop = scrollTop
+    if (isBody(this.element)) {
+      let html = new BaseElement(dom.qs('html'))
+      let scrollTop = html.scrollTop()
+      html.style('overflowX', prop)
+      html.scrollTop(scrollTop)
     }
   }
 
   unprepare () {
-    if (this.item.tagName === 'BODY') {
-      let html = dom.qs('html')
-      html.style.overflowX = ''
+    if (isBody(this.element)) {
+      let html = new BaseElement(dom.qs('html'))
+      html.style('overflowX', '')
     }
   }
 
   move (action) {
-    this.item.classList.add(bodyAnimationClass)
+    this.addClass(bodyAnimationClass)
     if (action === openAction) {
       this.open()
     } else {
@@ -46,59 +61,54 @@ class Body {
   open () {
     if (this.displace) {
       let transitions = dom.transitions
-      let item = this.item
-
-      item.style[transitions.cssProperty] = this.side + ' ' + (this.speed / 1000) + 's ' + this.timing
-      item.style[this.side] = 0
-      item.style.width = item.offsetWidth + 'px'
-      item.style.position = 'absolute'
-      item.style[this.side] = this.menuWidth + 'px'
+      let styles = {
+        width: this.offsetWidth() + 'px',
+        position: 'absolute'
+      }
+      this.style(this.side, '0')
+      this.style(transitions.cssProperty, this.side + ' ' + (this.speed / 1000) + 's ' + this.timing)
+      this.style(styles)
+      setTimeout(() => this.style(this.side, this.menuWidth + 'px'), 1)
     }
   }
 
   onClose () {
     let transitions = dom.transitions
-    let item = this.item
+    let styles = {
+      width: '',
+      position: '',
+      right: '',
+      left: ''
+    }
 
-    item.style[transitions.cssProperty] = ''
-    item.style.right = ''
-    item.style.left = ''
-    item.style.width = ''
-    item.style.position = ''
-
-    dom.unbind(item, transitions.event, this.temporalCallback)
+    styles[transitions.cssProperty] = ''
+    this.style(styles)
+    this.unbind(transitions.event, this.temporalCallback)
   }
 
   close () {
     if (this.displace) {
       let transitions = dom.transitions
-      let item = this.item
 
-      item.style[this.side] = 0
+      this.style(this.side, 0)
       let self = this
       this.temporalCallback = () => {
         self.onClose()
       }
-      dom.bind(item, transitions.event, this.temporalCallback)
+      this.bind(transitions.event, this.temporalCallback)
     }
   }
 
   removeAnimationClass () {
-    this.item.classList.remove(bodyAnimationClass)
+    this.removeClass(bodyAnimationClass)
   }
 
   removeOpenClass () {
-    this.item.classList.remove('sidr-open')
-    if (this.name !== 'sidr') {
-      this.item.classList.remove(this.name + '-open')
-    }
+    this.removeClass(openClasses(this.name))
   }
 
   addOpenClass () {
-    this.item.classList.add('sidr-open')
-    if (this.name !== 'sidr') {
-      this.item.classList.add(this.name + '-open')
-    }
+    this.addClass(openClasses(this.name))
   }
 }
 

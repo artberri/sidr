@@ -19,26 +19,12 @@ export default {
     return document.querySelectorAll(selectors)
   },
 
-  bind (element, event, callback) {
-    element.addEventListener(event, callback, false)
-  },
-
-  unbind (element, event, callback) {
-    element.removeEventListener(event, callback, false)
-  },
-
-  createMenu (elementId) {
+  createElement (elementId) {
     var elem = document.createElement('div')
     elem.id = elementId
     document.body.appendChild(elem)
 
     return elem
-  },
-
-  replaceHTML (element, content) {
-    element.innerHTML = content
-
-    return element
   },
 
   getHTMLContent (selectors) {

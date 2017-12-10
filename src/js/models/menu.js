@@ -3,9 +3,12 @@ import dom from '../utils/dom'
 import utils from '../utils/utils'
 import status from '../status'
 import store from '../menu.store'
+import BaseElement from './base.element'
 
-class Menu {
+class Menu extends BaseElement {
   constructor (settings) {
+    super(dom.id(settings.name))
+
     this.name = settings.name
     this.speed = settings.speed
     this.side = settings.side
@@ -23,32 +26,25 @@ class Menu {
   }
 
   init (settings) {
-    let name = this.name
-    let sideMenu = dom.id(name)
-
     // If the side menu do not exist create it
-    if (!sideMenu) {
-      sideMenu = dom.createMenu(name)
+    if (!this.element) {
+      this.element = dom.createElement(this.name)
     }
 
-    // Add transition to menu
-    sideMenu.style[dom.transitions.cssProperty] = this.side + ' ' + (this.speed / 1000) + 's ' + this.timing
-    // Add required classes
-    sideMenu.classList.add('sidr')
-    sideMenu.classList.add('sidr-' + this.side)
+    this.style(dom.transitions.cssProperty, this.side + ' ' + (this.speed / 1000) + 's ' + this.timing)
+    this.addClass('sidr sidr-' + this.side)
+    this.body = new Body(settings, this.offsetWidth())
 
-    this.item = sideMenu
-    this.fillWithContent()
-    this.body = new Body(settings, this.item.offsetWidth)
+    this.reload()
   }
 
-  fillWithContent () {
+  reload () {
     if (typeof this.source === 'function') {
       let newContent = this.source(name)
-      dom.replaceHTML(this.item, newContent)
+      this.html(newContent)
     } else if (typeof this.source === 'string' && utils.isUrl(this.source)) {
       utils.fetch(this.source, (newContent) => {
-        dom.replaceHTML(this.item, newContent)
+        this.html(newContent)
       })
     } else if (typeof this.source === 'string') {
       let htmlContent = dom.getHTMLContent(this.source)
@@ -57,7 +53,7 @@ class Menu {
         htmlContent = dom.addPrefixes(htmlContent)
       }
 
-      dom.replaceHTML(this.item, htmlContent)
+      this.html(htmlContent)
     } else if (this.source !== null) {
       console.error('Invalid Sidr Source')
     }
@@ -90,8 +86,6 @@ class Menu {
     }
 
     this.move('open', callback)
-
-    // onOpen callback
     this.onOpenCallback()
   }
 
@@ -102,8 +96,6 @@ class Menu {
     }
 
     this.move('close', callback)
-
-    // onClose callback
     this.onCloseCallback()
   }
 
@@ -116,16 +108,14 @@ class Menu {
   }
 
   onOpenMenu (callback) {
-    var name = this.name
+    let name = this.name
 
     status.moving = false
     status.opened = name
 
-    dom.unbind(this.item, dom.transitions.event, this.temporalOpenMenuCallback)
-
+    this.unbind(dom.transitions.event, this.temporalOpenMenuCallback)
     this.body.removeAnimationClass()
     this.body.addOpenClass()
-
     this.onOpenEndCallback()
 
     if (typeof callback === 'function') {
@@ -134,22 +124,21 @@ class Menu {
   }
 
   openMenu (callback) {
-    let item = this.item
-
-    item.style[this.side] = 0
     let self = this
+
+    this.style(this.side, 0)
     this.temporalOpenMenuCallback = () => {
       self.onOpenMenu(callback)
     }
-    dom.bind(item, dom.transitions.event, this.temporalOpenMenuCallback)
+    this.bind(dom.transitions.event, this.temporalOpenMenuCallback)
   }
 
   onCloseMenu (callback) {
-    let item = this.item
-
-    dom.unbind(item, dom.transitions.event, this.temporalCloseMenuCallback)
-    item.style.left = ''
-    item.style.right = ''
+    this.unbind(dom.transitions.event, this.temporalCloseMenuCallback)
+    this.style({
+      left: '',
+      right: ''
+    })
     this.body.unprepare()
 
     status.moving = false
@@ -157,25 +146,20 @@ class Menu {
 
     this.body.removeAnimationClass()
     this.body.removeOpenClass()
-
     this.onCloseEndCallback()
-
-    // Callback
     if (typeof callback === 'function') {
       callback(name)
     }
   }
 
   closeMenu (callback) {
-    var item = this.item
-
-    item.style[this.side] = ''
-
     let self = this
+
+    this.style(this.side, '')
     this.temporalCloseMenuCallback = () => {
       self.onCloseMenu(callback)
     }
-    dom.bind(item, dom.transitions.event, this.temporalCloseMenuCallback)
+    this.bind(dom.transitions.event, this.temporalCloseMenuCallback)
   }
 
   moveMenu (action, callback) {

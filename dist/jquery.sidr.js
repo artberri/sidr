@@ -1,4 +1,4 @@
-/*! sidr - v3.0.0 - 2017-12-09
+/*! sidr - v3.0.0 - 2017-12-10
   http://www.berriart.com/sidr/
   * Copyright (c) 2013-2017 Alberto Varela; Licensed MIT */
 (function () {
@@ -24,6 +24,9 @@ function execute(action, name, callback) {
       break;
     case 'close':
       menu.close(callback);
+      break;
+    case 'reload':
+      menu.reload();
       break;
     case 'toggle':
       menu.toggle(callback);
@@ -54,7 +57,7 @@ var getMethod = function getMethod(methodName) {
 };
 
 var methods = {};
-var publicMethods = ['open', 'close', 'toggle'];
+var publicMethods = ['open', 'close', 'toggle', 'reload'];
 for (var i = 0; i < publicMethods.length; i++) {
   var methodName = publicMethods[i];
   methods[methodName] = getMethod(methodName);
@@ -128,23 +131,12 @@ var dom = {
   qsa: function qsa(selectors) {
     return document.querySelectorAll(selectors);
   },
-  bind: function bind(element, event, callback) {
-    element.addEventListener(event, callback, false);
-  },
-  unbind: function unbind(element, event, callback) {
-    element.removeEventListener(event, callback, false);
-  },
-  createMenu: function createMenu(elementId) {
+  createElement: function createElement(elementId) {
     var elem = document.createElement('div');
     elem.id = elementId;
     document.body.appendChild(elem);
 
     return elem;
-  },
-  replaceHTML: function replaceHTML(element, content) {
-    element.innerHTML = content;
-
-    return element;
   },
   getHTMLContent: function getHTMLContent(selectors) {
     var htmlContent = '';
@@ -239,20 +231,155 @@ var createClass = function () {
   };
 }();
 
+
+
+
+
+
+
+
+
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+
+
+
+
+
+
+
+
+
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
+
+function changeClasses(element, action, classes) {
+  var classesArray = classes.split(' ');
+  for (var i = 0; i < classesArray.length; i++) {
+    var newClass = classesArray[i].trim();
+    element.classList[action](newClass);
+  }
+}
+
+var BaseElement = function () {
+  function BaseElement(element) {
+    classCallCheck(this, BaseElement);
+
+    this.element = element;
+  }
+
+  createClass(BaseElement, [{
+    key: 'bind',
+    value: function bind(event, callback) {
+      this.element.addEventListener(event, callback, false);
+    }
+  }, {
+    key: 'unbind',
+    value: function unbind(event, callback) {
+      this.element.removeEventListener(event, callback, false);
+    }
+  }, {
+    key: 'style',
+    value: function style(property, value) {
+      if (typeof property === 'string') {
+        this.element.style[property] = value;
+      } else {
+        for (var key in property) {
+          if (property.hasOwnProperty(key)) {
+            this.element.style[key] = property[key];
+          }
+        }
+      }
+    }
+  }, {
+    key: 'addClass',
+    value: function addClass(classes) {
+      changeClasses(this.element, 'add', classes);
+    }
+  }, {
+    key: 'removeClass',
+    value: function removeClass(classes) {
+      changeClasses(this.element, 'remove', classes);
+    }
+  }, {
+    key: 'html',
+    value: function html(value) {
+      if (value) {
+        this.element.innerHTML = value;
+      } else {
+        return this.element.innerHTML;
+      }
+    }
+  }, {
+    key: 'scrollTop',
+    value: function scrollTop(value) {
+      if (value) {
+        this.element.scrollTop = value;
+      } else {
+        return this.element.scrollTop;
+      }
+    }
+  }, {
+    key: 'offsetWidth',
+    value: function offsetWidth() {
+      return this.element.offsetWidth;
+    }
+  }]);
+  return BaseElement;
+}();
+
 var bodyAnimationClass = 'sidr-animating';
 var openAction = 'open';
 
-var Body = function () {
+function isBody(element) {
+  return element.tagName === 'BODY';
+}
+
+function openClasses(name) {
+  var classes = 'sidr-open';
+
+  if (name !== 'sidr') {
+    classes += ' ' + name + '-open';
+  }
+
+  return classes;
+}
+
+var Body = function (_BaseElement) {
+  inherits(Body, _BaseElement);
+
   function Body(settings, menuWidth) {
     classCallCheck(this, Body);
 
-    this.name = settings.name;
-    this.item = dom.qs(settings.body);
-    this.side = settings.side;
-    this.speed = settings.speed;
-    this.timing = settings.timing;
-    this.displace = settings.displace;
-    this.menuWidth = menuWidth;
+    var _this = possibleConstructorReturn(this, (Body.__proto__ || Object.getPrototypeOf(Body)).call(this, dom.qs(settings.body)));
+
+    _this.name = settings.name;
+    _this.side = settings.side;
+    _this.speed = settings.speed;
+    _this.timing = settings.timing;
+    _this.displace = settings.displace;
+    _this.menuWidth = menuWidth;
+    return _this;
   }
 
   createClass(Body, [{
@@ -261,26 +388,25 @@ var Body = function () {
       var prop = action === openAction ? 'hidden' : '';
 
       // Prepare page if container is body
-      if (this.item.tagName === 'BODY') {
-        var html = dom.qs('html');
-        var scrollTop = html.scrollTop;
-
-        html.style.overflowX = prop;
-        html.scrollTop = scrollTop;
+      if (isBody(this.element)) {
+        var html = new BaseElement(dom.qs('html'));
+        var scrollTop = html.scrollTop();
+        html.style('overflowX', prop);
+        html.scrollTop(scrollTop);
       }
     }
   }, {
     key: 'unprepare',
     value: function unprepare() {
-      if (this.item.tagName === 'BODY') {
-        var html = dom.qs('html');
-        html.style.overflowX = '';
+      if (isBody(this.element)) {
+        var html = new BaseElement(dom.qs('html'));
+        html.style('overflowX', '');
       }
     }
   }, {
     key: 'move',
     value: function move(action) {
-      this.item.classList.add(bodyAnimationClass);
+      this.addClass(bodyAnimationClass);
       if (action === openAction) {
         this.open();
       } else {
@@ -290,123 +416,120 @@ var Body = function () {
   }, {
     key: 'open',
     value: function open() {
+      var _this2 = this;
+
       if (this.displace) {
         var transitions = dom.transitions;
-        var item = this.item;
-
-        item.style[transitions.cssProperty] = this.side + ' ' + this.speed / 1000 + 's ' + this.timing;
-        item.style[this.side] = 0;
-        item.style.width = item.offsetWidth + 'px';
-        item.style.position = 'absolute';
-        item.style[this.side] = this.menuWidth + 'px';
+        var styles = {
+          width: this.offsetWidth() + 'px',
+          position: 'absolute'
+        };
+        this.style(this.side, '0');
+        this.style(transitions.cssProperty, this.side + ' ' + this.speed / 1000 + 's ' + this.timing);
+        this.style(styles);
+        setTimeout(function () {
+          return _this2.style(_this2.side, _this2.menuWidth + 'px');
+        }, 1);
       }
     }
   }, {
     key: 'onClose',
     value: function onClose() {
       var transitions = dom.transitions;
-      var item = this.item;
+      var styles = {
+        width: '',
+        position: '',
+        right: '',
+        left: ''
+      };
 
-      item.style[transitions.cssProperty] = '';
-      item.style.right = '';
-      item.style.left = '';
-      item.style.width = '';
-      item.style.position = '';
-
-      dom.unbind(item, transitions.event, this.temporalCallback);
+      styles[transitions.cssProperty] = '';
+      this.style(styles);
+      this.unbind(transitions.event, this.temporalCallback);
     }
   }, {
     key: 'close',
     value: function close() {
       if (this.displace) {
         var transitions = dom.transitions;
-        var item = this.item;
 
-        item.style[this.side] = 0;
+        this.style(this.side, 0);
         var self = this;
         this.temporalCallback = function () {
           self.onClose();
         };
-        dom.bind(item, transitions.event, this.temporalCallback);
+        this.bind(transitions.event, this.temporalCallback);
       }
     }
   }, {
     key: 'removeAnimationClass',
     value: function removeAnimationClass() {
-      this.item.classList.remove(bodyAnimationClass);
+      this.removeClass(bodyAnimationClass);
     }
   }, {
     key: 'removeOpenClass',
     value: function removeOpenClass() {
-      this.item.classList.remove('sidr-open');
-      if (this.name !== 'sidr') {
-        this.item.classList.remove(this.name + '-open');
-      }
+      this.removeClass(openClasses(this.name));
     }
   }, {
     key: 'addOpenClass',
     value: function addOpenClass() {
-      this.item.classList.add('sidr-open');
-      if (this.name !== 'sidr') {
-        this.item.classList.add(this.name + '-open');
-      }
+      this.addClass(openClasses(this.name));
     }
   }]);
   return Body;
-}();
+}(BaseElement);
 
-var Menu = function () {
+var Menu = function (_BaseElement) {
+  inherits(Menu, _BaseElement);
+
   function Menu(settings) {
     classCallCheck(this, Menu);
 
-    this.name = settings.name;
-    this.speed = settings.speed;
-    this.side = settings.side;
-    this.displace = settings.displace;
-    this.source = settings.source;
-    this.timing = settings.timing;
-    this.method = settings.method;
-    this.renaming = settings.renaming;
-    this.onOpenCallback = settings.onOpen;
-    this.onCloseCallback = settings.onClose;
-    this.onOpenEndCallback = settings.onOpenEnd;
-    this.onCloseEndCallback = settings.onCloseEnd;
+    var _this = possibleConstructorReturn(this, (Menu.__proto__ || Object.getPrototypeOf(Menu)).call(this, dom.id(settings.name)));
 
-    this.init(settings);
+    _this.name = settings.name;
+    _this.speed = settings.speed;
+    _this.side = settings.side;
+    _this.displace = settings.displace;
+    _this.source = settings.source;
+    _this.timing = settings.timing;
+    _this.method = settings.method;
+    _this.renaming = settings.renaming;
+    _this.onOpenCallback = settings.onOpen;
+    _this.onCloseCallback = settings.onClose;
+    _this.onOpenEndCallback = settings.onOpenEnd;
+    _this.onCloseEndCallback = settings.onCloseEnd;
+
+    _this.init(settings);
+    return _this;
   }
 
   createClass(Menu, [{
     key: 'init',
     value: function init(settings) {
-      var name = this.name;
-      var sideMenu = dom.id(name);
-
       // If the side menu do not exist create it
-      if (!sideMenu) {
-        sideMenu = dom.createMenu(name);
+      if (!this.element) {
+        this.element = dom.createElement(this.name);
       }
 
-      // Add transition to menu
-      sideMenu.style[dom.transitions.cssProperty] = this.side + ' ' + this.speed / 1000 + 's ' + this.timing;
-      // Add required classes
-      sideMenu.classList.add('sidr');
-      sideMenu.classList.add('sidr-' + this.side);
+      this.style(dom.transitions.cssProperty, this.side + ' ' + this.speed / 1000 + 's ' + this.timing);
+      this.addClass('sidr sidr-' + this.side);
+      this.body = new Body(settings, this.offsetWidth());
 
-      this.item = sideMenu;
-      this.fillWithContent();
-      this.body = new Body(settings, this.item.offsetWidth);
+      this.reload();
     }
   }, {
-    key: 'fillWithContent',
-    value: function fillWithContent() {
-      var _this = this;
+    key: 'reload',
+    value: function reload() {
+      var _this2 = this;
 
       if (typeof this.source === 'function') {
         var newContent = this.source(name);
-        dom.replaceHTML(this.item, newContent);
+        this.html(newContent);
       } else if (typeof this.source === 'string' && utils.isUrl(this.source)) {
         utils.fetch(this.source, function (newContent) {
-          dom.replaceHTML(_this.item, newContent);
+          _this2.html(newContent);
         });
       } else if (typeof this.source === 'string') {
         var htmlContent = dom.getHTMLContent(this.source);
@@ -415,7 +538,7 @@ var Menu = function () {
           htmlContent = dom.addPrefixes(htmlContent);
         }
 
-        dom.replaceHTML(this.item, htmlContent);
+        this.html(htmlContent);
       } else if (this.source !== null) {
         console.error('Invalid Sidr Source');
       }
@@ -433,7 +556,7 @@ var Menu = function () {
   }, {
     key: 'open',
     value: function open(callback) {
-      var _this2 = this;
+      var _this3 = this;
 
       // Check if is already opened or moving
       if (sidrStatus.opened === this.name || sidrStatus.moving) {
@@ -445,15 +568,13 @@ var Menu = function () {
         var alreadyOpenedMenu = store$1.get(sidrStatus.opened);
 
         alreadyOpenedMenu.close(function () {
-          _this2.open(callback);
+          _this3.open(callback);
         });
 
         return;
       }
 
       this.move('open', callback);
-
-      // onOpen callback
       this.onOpenCallback();
     }
   }, {
@@ -465,8 +586,6 @@ var Menu = function () {
       }
 
       this.move('close', callback);
-
-      // onClose callback
       this.onCloseCallback();
     }
   }, {
@@ -486,11 +605,9 @@ var Menu = function () {
       sidrStatus.moving = false;
       sidrStatus.opened = name;
 
-      dom.unbind(this.item, dom.transitions.event, this.temporalOpenMenuCallback);
-
+      this.unbind(dom.transitions.event, this.temporalOpenMenuCallback);
       this.body.removeAnimationClass();
       this.body.addOpenClass();
-
       this.onOpenEndCallback();
 
       if (typeof callback === 'function') {
@@ -500,23 +617,22 @@ var Menu = function () {
   }, {
     key: 'openMenu',
     value: function openMenu(callback) {
-      var item = this.item;
-
-      item.style[this.side] = 0;
       var self = this;
+
+      this.style(this.side, 0);
       this.temporalOpenMenuCallback = function () {
         self.onOpenMenu(callback);
       };
-      dom.bind(item, dom.transitions.event, this.temporalOpenMenuCallback);
+      this.bind(dom.transitions.event, this.temporalOpenMenuCallback);
     }
   }, {
     key: 'onCloseMenu',
     value: function onCloseMenu(callback) {
-      var item = this.item;
-
-      dom.unbind(item, dom.transitions.event, this.temporalCloseMenuCallback);
-      item.style.left = '';
-      item.style.right = '';
+      this.unbind(dom.transitions.event, this.temporalCloseMenuCallback);
+      this.style({
+        left: '',
+        right: ''
+      });
       this.body.unprepare();
 
       sidrStatus.moving = false;
@@ -524,10 +640,7 @@ var Menu = function () {
 
       this.body.removeAnimationClass();
       this.body.removeOpenClass();
-
       this.onCloseEndCallback();
-
-      // Callback
       if (typeof callback === 'function') {
         callback(name);
       }
@@ -535,15 +648,13 @@ var Menu = function () {
   }, {
     key: 'closeMenu',
     value: function closeMenu(callback) {
-      var item = this.item;
-
-      item.style[this.side] = '';
-
       var self = this;
+
+      this.style(this.side, '');
       this.temporalCloseMenuCallback = function () {
         self.onCloseMenu(callback);
       };
-      dom.bind(item, dom.transitions.event, this.temporalCloseMenuCallback);
+      this.bind(dom.transitions.event, this.temporalCloseMenuCallback);
     }
   }, {
     key: 'moveMenu',
@@ -556,33 +667,42 @@ var Menu = function () {
     }
   }]);
   return Menu;
-}();
+}(BaseElement);
 
-var events = {
-  init: function init(selector, settings) {
-    var buttons = dom.qsa(selector);
-    for (var i = 0; i < buttons.length; i++) {
-      this.addEvent(buttons[i], settings);
-    }
-  },
-  addEvent: function addEvent(button, settings) {
-    var data = button.getAttribute('data-sidr');
+var Button = function (_BaseElement) {
+  inherits(Button, _BaseElement);
 
-    // If the plugin hasn't been initialized yet
-    if (!data) {
-      var name = settings.name;
-      var bind = settings.bind;
-      var method = settings.method;
+  function Button(element, settings) {
+    classCallCheck(this, Button);
 
-      button.setAttribute('data-sidr', name);
-      dom.bind(button, bind, function (event) {
-        event.preventDefault();
+    var _this = possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).call(this, element));
 
-        runner(method, name);
-      });
-    }
+    _this.init(settings);
+    return _this;
   }
-};
+
+  createClass(Button, [{
+    key: 'init',
+    value: function init(settings) {
+      var data = this.element.getAttribute('data-sidr');
+
+      // If the plugin hasn't been initialized yet
+      if (!data) {
+        var name = settings.name;
+        var method = settings.method;
+        var bind = settings.bind;
+
+        this.element.setAttribute('data-sidr', name);
+        this.bind(bind, function (event) {
+          event.preventDefault();
+
+          runner(method, name);
+        });
+      }
+    }
+  }]);
+  return Button;
+}(BaseElement);
 
 var defaultOptions = {
   name: 'sidr', // Name for the 'sidr'
@@ -610,7 +730,7 @@ function fnSidr(options) {
   store$1.add(settings.name, new Menu(settings));
 
   return this.each(function () {
-    events.addEvent(this, settings);
+    new Button(this, settings);
   });
 }
 

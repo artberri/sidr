@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Menu - Sidr Example</title>
+    <!-- Include Sidr bundled CSS theme -->
+    <link rel="stylesheet" href="../../dist/stylesheets/sidr.dark.css">
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="../style.css">
+  </head>
+  <body>
+
+    <a id="simple-menu" class="menu-button" href="#sidr">Toggle menu</a>
+
+    <div class="wrapper">
+      <h1>Reload Content Example</h1>
+
+      <p>This will be the menu content:</p>
+      <div class="sample-content">
+        <ul>
+            <li><a href="index.html">All Examples</a></li>
+            <li><a id="link1" href="index.html">Random Link 1</a></li>
+            <li><a id="link2" href="index.html">Random Link 2</a></li>
+            <li><a id="link3" href="index.html">Random Link 3</a></li>
+        </ul>
+
+        <p></p>
+      </div>
+
+      <p>Click this button to change above content and look how it changes also the menu content:</p>
+
+      <button id="content-changer">Change content</button>
+    </div>
+
+    <!-- Include the Sidr JS -->
+    <script src="../../dist/sidr.js"></script>
+
+    <!-- Your code -->
+    <script>
+      (function(sidr) {
+        "use strict"
+
+        sidr.new('#simple-menu', {
+          name: 'changing-menu',
+          timing: 'ease-in-out',
+          speed: 500,
+          source: '.sample-content'
+        });
+
+        window.onresize = function() {
+          sidr.close('changing-menu');
+        };
+
+        document.getElementById('content-changer').addEventListener('click', function () {
+          document.getElementById('link1').innerHTML = randomWord()
+          document.getElementById('link2').innerHTML = randomWord()
+          document.getElementById('link3').innerHTML = randomWord()
+          sidr.reload('changing-menu');
+        }, false)
+
+        function randomWord() {
+          var things = ['Rock', 'Paper', 'Scissor', 'Piedra', 'Papel', 'Tijera'];
+          return things[Math.floor(Math.random()*things.length)];
+        }
+
+      })(window.sidr);
+    </script>
+
+  </body>
+</html>

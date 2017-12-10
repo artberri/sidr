@@ -1,7 +1,7 @@
 import fnSidr from '../src/js/jquery.fnSidr'
 import store from '../src/js/menu.store'
 import Menu from '../src/js/models/menu'
-import events from '../src/js/events'
+import Button from '../src/js/models/button'
 
 describe('fnSidr.js', () => {
   describe('#fnSidr()', () => {
@@ -20,7 +20,7 @@ describe('fnSidr.js', () => {
     })
 
     it('should add the new Menu to the menu store', () => {
-      sandbox.stub(events, 'addEvent')
+      sandbox.stub(Button.prototype, 'init')
       let addStub = sandbox.stub(store, 'add').callsFake((name, menu) => {
         items.push(menu)
       })
@@ -35,9 +35,9 @@ describe('fnSidr.js', () => {
       items.length.should.equal(1)
     })
 
-    it('should call addEvent on each jquery element', (done) => {
+    it('should create a button for each jquery element', (done) => {
       sandbox.stub(store, 'add')
-      let addEventStub = sandbox.stub(events, 'addEvent')
+      let buttonStub = sandbox.stub(Button.prototype, 'init')
 
       fnSidr.apply({
         each: (callback) => {
@@ -48,7 +48,7 @@ describe('fnSidr.js', () => {
         name: 'acme'
       })
 
-      sandbox.assert.calledOnce(addEventStub)
+      sandbox.assert.calledOnce(buttonStub)
     })
   })
 })

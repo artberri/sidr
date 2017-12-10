@@ -16,7 +16,7 @@ let getMethod = function (methodName) {
 }
 
 let methods = {}
-let publicMethods = ['open', 'close', 'toggle']
+let publicMethods = ['open', 'close', 'toggle', 'reload']
 for (let i = 0; i < publicMethods.length; i++) {
   let methodName = publicMethods[i]
   methods[methodName] = getMethod(methodName)

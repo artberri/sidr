@@ -10,6 +10,9 @@ function execute (action, name, callback) {
     case 'close':
       menu.close(callback)
       break
+    case 'reload':
+      menu.reload()
+      break
     case 'toggle':
       menu.toggle(callback)
       break

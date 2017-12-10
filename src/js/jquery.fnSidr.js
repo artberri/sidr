@@ -1,7 +1,7 @@
 import utils from './utils/utils'
 import Menu from './models/menu'
+import Button from './models/button'
 import store from './menu.store'
-import events from './events'
 import defaultOptions from './default.options'
 
 function fnSidr (options) {
@@ -9,7 +9,7 @@ function fnSidr (options) {
   store.add(settings.name, new Menu(settings))
 
   return this.each(function () {
-    events.addEvent(this, settings)
+    new Button(this, settings)
   })
 }
 

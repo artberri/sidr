@@ -1,7 +1,7 @@
 import dom from '../../src/js/utils/dom'
 
 describe('dom.js', () => {
-  describe('#createMenu()', () => {
+  describe('#createElement()', () => {
     beforeEach(() => {
       document.body.innerHTML = ''
     })
@@ -11,21 +11,11 @@ describe('dom.js', () => {
     })
 
     it('should create a new div at the end of the body', () => {
-      dom.createMenu('myid').should.equal(document.body.lastElementChild)
+      dom.createElement('myid').should.equal(document.body.lastElementChild)
     })
 
     it('should create a new div with the given id', () => {
-      dom.createMenu('myid').id.should.equal('myid')
-    })
-  })
-
-  describe('#replaceHTML()', () => {
-    it('should replace the html of an element', () => {
-      let elem = document.createElement('div')
-      elem.innerHTML = 'old'
-
-      dom.replaceHTML(elem, 'new')
-        .innerHTML.should.equal('new')
+      dom.createElement('myid').id.should.equal('myid')
     })
   })
 
