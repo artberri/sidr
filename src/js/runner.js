@@ -1,5 +1,5 @@
-import execute from './execute'
 import status from './status'
+import store from './menu.store'
 
 let getMethod = function (methodName) {
   return function (name, callback) {
@@ -11,7 +11,8 @@ let getMethod = function (methodName) {
       name = 'sidr'
     }
 
-    execute(methodName, name, callback)
+    let menu = store.get(name)
+    menu[methodName](callback)
   }
 }
 

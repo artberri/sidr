@@ -6,6 +6,14 @@ function changeClasses (element, action, classes) {
   }
 }
 
+function setProperty (element, prop, value) {
+  element[prop] = value
+}
+
+function getProperty (element, prop, value) {
+  return element[prop]
+}
+
 class BaseElement {
   constructor (element) {
     this.element = element
@@ -41,17 +49,17 @@ class BaseElement {
 
   html (value) {
     if (value) {
-      this.element.innerHTML = value
+      setProperty(this.element, 'innerHTML', value)
     } else {
-      return this.element.innerHTML
+      return getProperty(this.element, 'innerHTML')
     }
   }
 
   scrollTop (value) {
     if (value) {
-      this.element.scrollTop = value
+      setProperty(this.element, 'scrollTop', value)
     } else {
-      return this.element.scrollTop
+      return getProperty(this.element, 'scrollTop')
     }
   }
 

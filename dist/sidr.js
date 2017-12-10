@@ -82,6 +82,19 @@ function addPrefix(item, attribute) {
   }
 }
 
+function getTransitionPrefix(property, style) {
+  var prefix = void 0;
+  var prefixes = ['moz', 'webkit', 'o', 'ms'];
+  for (var i = 0; i < prefixes.length; i++) {
+    prefix = prefixes[i];
+    if (prefix + property in style) {
+      return prefix;
+    }
+  }
+
+  return false;
+}
+
 var dom = {
   id: function id(elementId) {
     return document.getElementById(elementId);
@@ -135,21 +148,9 @@ var dom = {
     if (property in style) {
       supported = true;
     } else {
-      var prefixes = ['moz', 'webkit', 'o', 'ms'];
-      var prefix = void 0;
-      var i = void 0;
-
       property = property.charAt(0).toUpperCase() + property.substr(1);
-      supported = function () {
-        for (i = 0; i < prefixes.length; i++) {
-          prefix = prefixes[i];
-          if (prefix + property in style) {
-            return true;
-          }
-        }
-
-        return false;
-      }();
+      var prefix = getTransitionPrefix(property, style);
+      supported = !!prefix;
       cssProperty = supported ? prefix + property : null;
       property = supported ? '-' + prefix + '-' + property.toLowerCase() : null;
       if (prefix === 'webkit') {
@@ -159,12 +160,7 @@ var dom = {
       }
     }
 
-    return {
-      cssProperty: cssProperty,
-      supported: supported,
-      property: property,
-      event: event
-    };
+    return { cssProperty: cssProperty, supported: supported, property: property, event: event };
   }()
 };
 
@@ -242,6 +238,14 @@ function changeClasses(element, action, classes) {
   }
 }
 
+function setProperty(element, prop, value) {
+  element[prop] = value;
+}
+
+function getProperty(element, prop, value) {
+  return element[prop];
+}
+
 var BaseElement = function () {
   function BaseElement(element) {
     classCallCheck(this, BaseElement);
@@ -286,18 +290,18 @@ var BaseElement = function () {
     key: 'html',
     value: function html(value) {
       if (value) {
-        this.element.innerHTML = value;
+        setProperty(this.element, 'innerHTML', value);
       } else {
-        return this.element.innerHTML;
+        return getProperty(this.element, 'innerHTML');
       }
     }
   }, {
     key: 'scrollTop',
     value: function scrollTop(value) {
       if (value) {
-        this.element.scrollTop = value;
+        setProperty(this.element, 'scrollTop', value);
       } else {
-        return this.element.scrollTop;
+        return getProperty(this.element, 'scrollTop');
       }
     }
   }, {
@@ -635,28 +639,6 @@ var Menu = function (_BaseElement) {
   return Menu;
 }(BaseElement);
 
-function execute(action, name, callback) {
-  var menu = store$1.get(name);
-
-  switch (action) {
-    case 'open':
-      menu.open(callback);
-      break;
-    case 'close':
-      menu.close(callback);
-      break;
-    case 'reload':
-      menu.reload();
-      break;
-    case 'toggle':
-      menu.toggle(callback);
-      break;
-    default:
-      console.error('Method ' + action + ' does not exist on sidr');
-      break;
-  }
-}
-
 var getMethod = function getMethod(methodName) {
   return function (name, callback) {
     // Check arguments
@@ -667,7 +649,8 @@ var getMethod = function getMethod(methodName) {
       name = 'sidr';
     }
 
-    execute(methodName, name, callback);
+    var menu = store$1.get(name);
+    menu[methodName](callback);
   };
 };
 

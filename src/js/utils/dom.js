@@ -6,6 +6,19 @@ function addPrefix (item, attribute) {
   }
 }
 
+function getTransitionPrefix (property, style) {
+  let prefix
+  let prefixes = ['moz', 'webkit', 'o', 'ms']
+  for (let i = 0; i < prefixes.length; i++) {
+    prefix = prefixes[i]
+    if ((prefix + property) in style) {
+      return prefix
+    }
+  }
+
+  return false
+}
+
 export default {
   id (elementId) {
     return document.getElementById(elementId)
@@ -63,21 +76,9 @@ export default {
     if (property in style) {
       supported = true
     } else {
-      let prefixes = ['moz', 'webkit', 'o', 'ms']
-      let prefix
-      let i
-
       property = property.charAt(0).toUpperCase() + property.substr(1)
-      supported = (function () {
-        for (i = 0; i < prefixes.length; i++) {
-          prefix = prefixes[i]
-          if ((prefix + property) in style) {
-            return true
-          }
-        }
-
-        return false
-      }())
+      let prefix = getTransitionPrefix(property, style)
+      supported = !!prefix
       cssProperty = supported ? prefix + property : null
       property = supported ? '-' + prefix + '-' + property.toLowerCase() : null
       if (prefix === 'webkit') {
@@ -87,11 +88,6 @@ export default {
       }
     }
 
-    return {
-      cssProperty,
-      supported,
-      property,
-      event
-    }
+    return { cssProperty, supported, property, event }
   }())
 }
