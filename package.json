@@ -70,7 +70,7 @@
     "postcss-cli": "^4.1.1",
     "postcss-cssnext": "^3.0.2",
     "postcss-import": "^11.0.0",
-    "puppeteer": "^0.13.0",
+    "puppeteer": "^5.2.1",
     "rollup": "^0.52.1",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-istanbul": "^2.0.0",
